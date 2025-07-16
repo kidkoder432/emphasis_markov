@@ -9,6 +9,7 @@ v2: Add tag FSM
 
 import pickle as pkl
 import json
+from mock import DEFAULT
 import numpy as np
 import mido
 from plotly.subplots import make_subplots
@@ -25,7 +26,7 @@ logger.setLevel(logging.DEBUG)
 logger.handlers = []
 
 # Add file logging
-file_handler = logging.FileHandler("./output/generate_refactored.log", mode="w")
+file_handler = logging.FileHandler("./output/debug.log", mode="w")
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt="%H:%M:%S"))
 logger.addHandler(file_handler)
@@ -43,6 +44,8 @@ ENABLE_TEMPERATURE_SCALING = True
 # --- Constants ---
 DEFAULT_TPM_PATH = "./model_data/tpm.npy"
 DEFAULT_RAGADATA_PATH = "./raga_data/amrit.json"
+DEFAULT_TAG_TPM_PATH = "./model_data/tpm_tags.npy"
+DEFAULT_TAG_PICKLE_PATH = "./model_data/tag_tpms.pkl"
 DEFAULT_SPLINES_PATH = "./model_data/splines.pkl"
 DEFAULT_SWARS_PATH = "./raga_data/swars.json"
 OUTPUT_PHRASES_FILE = "./output/phrases.txt"
@@ -73,13 +76,14 @@ tags = amrit_data["tags"]
 unique_tags = list(set(tags))
 note_tags = amrit_data["new_tags"]
 
-tag_tpm = np.load("tpm_tags.npy")
+tag_tpm = np.load(DEFAULT_TAG_TPM_PATH)
 
 tag_tpm_dict, unique_note_tags, tags_to_time = pkl.load(
-    open("tag_tpms.pkl", "rb")
+    open(DEFAULT_TAG_PICKLE_PATH, "rb")
 ).values()
 
 # --- Utility Functions ---
+
 
 def clip_value(value, min_val, max_val):
     """Clips a value to be within the specified minimum and maximum range."""
@@ -202,7 +206,9 @@ def create_emphasized_tpm(tpm_orig, emphasis, swars_list):
     logger.debug("Created emphasized TPM.")
     return new_tpm
 
+
 # --- Generating functions ---
+
 
 def generate_single_phrase(
     timestamp,
@@ -215,7 +221,7 @@ def generate_single_phrase(
     temp=NOTE_SELECTION_TEMPERATURE,
 ):
     """Generates a single musical phrase."""
-    logger.info(f"Generating phrase {timestamp}/{num_total_phrases - 1}")
+    logger.info(f"Generating phrase {timestamp}/{num_total_phrases - 1}, tag {fsm_tag}")
     t_phrase_start = timestamp
     t_phrase_end = timestamp + 1
     t_emphasis = clip_value(
@@ -239,7 +245,7 @@ def generate_single_phrase(
         logger.error("No notes available to start phrase.")
         return None, None
 
-    start_note_probs = emphasis_vector.copy()
+    start_note_probs = emphasized_tpm[-1][:-2].copy()
     start_note_probs[np.isnan(start_note_probs) | (start_note_probs < 0)] = 0
     prob_sum = np.sum(start_note_probs)
     if prob_sum < 1e-9:
@@ -279,9 +285,30 @@ def generate_single_phrase(
 
     logger.debug(f"Phrase {timestamp} initial note: {current_note}")
 
-    # --- Phrase Generation Loop ---
-    phrase_notes = []
     current_time = t_phrase_start  # Time used for duration calculation
+
+    time_delta = np.random.normal(0.2, 0.2)
+    current_time = clip_value(
+        current_time + time_delta, t_phrase_start, t_phrase_end
+    )
+    try:
+        duration_emphasis = calculate_emphasis(current_time, convolved_splines)
+        duration = 10 * duration_emphasis[swars_list.index(current_note)]
+    except Exception as e:
+        logger.error(
+            f"Error calculating duration for '{current_note}': {e}. Setting duration=0."
+        )
+        duration = 0
+
+    if duration >= MIN_NOTE_DURATION_THRESHOLD:
+        logger.debug(f"Adding note: {current_note} (duration {duration:.2f})")
+    else:
+        logger.debug(
+            f"Skipping note '{current_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD})."
+        )
+
+    # --- Phrase Generation Loop ---
+    phrase_notes = [(duration, current_note)]
     max_steps = 50
     generated_sequence = [current_note]
 
@@ -315,7 +342,13 @@ def generate_single_phrase(
 
         # Handle Retry State
         if next_idx == len(swars_list):  # Retry column index
-            tpm_temp_scale(enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx)
+            tpm_temp_scale(
+                enable_temp_scaling,
+                temp,
+                emphasized_tpm,
+                current_note,
+                current_note_idx,
+            )
             continue  # Re-select note
 
         # Process Selected Note
@@ -327,12 +360,16 @@ def generate_single_phrase(
             break
 
         # Avoid Repetition
-        if len(generated_sequence) > 1 and next_note == generated_sequence[-1]:
+        if len(generated_sequence) > 1 and next_note == current_note:
             logger.debug(f"Avoiding repetition of '{current_note}'.")
-            tpm_temp_scale(enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx)
+            tpm_temp_scale(
+                enable_temp_scaling,
+                temp,
+                emphasized_tpm,
+                current_note,
+                current_note_idx,
+            )
             continue
-
-        generated_sequence.append(next_note)
 
         # Normal Note Processing (if not '|')
         if next_note != "|":
@@ -341,15 +378,21 @@ def generate_single_phrase(
                 current_time + time_delta, t_phrase_start, t_phrase_end
             )
             try:
-                duration_emphasis = calculate_emphasis(
-                    current_time, convolved_splines
-                )
+                duration_emphasis = calculate_emphasis(current_time, convolved_splines)
                 duration = 10 * duration_emphasis[swars_list.index(next_note)]
             except Exception as e:
                 logger.error(
                     f"Error calculating duration for '{next_note}': {e}. Setting duration=0."
                 )
                 duration = 0
+
+            tpm_temp_scale(
+                enable_temp_scaling,
+                1.1,
+                emphasized_tpm,
+                next_note,
+                next_idx,
+            )
 
             if duration >= MIN_NOTE_DURATION_THRESHOLD:
                 logger.debug(f"Adding note: {next_note} (duration {duration:.2f})")
@@ -358,24 +401,38 @@ def generate_single_phrase(
                 logger.debug(
                     f"Skipping note '{next_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD})."
                 )
-
-        # Update state
-        previous_note = current_note
-        current_note = next_note
+                continue  # Skip this note
+                
+            
 
         # Handle getting stuck on '|' early
-        if current_note == "|" and len(phrase_notes) < 3:
-            if np.sum(emphasized_tpm[swars_list.index("|"), :-1]) < 1e-9:
+        if next_note == "|" and len(phrase_notes) < 3:
+            logger.debug("Reached '|' early, attempting transition out.")
+
+            if emphasized_tpm[current_note_idx, -2] > 1 - 1e-9:
                 logger.warning(
-                    f"Reached '|' early and cannot transition out. Breaking phrase {timestamp}."
+                    f"Stuck on '|' with high retry prob from '{current_note}'. Skipping retry."
                 )
                 break
-            else:
-                logger.debug("Reached '|' early, attempting transition out.")
+
+            tpm_temp_scale(
+                enable_temp_scaling,
+                temp,
+                emphasized_tpm,
+                current_note,
+                current_note_idx,
+            )
+            continue
+
+        # Update state
+        current_note = next_note
+
+        logger.info(f"Current sequence: {phrase_notes}")
+
 
     else:  # Loop finished without break (max_steps reached)
         logger.warning(
-            f"Phrase {timestamp} reached max steps ({max_steps}). Truncating. Sequence: {' '.join(generated_sequence)}"
+            f"Phrase {timestamp} reached max steps ({max_steps}). Truncating. Sequence: {phrase_notes}"
         )
 
     # --- Format Output ---
@@ -385,19 +442,19 @@ def generate_single_phrase(
         "original_tpm": tpm_orig,
     }
     if not phrase_notes:
-        logger.warning(
-            f"Phrase {timestamp} generated no valid notes. Sequence: {' '.join(generated_sequence)}"
-        )
+        logger.warning(f"Phrase {timestamp} generated no valid notes.")
         return None, viz_data
-
-    phrase_notes = phrase_notes[1:]
 
     formatted_notes = [f"{duration:.2f}-{note}" for duration, note in phrase_notes]
     final_phrase_string = f"{fsm_tag} {t_emphasis:.4f} " + " ".join(formatted_notes)
+
+    logger.info(f"Generated final phrase: {final_phrase_string}")
     return final_phrase_string, viz_data
 
 
-def tpm_temp_scale(enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx):
+def tpm_temp_scale(
+    enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx
+):
     base_probs = emphasized_tpm[current_note_idx, :-1].copy()
     base_probs[base_probs < 0] = 0
     norm_probs = np.array([])  # Initialize
@@ -411,9 +468,7 @@ def tpm_temp_scale(enable_temp_scaling, temp, emphasized_tpm, current_note, curr
         if retry_sum > 1e-9:
             norm_probs = powered / retry_sum
     else:  # No temp scaling
-        logger.debug(
-                f"Retrying for '{current_note}' without temperature scaling."
-            )
+        logger.debug(f"Retrying for '{current_note}' without temperature scaling.")
         retry_sum = np.sum(base_probs)
         if retry_sum > 1e-9:
             norm_probs = base_probs / retry_sum
@@ -421,22 +476,21 @@ def tpm_temp_scale(enable_temp_scaling, temp, emphasized_tpm, current_note, curr
         # Fallback to uniform if needed
     if norm_probs.size == 0 or np.sum(norm_probs) < 1e-9:
         logger.warning(
-                f"Retry resulted in zero sum for '{current_note}'. Using uniform."
-            )
+            f"Retry resulted in zero sum for '{current_note}'. Using uniform."
+        )
         num_valid = len(base_probs)
-        norm_probs = (
-                np.ones(num_valid) / num_valid if num_valid > 0 else np.array([])
-            )
+        norm_probs = np.ones(num_valid) / num_valid if num_valid > 0 else np.array([])
 
         # Update TPM row if possible
     if len(norm_probs) == len(emphasized_tpm[current_note_idx, :-1]):
         emphasized_tpm[current_note_idx, :-1] = norm_probs
         emphasized_tpm[current_note_idx, -1] = 0  # Reset retry prob
     else:
-        logger.error(
-                f"Shape mismatch during retry update for '{current_note}'."
-            )
+        logger.error(f"Shape mismatch during retry update for '{current_note}'.")
 
+    logger.info(
+        f"Retry probabilities for '{current_note}': {norm_probs}"
+    )
 
 def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
     """Generates a specified number of phrases."""
@@ -508,10 +562,11 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
 # --- Evaluation functions ---
 from sktime.distances import dtw_distance
 
+
 def evaluate_phrase(phrase, swars_list, convolved_splines):
     """Evaluates the quality of a generated phrase."""
-    
-    total = 0   
+
+    total = 0
     tag, note = phrase.split(" ")[:2]
     phrase = phrase.split(" ")[3:]
 
@@ -519,13 +574,15 @@ def evaluate_phrase(phrase, swars_list, convolved_splines):
     if len(phrase) < 3 or len(phrase) > 15:
         total -= 10
 
+    print(phrase)
     # Introductory phrases should not start with the note they are highlighting
     if tag == "I" and phrase[0].split("-")[1] == note:
-        total -= 10
+        total -= 30
 
     # Convert phrase to notes
 
     return total
+
 
 def evaluate_all_phrases(phrases_list, swars_list, convolved_splines):
     """Evaluates the quality of all generated phrases."""
@@ -538,7 +595,9 @@ def evaluate_all_phrases(phrases_list, swars_list, convolved_splines):
 
     return total_eval / len(phrases_list)
 
+
 # --- Save/Plot functions ---
+
 
 def save_phrases_to_text(phrases_list, filename):
     """Saves the list of generated phrases to a text file."""
@@ -661,11 +720,11 @@ def create_visualization(viz_tables, swars_list):
         return
 
     logger.info("Creating Plotly visualization...")
-    
+
     num_phrases_generated = len(viz_tables)
 
     try:
-        # Find the first valid frame to initialize the figure
+        # Find the first valid frame
         initial_data = next(
             (
                 d
@@ -681,83 +740,71 @@ def create_visualization(viz_tables, swars_list):
         )
 
         if not initial_data:
-            logger.error(
-                "No valid data found to initialize visualization. All frames might be missing or contain non-finite data."
-            )
+            logger.error("No valid data found to initialize visualization.")
             return
 
-        # Define labels for the axes
-        emphasis_labels = swars_list[:-1]  # Labels for the emphasis vector
-        tpm_labels = swars_list + ["Retry"]  # Labels for the TPM 'To' axis
+        emphasis_labels = swars_list[:-1]
+        tpm_labels = swars_list + ["Retry"]
 
-        #
-        # --- This section is updated to match the style of your first code block ---
-        #
-
-        # 1. Create initial figures using the desired subplot titles and add spacing
         figs = make_subplots(
             rows=1,
             cols=3,
+            column_widths=[0.45, 0.45, 0.1],  # reduce Emphasis width
             subplot_titles=(
                 "Transition Probability Matrix",
                 "TPM Original",
                 "Emphasis Table",
             ),
-            column_widths=[
-                0.5,
-                0.35,
-                0.15,
-            ],  # Retaining custom widths for better layout
-            horizontal_spacing=0.08,  # Add horizontal space between plots
+            horizontal_spacing=0.05,
         )
 
-        # 2. Add initial traces (Heatmaps) using the 'hot' colorscale
-        # Emphasized TPM
-        heatmap1 = go.Heatmap(
-            z=initial_data["emphasized_tpm"],
-            colorscale="hot",
-            name="Emphasized TPM",
-            x=tpm_labels,
-            y=swars_list,
-            zmin=0,
-            zmax=1,  # Keep color range consistent
-            colorbar=dict(
-                title=dict(text="Prob", side="top"), x=0.32
-            ),  # Position colorbar title
-        )
-        # Original TPM
-        heatmap2 = go.Heatmap(
-            z=initial_data["original_tpm"],
-            colorscale="hot",
-            name="Original TPM",
-            x=tpm_labels,
-            y=swars_list,
-            zmin=0,
-            zmax=1,  # Keep color range consistent
-            colorbar=dict(
-                title=dict(text="Prob", side="top"), x=0.83
-            ),  # Position colorbar title
-        )
-        # Emphasis Vector
-        heatmap3 = go.Heatmap(
-            z=initial_data["emphasis"].reshape(-1, 1),
-            colorscale="hot",
-            name="Emphasis",
-            y=emphasis_labels,
-            x=["Emphasis"],
-            colorbar=dict(
-                title=dict(text="Value", side="top"), x=1.0
-            ),  # Position colorbar title
+        # Add initial heatmaps with coloraxis instead of individual colorbars
+        figs.add_trace(
+            go.Heatmap(
+                z=initial_data["emphasized_tpm"],
+                x=tpm_labels,
+                y=swars_list,
+                coloraxis="coloraxis1",
+                xaxis="x1",
+                yaxis="y1",
+                name="Emphasized TPM",
+            ),
+            row=1,
+            col=1,
         )
 
-        figs.add_trace(heatmap1, row=1, col=1)
-        figs.add_trace(heatmap2, row=1, col=2)
-        figs.add_trace(heatmap3, row=1, col=3)
+        figs.add_trace(
+            go.Heatmap(
+                z=initial_data["original_tpm"],
+                x=tpm_labels,
+                y=swars_list,
+                coloraxis="coloraxis2",
+                xaxis="x2",
+                yaxis="y2",
+                name="Original TPM",
+            ),
+            row=1,
+            col=2,
+        )
 
-        # 3. Define frames for the animation
-        frames, valid_indices = [], []
+        figs.add_trace(
+            go.Heatmap(
+                z=initial_data["emphasis"].reshape(-1, 1),
+                x=["Emphasis"],
+                y=emphasis_labels,
+                coloraxis="coloraxis3",
+                xaxis="x3",
+                yaxis="y3",
+                name="Emphasis",
+            ),
+            row=1,
+            col=3,
+        )
+
+        # Create frames
+        frames = []
+        valid_indices = []
         for i, data in enumerate(viz_tables):
-            # Validate data for each frame (preserved from your original function)
             if not (
                 data
                 and all(
@@ -768,29 +815,42 @@ def create_visualization(viz_tables, swars_list):
                     for k in ["emphasized_tpm", "original_tpm", "emphasis"]
                 )
             ):
-                logger.debug(f"Skipping frame {i} due to missing or non-finite data.")
+                logger.debug(f"Skipping frame {i} due to missing or invalid data.")
                 continue
 
             frames.append(
                 go.Frame(
                     data=[
-                        go.Heatmap(z=data["emphasized_tpm"], colorscale="hot"),
-                        go.Heatmap(z=data["original_tpm"], colorscale="hot"),
-                        go.Heatmap(z=data["emphasis"].reshape(-1, 1), colorscale="hot"),
+                        go.Heatmap(
+                            z=data["emphasized_tpm"],
+                            coloraxis="coloraxis1",
+                            xaxis="x1",
+                            yaxis="y1",
+                        ),
+                        go.Heatmap(
+                            z=data["original_tpm"],
+                            coloraxis="coloraxis2",
+                            xaxis="x2",
+                            yaxis="y2",
+                        ),
+                        go.Heatmap(
+                            z=data["emphasis"].reshape(-1, 1),
+                            coloraxis="coloraxis3",
+                            xaxis="x3",
+                            yaxis="y3",
+                        ),
                     ],
                     name=f"Phrase {i}",
-                    # Specify which traces are being updated by this frame
                     traces=[0, 1, 2],
                 )
             )
             valid_indices.append(i)
 
         if not frames:
-            logger.error("No valid frames could be generated for the animation.")
+            logger.error("No valid frames to animate.")
             return
-        logger.info(f"Generated {len(frames)} valid frames for visualization.")
 
-        # 4. Define slider steps for the animation
+        # Slider steps
         slider_steps = [
             {
                 "args": [
@@ -801,50 +861,53 @@ def create_visualization(viz_tables, swars_list):
                         "transition": {"duration": 50},
                     },
                 ],
-                "label": f"{i}",
+                "label": str(i),
                 "method": "animate",
             }
             for i in valid_indices
         ]
 
-        # 5. Update layout with slider, titles, and margins for spacing
+        # Layout update
         figs.update_layout(
-            title_text=f"TPM Evolution & Emphasis (Phrases 0-{num_phrases_generated-1})",
-            title_x=0.5,  # Center the main title
-            margin=dict(t=120, b=120, l=80, r=40),  # Add margins for titles and labels
+            title_text=f"TPM Evolution & Emphasis (Phrases 0–{num_phrases_generated - 1})",
+            title_x=0.5,
+            margin=dict(t=120, b=100, l=80, r=60),
             sliders=[
                 {
                     "active": 0,
                     "currentvalue": {"prefix": "Phrase: "},
-                    "pad": {"t": 50, "b": 10},
+                    "pad": {"t": 50},
                     "steps": slider_steps,
                 }
             ],
-            # Use detailed axis titles and rotate labels for clarity
             xaxis1=dict(title="To Swar/State", tickangle=-45),
             yaxis1=dict(title="From Swar"),
             xaxis2=dict(title="To Swar/State", tickangle=-45),
-            yaxis2=dict(title=""),  # Hide redundant Y-axis title
+            yaxis2=dict(title=""),
             xaxis3=dict(title=""),
             yaxis3=dict(title="Swar"),
-            template="plotly_dark",
             hovermode="closest",
+            template="plotly_dark",
+            # Explicit coloraxis layout
+            coloraxis1=dict(colorscale="hot", cmin=0, cmax=1),
+            coloraxis2=dict(colorscale="hot", cmin=0, cmax=1),
+            coloraxis3=dict(
+                colorscale="hot",
+                cmin=0,
+                cmax=1,
+            ),
         )
 
-        # 6. Manually add frames to the Figure object and show it
         figs.frames = frames
         figs.show()
-        logger.info("Visualization created and shown successfully.")
+        logger.info("Visualization successfully shown.")
 
-    except ImportError:
-        logger.critical("'plotly' library not found. Cannot create visualization.")
     except Exception as e:
-        logger.exception(
-            f"An unexpected error occurred while creating the visualization: {e}"
-        )
+        logger.exception(f"Unexpected error during visualization: {e}")
 
 
 # --- Main Execution ---
+
 
 def main():
     """Main function to orchestrate the phrase generation and output."""
@@ -908,29 +971,16 @@ def main_with_eval():
     logger.info(f"Visualization Enabled: {ENABLE_VISUALIZATION}")
     logger.info(f"Temperature Scaling Enabled: {ENABLE_TEMPERATURE_SCALING}")
 
-    # Define file paths
-    paths = [
-        DEFAULT_TPM_PATH,
-        DEFAULT_RAGADATA_PATH,
-        DEFAULT_SPLINES_PATH,
-        DEFAULT_SWARS_PATH,
-    ]
-
-    # Check files exist
-    missing = [p for p in paths if not os.path.exists(p)]
-    if missing:
-        logger.critical(f"Missing input file(s): {', '.join(missing)}. Exiting.")
-        return
-
     # TODO
     total_iter = 0
     current_eval = -1e10
 
     best_phrases = []
+    best_table = []
     best_eval = -1e10
     best_idx = -1
 
-    while current_eval < -3 and total_iter < 100:
+    while current_eval < -3 and total_iter < 1:
         logger.info("Eval Iteration: " + str(total_iter))
         # Generate phrases
         phrases, viz_tables = generate_all_phrases(
@@ -945,16 +995,17 @@ def main_with_eval():
         if current_eval > best_eval:
             best_eval = current_eval
             best_phrases = phrases
+            best_table = viz_tables
             best_idx = total_iter
 
         total_iter += 1
     # Save phrases & MIDI
     if best_phrases:
         logger.error(f"Saving best phrases (iter {best_idx})...")
-        save_phrases_to_text(phrases, OUTPUT_PHRASES_FILE)
+        save_phrases_to_text(best_phrases, OUTPUT_PHRASES_FILE)
         if swar2midi_map:
             create_midi_file(
-                phrases,
+                best_phrases,
                 swar2midi_map,
                 MIDI_TONIC_NOTE,
                 MIDI_BPM,
@@ -968,14 +1019,15 @@ def main_with_eval():
 
     # Create visualization
     if ENABLE_VISUALIZATION:
-        if viz_tables:
-            create_visualization(viz_tables, swars_list)
+        if best_table:
+            create_visualization(best_table, swars_list)
         else:
             logger.warning("Skipping visualization: No data available.")
     else:
         logger.info("Skipping visualization as per configuration.")
 
     logger.info("Music generation process finished.")
+
 
 if __name__ == "__main__":
 
