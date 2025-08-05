@@ -2,7 +2,7 @@ from tempfile import template
 import numpy as np
 import json
 
-amrit = json.load(open("amrit.json"))
+amrit = json.load(open("./raga_data/amrit.json"))
 
 new_tags = amrit["new_tags"]
 old_tags = amrit["tags"]
@@ -87,7 +87,7 @@ import pickle as pkl
 
 tags_to_time = {}
 
-for tag in set(amrit["new_tags"]):
+for tag in amrit["new_tags"][::-1]:
     t, i = tag.split("-")
     i = int(i)
     tags_to_time[t] = i
