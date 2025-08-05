@@ -9,7 +9,6 @@ v2: Add tag FSM
 
 import pickle as pkl
 import json
-from mock import DEFAULT
 import numpy as np
 import mido
 from plotly.subplots import make_subplots
@@ -17,6 +16,7 @@ import plotly.graph_objects as go
 import os
 import logging
 import sys
+from collections import defaultdict
 
 # --- Logging Configuration ---
 LOG_LEVEL = logging.ERROR  # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -60,6 +60,10 @@ MIN_NOTE_DURATION_THRESHOLD = 0.5
 
 SPLINE_DOMAIN_MAX = 74  # Domain used for scaling time for spline evaluation
 
+# Ablation parameters
+ENABLE_EMPHASIS = True  # Enable emphasis calculation
+ENABLE_TAGS = True  # Enable tag-based FSM generation
+
 # --- Data Loading ---
 
 tpm = np.load(DEFAULT_TPM_PATH)
@@ -73,7 +77,6 @@ swar2midi_map = swars_data.get("swar2midi")
 
 # --- Tag stuff ---
 tags = amrit_data["tags"]
-unique_tags = list(set(tags))
 note_tags = amrit_data["new_tags"]
 
 tag_tpm = np.load(DEFAULT_TAG_TPM_PATH)
@@ -229,11 +232,12 @@ def generate_single_phrase(
     )
 
     try:
-        emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
-        emphasized_tpm = create_emphasized_tpm(tpm_orig, emphasis_vector, swars_list)
-        # emphasized_tpm = create_emphasized_tpm(
-        #     tpm_orig, np.ones(len(swars_list) - 1), swars_list
-        # )
+        if ENABLE_EMPHASIS:
+            emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
+            emphasized_tpm = create_emphasized_tpm(tpm_orig, emphasis_vector, swars_list)
+        else:
+            emphasis_vector = np.ones(len(swars_list) - 1) / (len(swars_list) - 1)
+            emphasized_tpm = create_emphasized_tpm(tpm_orig, np.ones(len(swars_list) - 1), swars_list)
     except Exception as e:
         logger.error(f"Failed to create emphasis/TPM for phrase {timestamp}: {e}")
         return None, None  # Cannot proceed
@@ -292,8 +296,11 @@ def generate_single_phrase(
         current_time + time_delta, t_phrase_start, t_phrase_end
     )
     try:
-        duration_emphasis = calculate_emphasis(current_time, convolved_splines)
-        duration = 10 * duration_emphasis[swars_list.index(current_note)]
+        if ENABLE_EMPHASIS:
+            duration_emphasis = calculate_emphasis(current_time, convolved_splines)
+            duration = 10 * duration_emphasis[swars_list.index(current_note)]
+        else:
+            duration = 1
     except Exception as e:
         logger.error(
             f"Error calculating duration for '{current_note}': {e}. Setting duration=0."
@@ -378,8 +385,11 @@ def generate_single_phrase(
                 current_time + time_delta, t_phrase_start, t_phrase_end
             )
             try:
-                duration_emphasis = calculate_emphasis(current_time, convolved_splines)
-                duration = 10 * duration_emphasis[swars_list.index(next_note)]
+                if ENABLE_EMPHASIS:
+                    duration_emphasis = calculate_emphasis(current_time, convolved_splines)
+                    duration = 10 * duration_emphasis[swars_list.index(next_note)]
+                else:
+                    duration = 1
             except Exception as e:
                 logger.error(
                     f"Error calculating duration for '{next_note}': {e}. Setting duration=0."
@@ -502,42 +512,53 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
     initial_state = "I S"
     gen = [initial_state]
 
-    i = 0
-    current_time = 0
-    while len(gen) < 25:
-        gen = [initial_state]
-        while not gen[-1].startswith("F"):
-            try:
-                next = np.random.choice(
-                    unique_note_tags, p=tag_tpm[unique_note_tags.index(gen[-1])]
-                )
-                if tags_to_time[next] < current_time:
+    if ENABLE_TAGS:
+        i = 0
+        current_time = 0
+        while len(gen) < 25:
+            gen = [initial_state]
+            while not gen[-1].startswith("F"):
+                try:
+                    next = np.random.choice(
+                        unique_note_tags, p=tag_tpm[unique_note_tags.index(gen[-1])]
+                    )
+                    if tags_to_time[next] < current_time:
+                        continue
+                except:
+                    print(tag_tpm[unique_note_tags.index(gen[-1])])
                     continue
-            except:
-                print(tag_tpm[unique_note_tags.index(gen[-1])])
-                continue
 
-            gen.append(next)
-            i += 1
-            current_time = tags_to_time[next]
-            idx = unique_note_tags.index(next)
-            tag_tpm[idx][idx] *= np.random.normal(0.9, 0.1)
-            if np.sum(tag_tpm[idx]) != 0:
-                tag_tpm[idx] /= np.sum(tag_tpm[idx])
+                gen.append(next)
+                i += 1
+                current_time = tags_to_time[next]
+                idx = unique_note_tags.index(next)
+                if np.sum(tag_tpm[idx]) != 0:
+                    tag_tpm[idx] /= np.sum(tag_tpm[idx])
 
+    else:
+        time_to_tag = {v: k for k, v in tags_to_time.items()}
+        times = np.linspace(0, SPLINE_DOMAIN_MAX, 43)  # Tag-based vistaars are ~43 (median) phrases long
+        gen = []
+        for t in times:
+            snap = min(time_to_tag, key=lambda x:abs(x-t) if x < t else float('inf'))
+            gen.append(time_to_tag[snap])
     logger.info(f"--- Generating {len(gen)} Phrases ---")
     logger.info(
         f"Temperature Scaling: {'Enabled' if enable_temp_scaling else 'Disabled'}"
     )
 
     timestamp = 0
-    for state in gen:
-        tpm_orig = tag_tpm_dict[state]
+    for k, state in enumerate(gen):
+        if ENABLE_TAGS:
+            tpm_orig = tag_tpm_dict[state]
 
-        if state[0] in ["I", "F", "R", "C"]:
-            timestamp = tags_to_time[state]
+            if state[0] in ["I", "F", "R", "C"]:
+                timestamp = tags_to_time[state]
+            else:
+                timestamp += 1
         else:
-            timestamp += 1
+            tpm_orig = tpm
+            timestamp = times[k]
 
         phrase_str, viz_data = generate_single_phrase(
             timestamp,
@@ -560,40 +581,66 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
 
 
 # --- Evaluation functions ---
-from sktime.distances import dtw_distance
 
+def delta(a, b):
+    return 1 if a == b else 0
 
-def evaluate_phrase(phrase, swars_list, convolved_splines):
+def evaluate_phrase(phrase_str, swars_list, convolved_splines):
     """Evaluates the quality of a generated phrase."""
 
     total = 0
-    tag, note = phrase.split(" ")[:2]
-    phrase = phrase.split(" ")[3:]
+    evals = defaultdict(int)
+    tag, emphasis_note = phrase_str.split(" ")[:2]
+    phrase_str = phrase_str.split(" ")[3:]
+    notes = [s.split("-")[1] for s in phrase_str]
+
 
     # Make sure phrase isn't too short or too long
-    if len(phrase) < 3 or len(phrase) > 15:
-        total -= 10
+    # long phrases can imply repetition e.g. A B A B A ...
+    if len(phrase_str) < 3 or len(phrase_str) > 10:
+        evals["err_length"] += 10
 
-    print(phrase)
     # Introductory phrases should not start with the note they are highlighting
-    if tag == "I" and phrase[0].split("-")[1] == note:
-        total -= 30
+    if tag == "I" and phrase_str[0].split("-")[1] == emphasis_note:
+        evals["err_intro"] += 30
 
-    # Convert phrase to notes
+    # Autocorrelation
+    for lag in range(1, 4):
+        acr = 0
+        for i in range(len(notes) - lag):
+            acr += delta(notes[i], notes[i + lag])
+    
+        acr /= len(notes)
+        evals[f"acr_lag_{lag}"] += acr
 
-    return total
+    return tag, emphasis_note, notes, evals
 
 
 def evaluate_all_phrases(phrases_list, swars_list, convolved_splines):
     """Evaluates the quality of all generated phrases."""
 
-    total_eval = 0
+    evals = {"phrase_evals": []}
+    tags = []
+    emphasis_notes = []
+    notes_lists = []
+    for phrase_str in phrases_list:
+        tag, emphasis_note, notes, phrase_evals = evaluate_phrase(
+            phrase_str, swars_list, convolved_splines
+        )
+        evals["phrase_evals"].append(phrase_evals)
+        tags.append(tag)
+        emphasis_notes.append(emphasis_note)
+        notes_lists.append(notes)
 
-    for phrase in phrases_list:
-        eval = evaluate_phrase(phrase, swars_list, convolved_splines)
-        total_eval += eval
+    if notes_lists[-1][-1] != "S":
+        evals["err_last_note"] = 10
 
-    return total_eval / len(phrases_list)
+    num_unique_tags = len(set([tags[i] + " " + emphasis_notes[i] for i in range(len(tags))]))
+    evals["unique_tags_%"] = num_unique_tags / len(unique_note_tags) * 100
+
+    return evals, 0
+
+    
 
 
 # --- Save/Plot functions ---
@@ -973,14 +1020,14 @@ def main_with_eval():
 
     # TODO
     total_iter = 0
-    current_eval = -1e10
+    score = -1e10
 
     best_phrases = []
     best_table = []
     best_eval = -1e10
     best_idx = -1
 
-    while current_eval < -3 and total_iter < 1:
+    while score < -3 and total_iter < 1:
         logger.info("Eval Iteration: " + str(total_iter))
         # Generate phrases
         phrases, viz_tables = generate_all_phrases(
@@ -989,11 +1036,11 @@ def main_with_eval():
             enable_temp_scaling=ENABLE_TEMPERATURE_SCALING,
         )
 
-        current_eval = evaluate_all_phrases(phrases, swars_list, convolved_splines)
-        logger.error(f"Evaluation for iteration {total_iter}: {current_eval:.4f}")
+        current_eval, score = evaluate_all_phrases(phrases, swars_list, convolved_splines)
+        logger.error(f"Evaluation for iteration {total_iter}: {json.dumps(current_eval, indent=2)}")
 
-        if current_eval > best_eval:
-            best_eval = current_eval
+        if score > best_eval:
+            best_eval = score
             best_phrases = phrases
             best_table = viz_tables
             best_idx = total_iter
