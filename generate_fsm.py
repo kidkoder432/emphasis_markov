@@ -63,10 +63,11 @@ SPLINE_DOMAIN_MAX = 74  # Domain used for scaling time for spline evaluation
 # Ablation parameters
 ENABLE_EMPHASIS = True  # Enable emphasis calculation
 ENABLE_TAGS = True  # Enable tag-based FSM generation
+ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
 
 # --- Data Loading ---
 
-tpm = np.load(DEFAULT_TPM_PATH)
+full_tpm = np.load(DEFAULT_TPM_PATH)
 amrit_data = json.load(open(DEFAULT_RAGADATA_PATH))
 splines_data = pkl.load(open(DEFAULT_SPLINES_PATH, "rb"))
 swars_data = json.load(open(DEFAULT_SWARS_PATH))
@@ -235,6 +236,11 @@ def generate_single_phrase(
         if ENABLE_EMPHASIS:
             emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
             emphasized_tpm = create_emphasized_tpm(tpm_orig, emphasis_vector, swars_list)
+            full_tpm_prep = create_emphasized_tpm(full_tpm, np.ones(len(swars_list) - 1) / (len(swars_list) - 1), swars_list)
+
+            if ENABLE_HYBRID:
+                emphasized_tpm = 0.95 * emphasized_tpm + 0.05 * full_tpm_prep
+
         else:
             emphasis_vector = np.ones(len(swars_list) - 1) / (len(swars_list) - 1)
             emphasized_tpm = create_emphasized_tpm(tpm_orig, np.ones(len(swars_list) - 1), swars_list)
@@ -406,14 +412,13 @@ def generate_single_phrase(
 
             if duration >= MIN_NOTE_DURATION_THRESHOLD:
                 logger.debug(f"Adding note: {next_note} (duration {duration:.2f})")
-                phrase_notes.append((duration, next_note))
             else:
                 logger.debug(
-                    f"Skipping note '{next_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD})."
+                    f"Adding note '{next_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD}). Clamping to."
                 )
-                continue  # Skip this note
-                
-            
+                duration = MIN_NOTE_DURATION_THRESHOLD
+            phrase_notes.append((duration, next_note))
+
 
         # Handle getting stuck on '|' early
         if next_note == "|" and len(phrase_notes) < 3:
@@ -439,6 +444,16 @@ def generate_single_phrase(
 
         logger.info(f"Current sequence: {phrase_notes}")
 
+        if ENABLE_EMPHASIS and ENABLE_HYBRID:
+            emphasis_vector += np.ones(len(emphasis_vector)) * 0.01
+            emphasis_vector **= 0.95
+            emphasis_vector /= np.sum(emphasis_vector)
+
+            mod_tpm = tpm_orig * 0.95 + full_tpm * 0.05
+
+            emphasized_tpm = create_emphasized_tpm(
+                mod_tpm, emphasis_vector, swars_list
+            )
 
     else:  # Loop finished without break (max_steps reached)
         logger.warning(
@@ -556,8 +571,9 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
                 timestamp = tags_to_time[state]
             else:
                 timestamp += 1
+
         else:
-            tpm_orig = tpm
+            tpm_orig = full_tpm
             timestamp = times[k]
 
         phrase_str, viz_data = generate_single_phrase(
@@ -600,8 +616,8 @@ def evaluate_phrase(phrase_str, swars_list, convolved_splines):
     if len(phrase_str) < 3 or len(phrase_str) > 10:
         evals["err_length"] += 10
 
-    # Introductory phrases should not start with the note they are highlighting
-    if tag == "I" and phrase_str[0].split("-")[1] == emphasis_note:
+    # Intro phrases MUST contain the note they introduce!
+    if tag == "I" and emphasis_note not in notes:
         evals["err_intro"] += 30
 
     # Autocorrelation
@@ -639,8 +655,6 @@ def evaluate_all_phrases(phrases_list, swars_list, convolved_splines):
     evals["unique_tags_%"] = num_unique_tags / len(unique_note_tags) * 100
 
     return evals, 0
-
-    
 
 
 # --- Save/Plot functions ---
