@@ -2,25 +2,14 @@ from tkinter import SW
 import numpy as np
 import json
 
-with open("amrit.json", "r") as f:
+with open("./raga_data/amrit.json", "r") as f:
     amrit = json.load(f)
-
-phrases_file = open("./outputs/phrases_0509_2.txt").read().splitlines()
-
-gen_phrases = []
-
-for line in phrases_file:
-    phrase = line.split(" ")[3:]
-    phrase_str = " ".join(["x" + phrase.split("-")[1] for phrase in phrase])
-    gen_phrases.append(phrase_str)
-    
-print(gen_phrases[:5])
 
 SWARS = amrit["notes"] + ["|"]
 
 tpm = np.zeros((len(SWARS), len(SWARS)))
 
-phrases = amrit["phrases"] + amrit["new_phrases"] + gen_phrases
+phrases = amrit["phrases"] + amrit["new_phrases"]
 
 important_notes = ["S", "S_", "S^"]
 

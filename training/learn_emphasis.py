@@ -6,9 +6,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pickle as pkl
 from scipy.ndimage import median_filter
-from scipy.interpolate import InterpolatedUnivariateSpline, PchipInterpolator
+from scipy.interpolate import PchipInterpolator
 
-amrit = json.load(open("amrit.json"))
+amrit = json.load(open("../raga_data/amrit.json"))
 
 emphasis_table = np.zeros((len(amrit["new_phrases"]), len(amrit["notes"])))
 
@@ -25,7 +25,7 @@ for i, phrase in enumerate(amrit["new_phrases"]):
         print("".join(note), end=" ")
 
         if phrase[::-1].index(note) == 0:
-            emphasis_table[i][amrit["notes"].index(name)] += 1.5 * e ** (5 / 3)
+            emphasis_table[i][amrit["notes"].index(name)] *= 2.5
 
         # emphasis_table[i] **= (2/3)
 
@@ -126,6 +126,6 @@ fig.add_scatter(
 pkl.dump({
     "splines": splines,
     "convolved_splines": convolved_splines
-}, open("splines.pkl", "wb"))
+}, open("../model_data/splines.pkl", "wb"))
 
 fig.show()
