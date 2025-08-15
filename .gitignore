@@ -2,3 +2,5 @@ outputs/
 output/
 extras/
 voice_modeling/
+midishower/
+__pycache__/
