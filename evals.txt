@@ -1,0 +1,57 @@
+Running with emphasis, tags, and hybrid enabled
+Average ACR Lag 1:  0.06913210889617351
+Average ACR Lag 2:  0.3948748112949476
+Average ACR Lag 3:  0.24906924652970022
+Total rules broken:  211
+Rules broken per vistaar:  4.22
+% of unique tags:  100.0
+
+Running with emphasis and tags enabled
+Average ACR Lag 1:  0.07432307676490858
+Average ACR Lag 2:  0.4451759363569174
+Average ACR Lag 3:  0.2647739268955049
+Total rules broken:  421
+Rules broken per vistaar:  8.42
+% of unique tags:  100.0
+
+Running with emphasis enabled
+Average ACR Lag 1:  0.17198966473289284
+Average ACR Lag 2:  0.4108529199049235
+Average ACR Lag 3:  0.30936482292648226
+Total rules broken:  184
+Rules broken per vistaar:  3.68
+% of unique tags:  69.69696969696965
+
+Running with base Markov model
+Average ACR Lag 1:  0.05574714175400539
+Average ACR Lag 2:  0.2210614214759698
+Average ACR Lag 3:  0.13706838332120752
+Total rules broken:  1021
+Rules broken per vistaar:  20.42
+% of unique tags:  69.69696969696965
+
+Evaluating ground truth vistaar
+Average ACR Lag 1:  0.062370062370062374
+Average ACR Lag 2:  0.21621621621621623
+Average ACR Lag 3:  0.29521829521829523
+Total rules broken:  12
+Rules broken per vistaar:  12
+% of unique tags:  100.0
+
+Finished all runs
+
+Running t-tests
+t-test full vs tags (lag 1):  -1.8870737482621398 0.062112091854899076
+t-test full vs emphasis (lag 1):  -24.64177533664111 1.0893522789887182e-37
+t-test tags vs emphasis (lag 1):  -23.534446572090182 4.809027490597782e-36
+t-test full vs base (lag 1):  4.772845834455643 6.350204281914035e-06
+
+t-test full vs tags (lag 2):  -6.79819702914949 9.018250728420498e-10
+t-test full vs emphasis (lag 2):  -2.2001117719235865 0.03023803651171802
+t-test tags vs emphasis (lag 2):  5.144519142842664 1.3815874104876122e-06
+t-test full vs base (lag 2):  26.923431158162476 3.794492568311377e-41
+
+t-test full vs tags (lag 3):  -2.599683378293182 0.010777965258110844
+t-test full vs emphasis (lag 3):  -8.975971153561364 2.3497793814399766e-14
+t-test tags vs emphasis (lag 3):  -6.803853249689452 9.321262409301118e-10
+t-test full vs base (lag 3):  19.62573029164202 3.905684341224864e-35

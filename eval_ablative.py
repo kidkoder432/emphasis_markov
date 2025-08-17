@@ -6,10 +6,14 @@ from generate_fsm import *
 
 NUM_SAMPLES = 50
 
+gen = create_tags()
+
 def run():
     avg_acr_1 = 0
     avg_acr_2 = 0
     avg_acr_3 = 0
+
+    acr = [[], [], []]
 
     total_phrases = 0
     rules_broken = 0
@@ -18,7 +22,7 @@ def run():
     for i in range(NUM_SAMPLES):
         print("Generating vistaar", i + 1, end="\r", flush=True)
 
-        phrases, _ = generate_all_phrases(swars_list, convolved_splines, True)
+        phrases, _ = generate_all_phrases(swars_list, convolved_splines, True, gen)
 
         vistaar_eval, _ = evaluate_all_phrases(phrases, swars_list, convolved_splines)
 
@@ -27,6 +31,10 @@ def run():
         avg_acr_1 += vistaar_eval["full_acr_lag_1"]
         avg_acr_2 += vistaar_eval["full_acr_lag_2"]
         avg_acr_3 += vistaar_eval["full_acr_lag_3"]
+
+        acr[0].append(vistaar_eval["full_acr_lag_1"])
+        acr[1].append(vistaar_eval["full_acr_lag_2"])
+        acr[2].append(vistaar_eval["full_acr_lag_3"])
 
         total_phrases += len(phrase_evals)
 
@@ -43,6 +51,9 @@ def run():
     print("Total rules broken: ", rules_broken)
     print("Rules broken per vistaar: ", rules_broken / NUM_SAMPLES)
     print("% of unique tags: ", tags_percent / NUM_SAMPLES)
+
+    return acr
+
 
 def run_ground():
     avg_acr_1 = 0
@@ -93,24 +104,65 @@ gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = True
 gf.ENABLE_HYBRID = True
 print("Running with emphasis, tags, and hybrid enabled")
-run()
+acr_full = run()
 
 
 gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = True
 gf.ENABLE_HYBRID = False
 print("Running with emphasis and tags enabled")
-run()
+acr_tags = run()
 
-
+gen = []
 gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = False
 gf.ENABLE_HYBRID = False
 print("Running with emphasis enabled")
-run()
+acr_emphasis = run()
+
+gf.ENABLE_EMPHASIS = False
+gf.ENABLE_TAGS = False
+gf.ENABLE_HYBRID = False
+print("Running with base Markov model")
+acr_base = run()
 
 print("Evaluating ground truth vistaar")
 run_ground()
 
 print("Finished all runs")
+
+
+print("Running t-tests")
+import scipy.stats as stats
+
+# lag 1
+stat, p = stats.ttest_ind(acr_full[0], acr_tags[0], equal_var=False)
+print("t-test full vs tags (lag 1): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[0], acr_emphasis[0], equal_var=False)
+print("t-test full vs emphasis (lag 1): ", stat, p)
+stat, p = stats.ttest_ind(acr_tags[0], acr_emphasis[0], equal_var=False)
+print("t-test tags vs emphasis (lag 1): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[0], acr_base[0], equal_var=False)
+print("t-test full vs base (lag 1): ", stat, p)
+
+# lag 2
+stat, p = stats.ttest_ind(acr_full[1], acr_tags[1], equal_var=False)
+print("t-test full vs tags (lag 2): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[1], acr_emphasis[1], equal_var=False)
+print("t-test full vs emphasis (lag 2): ", stat, p)
+stat, p = stats.ttest_ind(acr_tags[1], acr_emphasis[1], equal_var=False)
+print("t-test tags vs emphasis (lag 2): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[1], acr_base[1], equal_var=False)
+print("t-test full vs base (lag 2): ", stat, p)
+
+# lag 3
+stat, p = stats.ttest_ind(acr_full[2], acr_tags[2], equal_var=False)
+print("t-test full vs tags (lag 3): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[2], acr_emphasis[2], equal_var=False)
+print("t-test full vs emphasis (lag 3): ", stat, p)
+stat, p = stats.ttest_ind(acr_tags[2], acr_emphasis[2], equal_var=False)
+print("t-test tags vs emphasis (lag 3): ", stat, p)
+stat, p = stats.ttest_ind(acr_full[2], acr_base[2], equal_var=False)
+print("t-test full vs base (lag 3): ", stat, p)
+
 MessageBeep()

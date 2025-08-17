@@ -61,9 +61,9 @@ MIN_NOTE_DURATION_THRESHOLD = 0.5
 SPLINE_DOMAIN_MAX = 74  # Domain used for scaling time for spline evaluation
 
 # Ablation parameters
-ENABLE_EMPHASIS = True  # Enable emphasis calculation
-ENABLE_TAGS = True  # Enable tag-based FSM generation
-ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
+ENABLE_EMPHASIS = False  # Enable emphasis calculation
+ENABLE_TAGS = False  # Enable tag-based FSM generation
+ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
 
 # --- Data Loading ---
 
@@ -520,48 +520,49 @@ def tpm_temp_scale(
 
     logger.info(f"Retry probabilities for '{current_note}': {norm_probs}")
 
+def create_tags(): 
+    initial_state = "I S"
+    gen = [initial_state]
 
-def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling):
+    i = 0
+    current_time = 0
+    while len(gen) < 25:
+        gen = [initial_state]
+        while not gen[-1].startswith("F"):
+            try:
+                next = np.random.choice(
+                    unique_note_tags, p=tag_tpm[unique_note_tags.index(gen[-1])]
+                )
+                if tags_to_time[next] < current_time:
+                    continue
+            except:
+                print(tag_tpm[unique_note_tags.index(gen[-1])])
+                continue
+
+            gen.append(next)
+            i += 1
+            current_time = tags_to_time[next]
+            idx = unique_note_tags.index(next)
+            if np.sum(tag_tpm[idx]) != 0:
+                tag_tpm[idx] /= np.sum(tag_tpm[idx])
+
+    return gen
+
+def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling, gen=[]):
     """Generates a specified number of phrases."""
     logger.info("--- Generating Phrases ---")
     logger.info("Generating Tag Sequence using FSM...")
 
     all_phrases, visualization_tables = [], []
-
-    initial_state = "I S"
-    gen = [initial_state]
-
-    if ENABLE_TAGS:
-        i = 0
-        current_time = 0
-        while len(gen) < 25:
-            gen = [initial_state]
-            while not gen[-1].startswith("F"):
-                try:
-                    next = np.random.choice(
-                        unique_note_tags, p=tag_tpm[unique_note_tags.index(gen[-1])]
-                    )
-                    if tags_to_time[next] < current_time:
-                        continue
-                except:
-                    print(tag_tpm[unique_note_tags.index(gen[-1])])
-                    continue
-
-                gen.append(next)
-                i += 1
-                current_time = tags_to_time[next]
-                idx = unique_note_tags.index(next)
-                if np.sum(tag_tpm[idx]) != 0:
-                    tag_tpm[idx] /= np.sum(tag_tpm[idx])
-
-    else:
+    times = []
+    if not gen:
         time_to_tag = {v: k for k, v in tags_to_time.items()}
         times = np.linspace(
             0, SPLINE_DOMAIN_MAX, 43
         )  # Tag-based vistaars are ~43 (median) phrases long
         gen = []
         for t in times:
-            snap = min(time_to_tag, key=lambda x: abs(x - t) if x < t else float("inf"))
+            snap = min(time_to_tag, key=lambda x: abs(x - t) if x <= t else float("inf"))
             gen.append(time_to_tag[snap])
     logger.info(f"--- Generating {len(gen)} Phrases ---")
     logger.info(
