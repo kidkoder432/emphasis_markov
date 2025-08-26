@@ -8,6 +8,7 @@ NUM_SAMPLES = 50
 
 gen = create_tags()
 
+
 def run():
     avg_acr_1 = 0
     avg_acr_2 = 0
@@ -66,17 +67,18 @@ def run_ground():
 
     print("Evaluating ground truth vistaar")
 
-    tags = amrit_data["new_tags"]
-    phrases_raw = amrit_data["new_phrases"]
+    tags = raga_data["new_tags"]
+    phrases_raw = raga_data["new_phrases"]
 
     phrases = []
     for i, phrase in enumerate(phrases_raw):
         tag = tags[i].split("-")[0]
         time = int(tags[i].split("-")[1])
-        phrase = ' '.join([re.sub(r"(\d+)(.+)", r"\1-\2", n) for n in phrase.split(" ")])
+        phrase = " ".join(
+            [re.sub(r"(\d+)(.+)", r"\1-\2", n) for n in phrase.split(" ")]
+        )
         phrases.append(f"{tag} {time} {phrase}")
         # print(phrases[-1])
-
 
     vistaar_eval, _ = evaluate_all_phrases(phrases, swars_list, convolved_splines)
 
@@ -99,6 +101,7 @@ def run_ground():
     print("Total rules broken: ", rules_broken)
     print("Rules broken per vistaar: ", rules_broken)
     print("% of unique tags: ", tags_percent)
+
 
 gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = True

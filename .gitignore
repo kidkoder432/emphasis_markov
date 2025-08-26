@@ -1,6 +1,7 @@
 outputs/
 output/
 extras/
+figures/
 voice_modeling/
 midishower/
 __pycache__/

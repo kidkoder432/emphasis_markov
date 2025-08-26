@@ -68,17 +68,17 @@ ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
 # --- Data Loading ---
 
 full_tpm = np.load(DEFAULT_TPM_PATH)
-amrit_data = json.load(open(DEFAULT_RAGADATA_PATH))
+raga_data = json.load(open(DEFAULT_RAGADATA_PATH))
 splines_data = pkl.load(open(DEFAULT_SPLINES_PATH, "rb"))
 swars_data = json.load(open(DEFAULT_SWARS_PATH))
 
-swars_list = amrit_data.get("notes", []) + ["|"]
+swars_list = raga_data.get("notes", []) + ["|"]
 convolved_splines = splines_data.get("convolved_splines")
 swar2midi_map = swars_data.get("swar2midi")
 
 # --- Tag stuff ---
-tags = amrit_data["tags"]
-note_tags = amrit_data["new_tags"]
+tags = raga_data["tags"]
+note_tags = raga_data["new_tags"]
 
 tag_tpm = np.load(DEFAULT_TAG_TPM_PATH)
 
@@ -411,7 +411,7 @@ def generate_single_phrase(
                 duration = 0
 
             tpm_temp_scale(
-                enable_temp_scaling,
+                enable_temp_scaling and ENABLE_EMPHASIS,
                 1.1,
                 emphasized_tpm,
                 next_note,
@@ -520,7 +520,8 @@ def tpm_temp_scale(
 
     logger.info(f"Retry probabilities for '{current_note}': {norm_probs}")
 
-def create_tags(): 
+
+def create_tags():
     initial_state = "I S"
     gen = [initial_state]
 
@@ -548,6 +549,7 @@ def create_tags():
 
     return gen
 
+
 def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling, gen=[]):
     """Generates a specified number of phrases."""
     logger.info("--- Generating Phrases ---")
@@ -562,7 +564,9 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling, gen
         )  # Tag-based vistaars are ~43 (median) phrases long
         gen = []
         for t in times:
-            snap = min(time_to_tag, key=lambda x: abs(x - t) if x <= t else float("inf"))
+            snap = min(
+                time_to_tag, key=lambda x: abs(x - t) if x <= t else float("inf")
+            )
             gen.append(time_to_tag[snap])
     logger.info(f"--- Generating {len(gen)} Phrases ---")
     logger.info(
@@ -608,6 +612,7 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling, gen
 
 def delta(a, b):
     return 1 if a == b else 0
+
 
 def evaluate_phrase(phrase_str, swars_list, convolved_splines):
     """Evaluates the quality of a generated phrase."""
