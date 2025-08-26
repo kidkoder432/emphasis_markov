@@ -1,131 +1,179 @@
 import json
 import numpy as np
-from pprint import pprint
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 import pickle as pkl
 from scipy.ndimage import median_filter
 from scipy.interpolate import PchipInterpolator
 
-amrit = json.load(open("../raga_data/amrit.json"))
 
-emphasis_table = np.zeros((len(amrit["new_phrases"]), len(amrit["notes"])))
+def calculate_emphasis_df(raga_data):
+    """
+    Calculates an emphasis table for musical phrases from a given data dictionary.
 
-for i, phrase in enumerate(amrit["new_phrases"]):
+    The emphasis table is a DataFrame where rows represent phrases and columns
+    represent notes. The value at each cell indicates the relative emphasis of a
+    specific note within a phrase.
 
-    phrase = [(p[0], p[1:]) for p in phrase.split(" ")]
-    totalEmphasis = sum([int(p[0]) for p in phrase])
-    phraseNotes = [p[1] for p in phrase]
-    for note in phrase:
-        e = int(note[0])
-        name = note[1]
-        count = phraseNotes.count(name)
-        emphasis_table[i][amrit["notes"].index(name)] += e ** (5 / 3)
-        print("".join(note), end=" ")
+    Args:
+        amrit_data (dict): A dictionary containing 'new_phrases' and 'notes'.
+                           'new_phrases' is a list of strings, where each string
+                           is a space-separated list of notes with emphasis values (e.g., "1.5SA 2RE").
+                           'notes' is a list of note names.
 
-        if phrase[::-1].index(note) == 0:
-            emphasis_table[i][amrit["notes"].index(name)] *= 2.5
+    Returns:
+        pd.DataFrame: A DataFrame representing the emphasis table.
+    """
+    emphasis_table = np.zeros(
+        (len(raga_data["phrases"]), len(raga_data["notes"]))
+    )
 
-        # emphasis_table[i] **= (2/3)
+    for i, phrase_str in enumerate(raga_data["phrases"]):
+        # Split the phrase into individual note-emphasis pairs
+        phrase_parts = phrase_str.split(" ")
 
-    emphasis_table[i] /= sum(emphasis_table[i])
+        # Prepare a list of just the note names for easy counting
+        # phrase_notes = [part[1:] for part in phrase_parts]
 
-    print()
+        # Calculate emphasis for each note in the current phrase
+        for part in phrase_parts:
+            # Handle potential empty strings from splitting
+            if not part:
+                continue
 
+            # Parse the emphasis value and note name
+            try:
+                part = part.split("-")
+                emphasis_value = float(part[0])
+                note_name = part[1]
+            except (ValueError, IndexError):
+                print(
+                    f"Warning: Could not parse '{part}' in phrase '{phrase_str}'. Skipping."
+                )
+                continue
 
-# Convert the emphasis_table into a DataFrame with column titles as notes
-emphasis_df = pd.DataFrame(emphasis_table, columns=amrit["notes"])
+            # Update the emphasis table with a power law for non-linear emphasis
+            emphasis_table[i][
+                raga_data["notes"].index(note_name)
+            ] += emphasis_value ** (5 / 3)
 
-t = np.linspace(0, len(amrit["new_phrases"]) - 1, 2000)
-splines = []
-for c in emphasis_df.columns:
-    splines.append(
-        # InterpolatedUnivariateSpline(
-        #     np.arange(len(amrit["new_phrases"])), emphasis_df[c], k=2
-        # )
-        PchipInterpolator(
-            np.arange(len(amrit["new_phrases"])), emphasis_df[c], extrapolate=False
+            # Apply a special emphasis boost for the last note of a phrase
+            # NOTE: phrase_parts is already a list of strings, no need to reverse and index
+            if part == phrase_parts[-1]:
+                emphasis_table[i][raga_data["notes"].index(note_name)] *= 2.5
+
+        # Normalize the row so that the total emphasis for each phrase sums to 1
+        row_sum = np.sum(emphasis_table[i])
+        if row_sum > 0:
+            emphasis_table[i] /= row_sum
+
+    # Convert the numpy array into a DataFrame with note names as columns
+    emphasis_df = pd.DataFrame(emphasis_table, columns=raga_data["notes"])
+    return emphasis_df
+
+def generate_splines(emphasis_df):
+    # Create a dense time vector for smooth plotting
+    t = np.linspace(0, len(emphasis_df) - 1, 2000)
+
+    # Generate PchipInterpolator splines for each note column
+    splines = []
+    for c in emphasis_df.columns:
+        spline = PchipInterpolator(
+            np.arange(len(emphasis_df)), emphasis_df[c], extrapolate=False
         )
+        splines.append(spline)
+
+    # Initialize a plotly figure for the plot
+    convolved_splines = []
+
+    # Process and plot each note's emphasis curve
+    for spline, name in zip(splines, emphasis_df.columns):
+        # Apply a median filter for smoothing
+        y = median_filter(spline(t), size=50)
+
+        # Store the smoothed spline for later use
+        convolved_splines.append(PchipInterpolator(t, y, extrapolate=False))
+    
+    return t, splines, convolved_splines
+
+def generate_plots_and_save_splines(emphasis_df, t, splines, convolved_splines, output_path):
+    """
+    Generates an emphasis plot with splines and saves the spline models.
+
+    Args:
+        emphasis_df (pd.DataFrame): The DataFrame containing emphasis values.
+        output_path (str): The file path to save the pickled splines.
+    """
+
+    # Create a dense time vector for smooth plotting
+    t = np.linspace(0, len(emphasis_df) - 1, 2000)
+    
+    # Initialize a plotly figure for the plot
+    fig = go.Figure()
+
+    # Process and plot each note's emphasis curve
+    for spline, name in zip(convolved_splines, emphasis_df.columns):
+        
+        # Add the smoothed curve to the plot
+        fig.add_scatter(
+            x=t,
+            y=spline(t),
+            mode="lines",
+            name=name,
+        )
+
+    # Add the "Max Emphasis" line to the plot
+    max_emphases = np.array(
+        [max([spline(ti) for spline in convolved_splines]) for ti in t]
     )
-
-print(emphasis_df)
-
-
-def adaptive_moving_average(signal, min_window=50, max_window=200):
-    # Compute local slope (rate of change)
-    slope = np.abs(np.gradient(signal))
-
-    # Normalize slope to [0,1] range
-    slope_norm = slope / np.max(slope) if np.max(slope) != 0 else slope
-
-    # Scale window size based on slope
-    window_sizes = (min_window + (max_window - min_window) * (1 - slope_norm)).astype(
-        int
-    )
-
-    # Ensure window sizes are odd for symmetry
-    window_sizes += window_sizes % 2 == 0
-
-    # Apply adaptive convolution
-    smoothed_signal = np.zeros_like(signal, dtype=np.float64)
-    for i in range(len(signal)):
-        k = window_sizes[i]  # Get adaptive window size
-        kernel = np.ones(k) / k  # Uniform kernel
-        start = max(0, i - k // 2)
-        end = min(len(signal), i + k // 2 + 1)
-        smoothed_signal[i] = np.convolve(signal[start:end], kernel, mode="valid").mean()
-
-    return smoothed_signal
-
-def lpf(signal, a):
-    a = 1 - a
-    y = np.zeros_like(signal)
-    y[0] = signal[0]
-    for t in range(1, len(signal)):
-        y[t] = a * signal[t] + (1 - a) * y[t - 1]
-    return y
-
-from scipy.signal import savgol_filter
-
-def savgol(y, window_size):
-    y = np.log(y + 1e-5) 
-    return np.exp(savgol_filter(y, window_size, 3))
-
-fig = go.Figure()
-convolved_splines = []
-for spline, name in zip(splines, emphasis_df.columns):
-
-    # y = np.convolve(spline(t), np.ones(200) / 200, mode="same")
-    y = median_filter(spline(t), size=50)
-    # y = lpf(spline(t), 0.9)  # spline(t)
-    # y = savgol(spline(t), 100)
-    # convolved_splines.append(InterpolatedUnivariateSpline(t, y, k=2))
-    convolved_splines.append(PchipInterpolator(t, y, extrapolate=False))
     fig.add_scatter(
-        x=t,
-        y=y,
-        mode="lines",
-        name=name,
+        x=t, y=max_emphases, mode="lines", name="Max Emphasis", line={"color": "white"}
     )
 
-fig.update_layout(
-    template="plotly_dark",
-    title="Emphasis Table",
-    xaxis_title="T",
-    yaxis_title="Emphasis Level",
-)
+    # Update plot layout and title
+    fig.update_layout(
+        template="plotly_dark",
+        title="Emphasis Table",
+        xaxis_title="T",
+        yaxis_title="Emphasis Level",
+    )
 
-maxe_idx = np.array([np.argmax([spline(ti) for spline in convolved_splines]) for ti in t])
-max_emphases = np.array([max([spline(ti) for spline in convolved_splines]) for ti in t])
+    # Save the splines to a pickle file for later use
+    pkl.dump(
+        {"t": t, "splines": splines, "convolved_splines": convolved_splines},
+        open(output_path, "wb"),
+    )
 
-fig.add_scatter(
-    x=t, y=max_emphases, mode="lines", name="Max Emphasis", line={"color": "white"}
-)
+    # Display the final plot
+    fig.show()
 
-pkl.dump({
-    "splines": splines,
-    "convolved_splines": convolved_splines
-}, open("../model_data/splines.pkl", "wb"))
 
-fig.show()
+if __name__ == "__main__":
+    # --- Main script execution starts here ---
+
+    # Define the path to your data file
+    json_file_path = "../raga_data/amrit.json"
+
+    # Load the data from the JSON file
+    try:
+        amrit = json.load(open(json_file_path))
+    except FileNotFoundError:
+        print(
+            f"Error: The file '{json_file_path}' was not found. Please ensure the path is correct."
+        )
+        exit()
+
+    data = {}
+    data["notes"] = amrit["notes"]
+    data["phrases"] = amrit["new_phrases"]
+
+    # Calculate the emphasis DataFrame using the reusable function
+    emphasis_df = calculate_emphasis_df(data)
+    print("Calculated Emphasis DataFrame:")
+    print(emphasis_df)
+
+    # Generate the plots and save the spline models using the reusable function
+    spline_output_path = "../model_data/splines.pkl"
+    generate_plots_and_save_splines(emphasis_df, *generate_splines(emphasis_df), spline_output_path)
+
+    print(f"\nSpline models saved to '{spline_output_path}'")

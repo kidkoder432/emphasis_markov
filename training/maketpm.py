@@ -48,8 +48,8 @@ fig = px.imshow(
     labels=dict(x="To", y="From", color="Transition Probability"),
     x=SWARS,
     y=SWARS,
-    aspect="auto",
-    color_continuous_scale="turbo",
+    color_continuous_scale="hot",
+    aspect="equal",
 )
 
 fig.update_xaxes(title="To")
