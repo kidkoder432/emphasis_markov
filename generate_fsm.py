@@ -37,10 +37,6 @@ stdout_handler.setLevel(LOG_LEVEL)
 stdout_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt="%H:%M:%S"))
 logger.addHandler(stdout_handler)
 
-# --- Configuration Flags ---
-ENABLE_VISUALIZATION = True
-ENABLE_TEMPERATURE_SCALING = True
-
 # --- Constants ---
 DEFAULT_TPM_PATH = "./model_data/tpm.npy"
 DEFAULT_RAGADATA_PATH = "./raga_data/amrit.json"
@@ -65,6 +61,10 @@ ENABLE_EMPHASIS = False  # Enable emphasis calculation
 ENABLE_TAGS = False  # Enable tag-based FSM generation
 ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
 
+
+# --- Configuration Flags ---
+ENABLE_VISUALIZATION = True
+ENABLE_TEMPERATURE_SCALING = ENABLE_EMPHASIS
 # --- Data Loading ---
 
 full_tpm = np.load(DEFAULT_TPM_PATH)
@@ -88,6 +88,8 @@ tag_tpm_dict, unique_note_tags, tags_to_time = pkl.load(
 
 # --- Utility Functions ---
 
+def swar2midi(swar):
+    return swar2midi_map[swar]
 
 def clip_value(value, min_val, max_val):
     """Clips a value to be within the specified minimum and maximum range."""
@@ -411,7 +413,7 @@ def generate_single_phrase(
                 duration = 0
 
             tpm_temp_scale(
-                enable_temp_scaling and ENABLE_EMPHASIS,
+                enable_temp_scaling,
                 1.1,
                 emphasized_tpm,
                 next_note,
@@ -550,7 +552,7 @@ def create_tags():
     return gen
 
 
-def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling, gen=[]):
+def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling=ENABLE_TEMPERATURE_SCALING, gen=[]):
     """Generates a specified number of phrases."""
     logger.info("--- Generating Phrases ---")
     logger.info("Generating Tag Sequence using FSM...")
