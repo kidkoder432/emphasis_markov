@@ -3,8 +3,6 @@
 Refactored script for generating musical phrases based on a transition probability matrix,
 emphasis curves derived from splines, and saving the output as text and MIDI.
 Includes visualization, configuration flags, and logging. Version focused on conciseness.
-
-v2: Add tag FSM
 """
 
 import pickle as pkl
@@ -57,14 +55,14 @@ MIN_NOTE_DURATION_THRESHOLD = 0.5
 SPLINE_DOMAIN_MAX = 74  # Domain used for scaling time for spline evaluation
 
 # Ablation parameters
-ENABLE_EMPHASIS = False  # Enable emphasis calculation
-ENABLE_TAGS = False  # Enable tag-based FSM generation
-ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
-
+ENABLE_EMPHASIS = True  # Enable emphasis calculation
+ENABLE_TAGS = True  # Enable tag-based FSM generation
+ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
 
 # --- Configuration Flags ---
 ENABLE_VISUALIZATION = True
 ENABLE_TEMPERATURE_SCALING = ENABLE_EMPHASIS
+ENABLE_TRANSITION_DECAY = False
 # --- Data Loading ---
 
 full_tpm = np.load(DEFAULT_TPM_PATH)
@@ -212,6 +210,18 @@ def create_emphasized_tpm(tpm_orig, emphasis, swars_list):
     logger.debug("Created emphasized TPM.")
     return new_tpm
 
+def decay_tpm(tpm, current, prev, decay_factor=0.9):
+    current = swars_list.index(current)
+    prev = swars_list.index(prev)
+    tpm[current, prev] *= decay_factor
+    tpm = normalize(tpm)
+    return tpm
+
+def normalize(tpm):
+    for row in tpm:
+        if np.sum(row) > 1e-10:
+            row /= np.sum(row)
+    return tpm
 
 # --- Generating functions ---
 
@@ -240,14 +250,6 @@ def generate_single_phrase(
             emphasized_tpm = create_emphasized_tpm(
                 tpm_orig, emphasis_vector, swars_list
             )
-            full_tpm_prep = create_emphasized_tpm(
-                full_tpm,
-                np.ones(len(swars_list) - 1) / (len(swars_list) - 1),
-                swars_list,
-            )
-
-            if ENABLE_HYBRID:
-                emphasized_tpm = 0.95 * emphasized_tpm + 0.05 * full_tpm_prep
 
         else:
             emphasis_vector = np.ones(len(swars_list) - 1) / (len(swars_list) - 1)
@@ -449,6 +451,7 @@ def generate_single_phrase(
             continue
 
         # Update state
+        prev_note = current_note
         current_note = next_note
 
         logger.info(f"Current sequence: {phrase_notes}")
@@ -458,9 +461,14 @@ def generate_single_phrase(
             emphasis_vector **= 0.95
             emphasis_vector /= np.sum(emphasis_vector)
 
-            mod_tpm = tpm_orig * 0.98 + full_tpm * 0.02
+            mod_tpm = 0.98 * tpm_orig + 0.02 * full_tpm
 
             emphasized_tpm = create_emphasized_tpm(mod_tpm, emphasis_vector, swars_list)
+            emphasized_tpm[:, -2] *= 1.1
+            emphasized_tpm = normalize(emphasized_tpm)
+
+        if ENABLE_TRANSITION_DECAY:
+            emphasized_tpm = decay_tpm(emphasized_tpm, current_note, prev_note)
 
     else:  # Loop finished without break (max_steps reached)
         logger.warning(
@@ -1076,6 +1084,8 @@ def main_with_eval():
     total_iter = 0
     score = -1e10
 
+    gen = create_tags()
+
     best_phrases = []
     best_table = []
     best_eval = -1e10
@@ -1088,6 +1098,7 @@ def main_with_eval():
             swars_list=swars_list,
             convolved_splines=convolved_splines,
             enable_temp_scaling=ENABLE_TEMPERATURE_SCALING,
+            gen=gen,
         )
 
         current_eval, score = evaluate_all_phrases(
