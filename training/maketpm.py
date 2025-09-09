@@ -2,21 +2,21 @@ from tkinter import SW
 import numpy as np
 import json
 
-with open("./raga_data/amrit.json", "r") as f:
-    amrit = json.load(f)
+with open("./raga_data_jog/jog.json", "r") as f:
+    raga_data = json.load(f)
 
-SWARS = amrit["notes"] + ["|"]
+SWARS = raga_data["notes"] + ["|"]
 
 tpm = np.zeros((len(SWARS), len(SWARS)))
 
-phrases = amrit["phrases"] + amrit["new_phrases"]
+phrases = raga_data["old_phrases"] + raga_data["new_phrases"]
 
 important_notes = ["S", "S_", "S^"]
 
-v = amrit["vadi"]
+v = raga_data["vadi"]
 important_notes += [v, v + "_", v + "^"]
 
-sv = amrit["samvadi"]
+sv = raga_data["samvadi"]
 important_notes += [sv, sv + "_", sv + "^"]
 
 important_notes = list(set(important_notes))
@@ -24,7 +24,7 @@ important_notes = list(set(important_notes))
 for phrase in phrases:
     phrase = phrase.split(" ")
 
-    phrase = [(p[0], p[1:]) for p in phrase]
+    phrase = [(p[0], p[2:]) for p in phrase]
 
     for i in range(len(phrase) - 1):
         tpm[SWARS.index(phrase[i][1]), SWARS.index(phrase[i + 1][1])] += 1.0
@@ -59,4 +59,4 @@ fig.update_layout(template="plotly_dark")
 fig.show()
 
 # print(tpm)
-np.save("tpm.npy", tpm)
+np.save("./model_data_jog/tpm.npy", tpm)

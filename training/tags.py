@@ -2,14 +2,14 @@ import json
 import numpy as np
 import pickle as pkl
 
-splines, convolved_splines = pkl.load(open("splines.pkl", "rb")).values()
+t, splines, convolved_splines = pkl.load(open("./model_data_jog/splines.pkl", "rb")).values()
 
-amrit = json.load(open("amrit.json"))
+raga_data = json.load(open("./raga_data_jog/jog.json"))
 
-notes = amrit["notes"]
+notes = raga_data["notes"]
 note = None
 new_tags = []
-for i, tag in enumerate(amrit["tags"]):
+for i, tag in enumerate(raga_data["tags"]):
     if tag == "I" or tag == "R":
         note = notes[np.argmax([sp(i).max() for sp in convolved_splines])]
     elif tag == "F":
@@ -20,7 +20,7 @@ for i, tag in enumerate(amrit["tags"]):
 
         new_tags.append(f"{tag} {note}-{i}")
 
-amrit["new_tags"] = new_tags
+raga_data["new_tags"] = new_tags
 
-with open("amrit.json", "w") as outfile:
-    json.dump(amrit, outfile, indent=4)
+with open("./raga_data_jog/jog.json", "w") as outfile:
+    json.dump(raga_data, outfile, indent=4)

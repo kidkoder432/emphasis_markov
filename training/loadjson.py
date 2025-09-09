@@ -1,17 +1,17 @@
 import json
 
-amrit = json.load(open("./raga_data/amrit.json"))
-phrases = str(open("./raga_data/amrit.txt").read()).splitlines()
-new_phrases = str(open("./raga_data/amrit copy.txt").read()).splitlines()
+raga_data = json.load(open("./raga_data_jog/jog.json"))
+phrases = str(open("./raga_data_jog/jog.txt").read()).splitlines()
+new_phrases = str(open("./raga_data_jog/jog.txt").read()).splitlines()
 
 new_phrases, tags = zip(*[(new_phrase[2:], new_phrase[0]) for new_phrase in new_phrases])
 old_phrases, old_tags = zip(*[(phrase[2:], phrase[0]) for phrase in phrases])
 
-amrit["new_phrases"] = new_phrases
-amrit["tags"] = tags
+raga_data["new_phrases"] = new_phrases
+raga_data["tags"] = tags
 
-amrit["old_phrases"] = old_phrases
-amrit["old_tags"] = old_tags
+raga_data["old_phrases"] = old_phrases
+raga_data["old_tags"] = old_tags
 
-with open("./raga_data/amrit.json", "w") as outfile:
-    json.dump(amrit, outfile, indent=4)
+with open("./raga_data_jog/jog.json", "w") as outfile:
+    json.dump(raga_data, outfile, indent=4)

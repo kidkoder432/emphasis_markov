@@ -36,12 +36,12 @@ stdout_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt="%H:%M:%S"))
 logger.addHandler(stdout_handler)
 
 # --- Constants ---
-DEFAULT_TPM_PATH = "./model_data/tpm.npy"
-DEFAULT_RAGADATA_PATH = "./raga_data/amrit.json"
-DEFAULT_TAG_TPM_PATH = "./model_data/tpm_tags.npy"
-DEFAULT_TAG_PICKLE_PATH = "./model_data/tag_tpms.pkl"
-DEFAULT_SPLINES_PATH = "./model_data/splines.pkl"
-DEFAULT_SWARS_PATH = "./raga_data/swars.json"
+DEFAULT_TPM_PATH = "./model_data_jog/tpm.npy"
+DEFAULT_RAGADATA_PATH = "./raga_data_jog/jog.json"
+DEFAULT_TAG_TPM_PATH = "./model_data_jog/tpm_tags.npy"
+DEFAULT_TAG_PICKLE_PATH = "./model_data_jog/tag_tpms.pkl"
+DEFAULT_SPLINES_PATH = "./model_data_jog/splines.pkl"
+DEFAULT_SWARS_PATH = "./raga_data_jog/swars.json"
 OUTPUT_PHRASES_FILE = "./output/phrases.txt"
 OUTPUT_MIDI_FILE = "./output/out.mid"
 
@@ -52,7 +52,7 @@ MIDI_TICKS_PER_BEAT = 480
 NOTE_SELECTION_TEMPERATURE = 1.3
 MIN_NOTE_DURATION_THRESHOLD = 0.5
 
-SPLINE_DOMAIN_MAX = 74  # Domain used for scaling time for spline evaluation
+SPLINE_DOMAIN_MAX = 59  # Domain used for scaling time for spline evaluation
 
 # Ablation parameters
 ENABLE_EMPHASIS = True  # Enable emphasis calculation
@@ -326,8 +326,9 @@ def generate_single_phrase(
     if duration >= MIN_NOTE_DURATION_THRESHOLD:
         logger.debug(f"Adding note: {current_note} (duration {duration:.2f})")
     else:
+        duration = MIN_NOTE_DURATION_THRESHOLD
         logger.debug(
-            f"Skipping note '{current_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD})."
+            f"Clamping note '{current_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD})."
         )
 
     # --- Phrase Generation Loop ---
@@ -335,7 +336,7 @@ def generate_single_phrase(
     max_steps = 50
     generated_sequence = [current_note]
 
-    for step_count in range(max_steps):
+    for _ in range(max_steps):
         current_note_idx = swars_list.index(current_note)
         probs = emphasized_tpm[current_note_idx].copy()
 
@@ -426,7 +427,7 @@ def generate_single_phrase(
                 logger.debug(f"Adding note: {next_note} (duration {duration:.2f})")
             else:
                 logger.debug(
-                    f"Adding note '{next_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD}). Clamping to."
+                    f"Adding note '{next_note}' (duration {duration:.2f} < {MIN_NOTE_DURATION_THRESHOLD}). Clamping to {MIN_NOTE_DURATION_THRESHOLD}."
                 )
                 duration = MIN_NOTE_DURATION_THRESHOLD
             phrase_notes.append((duration, next_note))
@@ -1084,7 +1085,10 @@ def main_with_eval():
     total_iter = 0
     score = -1e10
 
-    gen = create_tags()
+    if ENABLE_TAGS:
+        gen = create_tags()
+    else:
+        gen = []
 
     best_phrases = []
     best_table = []

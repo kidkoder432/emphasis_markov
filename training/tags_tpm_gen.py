@@ -2,10 +2,10 @@ from tempfile import template
 import numpy as np
 import json
 
-amrit = json.load(open("./raga_data/amrit.json"))
+raga_data = json.load(open("./raga_data_jog/jog.json"))
 
-new_tags = amrit["new_tags"]
-old_tags = amrit["tags"]
+new_tags = raga_data["new_tags"]
+old_tags = raga_data["tags"]
 
 states = [i.split("-")[0] for i in new_tags]
 unique_states = []
@@ -34,7 +34,7 @@ for i, row in enumerate(tpm):
 
 initial = "I S"
 
-np.save("tpm_tags.npy", tpm)
+np.save("./model_data_jog/tpm_tags.npy", tpm)
 
 gen = [initial]
 
@@ -60,24 +60,24 @@ while len(gen) < 25:
 print("\n".join(gen))
 
 
-allNotes = amrit["notes"] + ["|"]
+allNotes = raga_data["notes"] + ["|"]
 
 tag_tpms = {
     t.split("-")[0]: np.zeros((len(allNotes), len(allNotes))) for t in set(new_tags)
 }
 
 for i, tag in enumerate(new_tags):
-    phrase = amrit["new_phrases"][i].split(" ")
+    phrase = raga_data["new_phrases"][i].split(" ")
     # print(tag, phrase)
     tag = tag.split("-")[0]
     for j, token in enumerate(phrase[:-1]):
-        note = token[1:]
+        note = token[2:]
         tf = allNotes.index(note)
-        tt = allNotes.index(phrase[j + 1][1:])
+        tt = allNotes.index(phrase[j + 1][2:])
         tag_tpms[tag][tf][tt] += 1
 
-    tag_tpms[tag][-1][allNotes.index(phrase[0][1:])] += 1
-    tag_tpms[tag][allNotes.index(phrase[-1][1:])][-1] += 1
+    tag_tpms[tag][-1][allNotes.index(phrase[0][2:])] += 1
+    tag_tpms[tag][allNotes.index(phrase[-1][2:])][-1] += 1
 
     for i, row in enumerate(tag_tpms[tag]):
         if np.sum(row) != 0:
@@ -87,7 +87,7 @@ import pickle as pkl
 
 tags_to_time = {}
 
-for tag in amrit["new_tags"][::-1]:
+for tag in raga_data["new_tags"][::-1]:
     t, i = tag.split("-")
     i = int(i)
     tags_to_time[t] = i
@@ -96,7 +96,7 @@ for tag in amrit["new_tags"][::-1]:
 
 obj = {"tag_tpms": tag_tpms, "unique_tags": states, "tags_to_time": tags_to_time}
 
-pkl.dump(obj, open("tag_tpms.pkl", "wb"))
+pkl.dump(obj, open("./model_data_jog/tag_tpms.pkl", "wb"))
 
 import plotly.graph_objects as go
 

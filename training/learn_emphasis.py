@@ -89,7 +89,7 @@ def generate_splines(emphasis_df):
     # Process and plot each note's emphasis curve
     for spline, name in zip(splines, emphasis_df.columns):
         # Apply a median filter for smoothing
-        y = median_filter(spline(t), size=50)
+        y = median_filter(spline(t), size=35)
 
         # Store the smoothed spline for later use
         convolved_splines.append(PchipInterpolator(t, y, extrapolate=False))
@@ -152,11 +152,11 @@ if __name__ == "__main__":
     # --- Main script execution starts here ---
 
     # Define the path to your data file
-    json_file_path = "../raga_data/amrit.json"
+    json_file_path = "./raga_data_jog/jog.json"
 
     # Load the data from the JSON file
     try:
-        amrit = json.load(open(json_file_path))
+        raga_data = json.load(open(json_file_path))
     except FileNotFoundError:
         print(
             f"Error: The file '{json_file_path}' was not found. Please ensure the path is correct."
@@ -164,8 +164,8 @@ if __name__ == "__main__":
         exit()
 
     data = {}
-    data["notes"] = amrit["notes"]
-    data["phrases"] = amrit["new_phrases"]
+    data["notes"] = raga_data["notes"]
+    data["phrases"] = raga_data["new_phrases"]
 
     # Calculate the emphasis DataFrame using the reusable function
     emphasis_df = calculate_emphasis_df(data)
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     print(emphasis_df)
 
     # Generate the plots and save the spline models using the reusable function
-    spline_output_path = "../model_data/splines.pkl"
+    spline_output_path = "./model_data_jog/splines.pkl"
     generate_plots_and_save_splines(emphasis_df, *generate_splines(emphasis_df), spline_output_path)
 
     print(f"\nSpline models saved to '{spline_output_path}'")
