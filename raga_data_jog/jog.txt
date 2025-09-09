@@ -1,0 +1,60 @@
+I 6-n_ 9-S
+E 4-S 4-n_ 7-S
+I 4-S 8-n_
+E 4-S 8-n_ 3-n_ 4-S 6-n_
+E 3-n_ 4-n_ 7-S
+C 3-n_ 3-S 3-n_ 7-S
+I 3-S 4-n_ 7-P_
+E 3-P_ 5-n_ 7-P_
+E 3-P_ 5-S 7-n_
+C 3-n_ 4-n_ 7-S
+T 3-n_ 4-S 2-n_ 5-g 4-S
+T 2-g 3-n_ 4-g 4-S
+I 3-n_ 3-S 8-g
+E 4-g 3-n_ 6-g
+E 1-M 1-g 5-S 2-n 1-M 1-g 5-S
+E 2-P_ 3-n_ 3-S 4-g 2-n_ 5-g
+E 3-g 3-S 2-P_ 2-n_ 5-g
+E 2-n_ 3-S 2-n_ 4-g 4-S
+C 2-P_ 2-n_ 3-g 2-n 4-g 4-S
+T 2-P_ 2-n_ 2-S 4-g 5-g
+I 2-g 3-n_ 8-G
+E 3-G 2-M 3-g 5-S
+C 1-P_ 1-n_ 1-S 1-G 3-M 4-g 5-S
+I 2-g 2-n_ 4-G 3-G 7-M
+E 1-P_ 1-n_ 1-S 2-g 1-n_ 4-G 7-M
+E 2-G 7-M
+E 2-S 2-G 7-M
+I 2-G 3-M 8-P
+E 1-S 1-G 1-M 2-P 2-G 2-M 7-P
+E 1-S 1-G 1-M 2-P 1-G 2-P 4-M
+E 1-S 1-G 1-M 2-P 1-G 2-M 6-P
+I 2-G 2-M 2-P 7-n 3-P
+E 3-n 2-M 2-P 6-n 3-P
+T 1-G 1-M 1-P 2-n 3-S^ 3-n
+T 3-n 1-M 1-P 3-S^ 3-n
+T 1-P 1-n 3-g^ 2-S^ 3-n
+T 1-n 2-S^ 2-n 3-g^ 2-S^ 3-n
+I 2-P 3-n 3-n 8-S^
+E 3-S^ 1-n 1-P 1-G 1-M 1-P 2-n 6-S^
+E 1-P 1-n 2-S^ 3-g^ 3-n
+E 1-P 1-n 2-S^ 2-g^ 2-n 3-g^ 3-S
+I 2-P 2-n 3-S^ 6-g^
+E 3-g^ 3-S^ 2-P 2-n 6-g^
+E 3-n 7-g^
+C 1-P 2-n 3-g^ 4-S^
+I 3-n 7-G^
+I 3-G^ 3-G^ 6-M^
+E 3-M^ 3-G^ 1-M^ 3-g^ 4-S^
+E 1-P 1-n 1-S^ 1-G^ 3-M^ 4-g^ 5-S^
+C 1-g^ 1-S^ 1-n 1-P 1-n 1-S^ 2-G^ 3-M^ 3-g^ 5-S^
+R 4-S^ 6-n
+G 2-n 1-P 1-G 1-M 2-P 3-S^ 5-n
+R 2-P 2-n 3-S^ 3-n 4-P
+G 1-G 1-M 2-P 3-S^ 3-n 4-P
+R 2-n 3-P 2-n 2-P 6-M
+G 1-G 1-M 1-P 2-S^ 2-n 3-P 6-M
+R 2-M 3-P 4-M 6-G
+R 1-S 1-G 1-M 1-P 2-G 3-M 4-g 6-S
+G 1-P_ 1-n_ 1-S 2-G 3-M 4-g 5-S
+F 2-n_ 2-S 3-n_ 4-g 7-S
