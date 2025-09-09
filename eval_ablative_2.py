@@ -6,7 +6,7 @@ from winsound import MessageBeep
 
 import generate_fsm as gf
 
-NUM_SAMPLES = 50
+NUM_SAMPLES = 100
 
 gen = gf.create_tags()
 

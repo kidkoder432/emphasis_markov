@@ -4,12 +4,11 @@ from winsound import MessageBeep
 import generate_fsm as gf
 from generate_fsm import *
 
-NUM_SAMPLES = 50
+NUM_SAMPLES = 100
 
 gen = create_tags()
 
-
-def run():
+def run(ground=False):
     avg_acr_1 = 0
     avg_acr_2 = 0
     avg_acr_3 = 0
@@ -20,14 +19,33 @@ def run():
     rules_broken = 0
     tags_percent = 0.0
 
-    for i in range(NUM_SAMPLES):
-        print("Generating vistaar", i + 1, end="\r", flush=True)
+    if ground:
+        ns = 1
+    else:
+        ns = NUM_SAMPLES
 
-        phrases, _ = generate_all_phrases(swars_list, convolved_splines, True, gen)
+    for i in range(ns):
+        if ground:
+            print("Evaluating ground truth vistaar")
 
+            tags = raga_data["new_tags"]
+            phrases_raw = raga_data["new_phrases"]
+
+            phrases = []
+            for i, phrase in enumerate(phrases_raw):
+                tag = tags[i].split("-")[0]
+                time = int(tags[i].split("-")[1])
+                phrases.append(f"{tag} {time} {phrase}")
+                # print(phrases[-1])
+        else:
+            print("Generating vistaar", i+1, end="\r", flush=True)
+            phrases, _ = generate_all_phrases(swars_list, convolved_splines, True, gen)
+        
         vistaar_eval, _ = evaluate_all_phrases(phrases, swars_list, convolved_splines)
 
         phrase_evals = vistaar_eval["phrase_evals"]
+
+        # pprint.pprint(vistaar_eval)
 
         avg_acr_1 += vistaar_eval["full_acr_lag_1"]
         avg_acr_2 += vistaar_eval["full_acr_lag_2"]
@@ -41,66 +59,21 @@ def run():
 
         rules_broken += vistaar_eval["num_errors"]
         tags_percent += vistaar_eval["unique_tags_%"]
+
+    avg_acr_1 /= ns
+    avg_acr_2 /= ns
+    avg_acr_3 /= ns
+
     print()
-    avg_acr_1 /= NUM_SAMPLES
-    avg_acr_2 /= NUM_SAMPLES
-    avg_acr_3 /= NUM_SAMPLES
     print("Average ACR Lag 1: ", avg_acr_1)
     print("Average ACR Lag 2: ", avg_acr_2)
     print("Average ACR Lag 3: ", avg_acr_3)
 
     print("Total rules broken: ", rules_broken)
-    print("Rules broken per vistaar: ", rules_broken / NUM_SAMPLES)
-    print("% of unique tags: ", tags_percent / NUM_SAMPLES)
+    print("Rules broken per vistaar: ", rules_broken / (ns))
+    print("% of unique tags: ", tags_percent / (ns))
 
     return acr
-
-
-def run_ground():
-    avg_acr_1 = 0
-    avg_acr_2 = 0
-    avg_acr_3 = 0
-
-    total_phrases = 0
-    rules_broken = 0
-    tags_percent = 0.0
-
-    print("Evaluating ground truth vistaar")
-
-    tags = raga_data["new_tags"]
-    phrases_raw = raga_data["new_phrases"]
-
-    phrases = []
-    for i, phrase in enumerate(phrases_raw):
-        tag = tags[i].split("-")[0]
-        time = int(tags[i].split("-")[1])
-        phrase = " ".join(
-            [re.sub(r"(\d+)(.+)", r"\1-\2", n) for n in phrase.split(" ")]
-        )
-        phrases.append(f"{tag} {time} {phrase}")
-        # print(phrases[-1])
-
-    vistaar_eval, _ = evaluate_all_phrases(phrases, swars_list, convolved_splines)
-
-    phrase_evals = vistaar_eval["phrase_evals"]
-
-    # pprint.pprint(vistaar_eval)
-
-    avg_acr_1 += vistaar_eval["full_acr_lag_1"]
-    avg_acr_2 += vistaar_eval["full_acr_lag_2"]
-    avg_acr_3 += vistaar_eval["full_acr_lag_3"]
-
-    total_phrases += len(phrase_evals)
-
-    rules_broken += vistaar_eval["num_errors"]
-    tags_percent += vistaar_eval["unique_tags_%"]
-    print("Average ACR Lag 1: ", avg_acr_1)
-    print("Average ACR Lag 2: ", avg_acr_2)
-    print("Average ACR Lag 3: ", avg_acr_3)
-
-    print("Total rules broken: ", rules_broken)
-    print("Rules broken per vistaar: ", rules_broken)
-    print("% of unique tags: ", tags_percent)
 
 
 gf.ENABLE_EMPHASIS = True
@@ -130,7 +103,7 @@ print("Running with base Markov model")
 acr_base = run()
 
 print("Evaluating ground truth vistaar")
-run_ground()
+run(ground=True)
 
 print("Finished all runs")
 

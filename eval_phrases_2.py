@@ -8,7 +8,7 @@ import generate_fsm as gf
 from generate_fsm import *
 from training.learn_emphasis import *
 
-NUM_SAMPLES = 50
+NUM_SAMPLES = 100
 
 gen = create_tags()
 
