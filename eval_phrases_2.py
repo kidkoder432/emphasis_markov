@@ -8,7 +8,10 @@ import generate_fsm as gf
 from generate_fsm import *
 from training.learn_emphasis import *
 
-NUM_SAMPLES = 100
+NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+
+gf.changeRaga(sys.argv[2] if len(sys.argv) > 2 else "amrit")
+
 
 gen = create_tags()
 
@@ -17,16 +20,21 @@ notes = raga_data["notes"]
 t_ref = splines_data["t"]
 splines_ref = splines_data["convolved_splines"]
 
+
 def calculate_features(t, splines):
     out = splines(t)
-    return np.array([
-        np.mean(out),
-        np.std(out),
-        np.argmax(out),
-        1 - np.count_nonzero(out) / len(out),
-    ])
+    return np.array(
+        [
+            np.mean(out),
+            np.std(out),
+            np.argmax(out),
+            1 - np.count_nonzero(out) / len(out),
+        ]
+    )
+
 
 print([calculate_features(t_ref, splines_ref[i]) for i in range(len(notes))])
+
 
 def dist(ta, a, tb, b):
     return np.linalg.norm(calculate_features(ta, a) - calculate_features(tb, b))
@@ -51,6 +59,8 @@ def run():
     pprint(np.mean(metric, axis=1))
     return metric
 
+
+print("--- Structural Fidelity Evaluation ---")
 
 gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = True
@@ -86,7 +96,7 @@ print("Running t-tests")
 for i in range(len(notes)):
     t_test_vector = [metric_full[i], metric_tags[i], metric_emphasis[i], metric_base[i]]
     print("length of each t test vector:", len(t_test_vector[0]))
-    
+
     p_full_tags = ttest_ind(t_test_vector[0], t_test_vector[1], equal_var=False)[1]
     p_full_emphasis = ttest_ind(t_test_vector[0], t_test_vector[2], equal_var=False)[1]
     p_full_base = ttest_ind(t_test_vector[0], t_test_vector[3], equal_var=False)[1]

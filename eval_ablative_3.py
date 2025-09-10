@@ -1,12 +1,16 @@
 import pprint
-import re
-from collections import defaultdict, Counter
-import numpy as np
+import sys
+from collections import Counter, defaultdict
 from winsound import MessageBeep
+
+import numpy as np
 
 import generate_fsm as gf
 
-NUM_SAMPLES = 100
+NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+
+gf.changeRaga(sys.argv[2] if len(sys.argv) > 2 else "amrit")
+
 
 gen = gf.create_tags()
 
@@ -28,7 +32,7 @@ def evaluate_phrase(phrase_str, swars_list, convolved_splines):
     for i in range(len(diff) - 2):
         if tuple(diff[i : i + 3]) not in trigrams:
             trigrams.append(tuple(diff[i : i + 3]))
-    
+
     evals["trigrams"] = len(trigrams)
     return tag, emphasis_note, notes, evals
 
@@ -59,7 +63,7 @@ def evaluate_all_phrases(phrases_list, swars_list, convolved_splines):
     for i in range(len(diff) - 2):
         if tuple(diff[i : i + 3]) not in trigrams:
             trigrams.append(tuple(diff[i : i + 3]))
-    
+
     evals["vocab_size"] = len(trigrams)
     evals["avg_len"] = len(all_notes) / len(tags)
 
@@ -121,10 +125,13 @@ def run(ground=False):
         vocabs.append(vistaar_eval["vocab_size"])
 
     print("% of unique tags", tags_unique / ns)
-    print("Averge phrase length", phrase_len / ns)
+    print("Averge phrase` length", phrase_len / ns)
     print("Num errors", num_errors / ns)
     print("Average vocab size", np.mean(vocabs))
     return vocabs
+
+
+print("--- Ablative Evaluation III - Vocab Size ---")
 
 
 gf.ENABLE_EMPHASIS = True
@@ -185,4 +192,3 @@ p_emphasis_vs_base = ttest_ind(vocab_emphasis, vocab_base, equal_var=False)[1]
 print(f"Emphasis-Only vs. Base Model p-value: {p_emphasis_vs_base}")
 
 MessageBeep()
-

@@ -1,12 +1,21 @@
-import pprint, re
+import pprint
+import sys
 from winsound import MessageBeep
+
+print(sys.argv)
+
 
 import generate_fsm as gf
 from generate_fsm import *
 
-NUM_SAMPLES = 100
+
+NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+
+gf.changeRaga(sys.argv[2] if len(sys.argv) > 2 else "amrit")
+
 
 gen = create_tags()
+
 
 def run(ground=False):
     avg_acr_1 = 0
@@ -38,9 +47,9 @@ def run(ground=False):
                 phrases.append(f"{tag} {time} {phrase}")
                 # print(phrases[-1])
         else:
-            print("Generating vistaar", i+1, end="\r", flush=True)
+            print("Generating vistaar", i + 1, end="\r", flush=True)
             phrases, _ = generate_all_phrases(swars_list, convolved_splines, True, gen)
-        
+
         vistaar_eval, _ = evaluate_all_phrases(phrases, swars_list, convolved_splines)
 
         phrase_evals = vistaar_eval["phrase_evals"]
@@ -74,6 +83,9 @@ def run(ground=False):
     print("% of unique tags: ", tags_percent / (ns))
 
     return acr
+
+
+print("--- Ablative Evaluation I - Phrase Rules ---")
 
 
 gf.ENABLE_EMPHASIS = True

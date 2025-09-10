@@ -1,0 +1,1881 @@
+['eval_ablative.py', '100', 'jog']
+20:54:58.957 - ERROR - <module> (:41) 
+	 Generating music for jog
+--- Ablative Evaluation I - Phrase Rules ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+
+Average ACR Lag 1:  0.10504796397231209
+Average ACR Lag 2:  0.29645299443305995
+Average ACR Lag 3:  0.26463767760799667
+Total rules broken:  511
+Rules broken per vistaar:  5.11
+% of unique tags:  100.0
+Running with emphasis and tags enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+
+Average ACR Lag 1:  0.11071330241148863
+Average ACR Lag 2:  0.3166155885325266
+Average ACR Lag 3:  0.26287093008650875
+Total rules broken:  1058
+Rules broken per vistaar:  10.58
+% of unique tags:  100.0
+Running with emphasis enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+
+Average ACR Lag 1:  0.1254433269197717
+Average ACR Lag 2:  0.413571976967644
+Average ACR Lag 3:  0.28888303584652514
+Total rules broken:  744
+Rules broken per vistaar:  7.44
+% of unique tags:  78.57142857142848
+Running with base Markov model
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+
+Average ACR Lag 1:  0.04304523778781136
+Average ACR Lag 2:  0.2001214940363265
+Average ACR Lag 3:  0.1289729019720335
+Total rules broken:  2502
+Rules broken per vistaar:  25.02
+% of unique tags:  78.57142857142848
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+
+Average ACR Lag 1:  0.09342560553633218
+Average ACR Lag 2:  0.1972318339100346
+Average ACR Lag 3:  0.25951557093425603
+Total rules broken:  12
+Rules broken per vistaar:  12.0
+% of unique tags:  100.0
+Finished all runs
+Running t-tests
+t-test full vs tags (lag 1):  -2.2155705772029743 0.02786867636284935
+t-test full vs emphasis (lag 1):  -7.356545105237313 4.984572163642858e-12
+t-test tags vs emphasis (lag 1):  -5.516836812113265 1.1001516226780224e-07
+t-test full vs base (lag 1):  27.39407410026737 1.0441283410698821e-64
+t-test full vs tags (lag 2):  -3.452709074051053 0.000682465073491042
+t-test full vs emphasis (lag 2):  -22.85622790700186 2.691108728679486e-57
+t-test tags vs emphasis (lag 2):  -17.105920209498816 4.3197445430439964e-40
+t-test full vs base (lag 2):  21.218700640764563 3.6410013676105704e-50
+t-test full vs tags (lag 3):  0.3826431638000336 0.702395071365774
+t-test full vs emphasis (lag 3):  -4.998557463352257 1.2723193326776078e-06
+t-test tags vs emphasis (lag 3):  -5.426559783373571 1.6824194484906092e-07
+t-test full vs base (lag 3):  33.92570681238294 9.93395763089155e-79
+20:56:42.617 - ERROR - <module> (:41) 
+	 Generating music for jog
+--- Ablative Evaluation II - Pattern Distribution ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 100.0
+Num errors 0.04
+Running with emphasis and tags enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 100.0
+Num errors 0.0
+Running with emphasis enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 78.57142857142848
+Num errors 0.29
+Running with base Markov model
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 78.57142857142848
+Num errors 0.71
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+1 [7]
+% of unique tags 1.0
+Num errors 0.0
+Finished all runs
+--- T-Tests of KL Divergence from Ground Truth ---
+Full Model vs. Base Model p-value: 0.00012657018440156916
+Full Model vs. Tags-Only p-value: 1.1717764417170573e-17
+Full Model vs. Emphasis-Only p-value: 0.4516969219809436
+20:58:48.057 - ERROR - <module> (:41) 
+	 Generating music for jog
+--- Ablative Evaluation III - Vocab Size ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+% of unique tags 100.0
+Averge phrase` length 5.010652173913043
+Num errors 0.05
+Average vocab size 119.7
+Running with emphasis and tags enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+% of unique tags 100.0
+Averge phrase` length 4.606521739130435
+Num errors 0.0
+Average vocab size 104.51
+Running with emphasis enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+% of unique tags 78.57142857142848
+Averge phrase` length 5.132340425531916
+Num errors 0.23
+Average vocab size 117.01
+Running with base Markov model
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+% of unique tags 78.57142857142848
+Averge phrase` length 6.9368085106383
+Num errors 0.83
+Average vocab size 203.51
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+% of unique tags 100.0
+Averge phrase` length 4.816666666666666
+Num errors 0.0
+Average vocab size 147.0
+Finished all runs
+--- T-Tests of Vocab Size ---
+Full Model vs. Base Model p-value: 8.940183021459297e-109
+Full Model vs. Tags-Only p-value: 8.372236047565143e-36
+Full Model vs. Emphasis-Only p-value: 0.025255571280812975
+Tags-Only vs. Base Model p-value: 9.699891563910991e-108
+Tags-Only vs. Emphasis-Only p-value: 4.456699343770618e-24
+Emphasis-Only vs. Base Model p-value: 1.0184550853819586e-113
+21:00:35.525 - ERROR - <module> (:41) 
+	 Generating music for jog
+[array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([3.15123553e-02, 1.12697201e-01, 2.23000000e+02, 7.29000000e-01]), array([ 0.09886011,  0.16864433, 66.        ,  0.542     ]), array([ 0.16153122,  0.21931574, 19.        ,  0.3895    ]), array([1.08486484e-01, 2.02019630e-01, 4.27000000e+02, 6.77500000e-01]), array([5.15193089e-02, 1.12293827e-01, 6.70000000e+02, 5.59500000e-01]), array([1.06226600e-01, 2.04444276e-01, 8.43000000e+02, 5.25500000e-01]), array([9.25063280e-02, 1.78068062e-01, 9.14000000e+02, 4.91500000e-01]), array([1.22988977e-01, 1.92005282e-01, 1.07100000e+03, 5.08500000e-01]), array([1.01376247e-01, 1.68987032e-01, 1.27400000e+03, 6.10500000e-01]), array([7.52772604e-02, 1.73794965e-01, 1.44500000e+03, 7.62500000e-01]), array([2.52416730e-02, 1.06446137e-01, 1.51800000e+03, 8.98000000e-01]), array([2.00021470e-02, 7.98476502e-02, 1.55200000e+03, 9.15000000e-01]), array([0., 0., 0., 1.]), array([0., 0., 0., 1.])]
+--- Structural Fidelity Evaluation ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+array([   0.        ,    0.        ,    0.        ,    0.        ,
+         61.58002924,   18.1901042 , 1620.64004483,   93.04002883,
+         62.78006303,   42.48012661,  131.58005525,  111.63008076,
+         49.14035952,   71.86004626,   50.45001594,   48.55001701,
+          0.        ,    0.        ])
+Running with emphasis and tags enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+array([   0.        ,    0.        ,    0.        ,    0.        ,
+         62.26003849,   19.72003622, 1687.65005961,   79.63001754,
+         27.36006866,   48.01012974,  176.36009792,  106.61010167,
+         46.17047757,   72.04006324,   54.95001393,   47.01000962,
+          0.        ,    0.        ])
+Running with emphasis enabled
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+array([   0.        ,    0.        ,    0.        ,    0.        ,
+         33.61104759,   42.58031862, 1000.58005976,   62.78058191,
+        356.36050916,   25.00091023,   30.83148063,  108.79156646,
+        139.32005628,   35.58003974,    7.36022378,   23.02049199,
+          0.        ,    0.        ])
+Running with base Markov model
+Generating vistaar 1
+Generating vistaar 2
+Generating vistaar 3
+Generating vistaar 4
+Generating vistaar 5
+Generating vistaar 6
+Generating vistaar 7
+Generating vistaar 8
+Generating vistaar 9
+Generating vistaar 10
+Generating vistaar 11
+Generating vistaar 12
+Generating vistaar 13
+Generating vistaar 14
+Generating vistaar 15
+Generating vistaar 16
+Generating vistaar 17
+Generating vistaar 18
+Generating vistaar 19
+Generating vistaar 20
+Generating vistaar 21
+Generating vistaar 22
+Generating vistaar 23
+Generating vistaar 24
+Generating vistaar 25
+Generating vistaar 26
+Generating vistaar 27
+Generating vistaar 28
+Generating vistaar 29
+Generating vistaar 30
+Generating vistaar 31
+Generating vistaar 32
+Generating vistaar 33
+Generating vistaar 34
+Generating vistaar 35
+Generating vistaar 36
+Generating vistaar 37
+Generating vistaar 38
+Generating vistaar 39
+Generating vistaar 40
+Generating vistaar 41
+Generating vistaar 42
+Generating vistaar 43
+Generating vistaar 44
+Generating vistaar 45
+Generating vistaar 46
+Generating vistaar 47
+Generating vistaar 48
+Generating vistaar 49
+Generating vistaar 50
+Generating vistaar 51
+Generating vistaar 52
+Generating vistaar 53
+Generating vistaar 54
+Generating vistaar 55
+Generating vistaar 56
+Generating vistaar 57
+Generating vistaar 58
+Generating vistaar 59
+Generating vistaar 60
+Generating vistaar 61
+Generating vistaar 62
+Generating vistaar 63
+Generating vistaar 64
+Generating vistaar 65
+Generating vistaar 66
+Generating vistaar 67
+Generating vistaar 68
+Generating vistaar 69
+Generating vistaar 70
+Generating vistaar 71
+Generating vistaar 72
+Generating vistaar 73
+Generating vistaar 74
+Generating vistaar 75
+Generating vistaar 76
+Generating vistaar 77
+Generating vistaar 78
+Generating vistaar 79
+Generating vistaar 80
+Generating vistaar 81
+Generating vistaar 82
+Generating vistaar 83
+Generating vistaar 84
+Generating vistaar 85
+Generating vistaar 86
+Generating vistaar 87
+Generating vistaar 88
+Generating vistaar 89
+Generating vistaar 90
+Generating vistaar 91
+Generating vistaar 92
+Generating vistaar 93
+Generating vistaar 94
+Generating vistaar 95
+Generating vistaar 96
+Generating vistaar 97
+Generating vistaar 98
+Generating vistaar 99
+Generating vistaar 100
+array([  0.        ,   0.        ,   0.        ,   0.        ,
+       877.56005531, 892.8502019 , 873.97017892, 658.20079541,
+       582.81016432, 529.84024041, 510.37014459, 474.37046619,
+       544.4901264 , 661.93012693, 611.46009763, 685.13009062,
+         0.        ,   0.        ])
+Finished all runs
+Running t-tests
+length of each t test vector: 100
+note 0 full vs base: nan
+note 0 full vs tags: nan
+note 0 full vs emphasis: nan
+note 0 tags vs emphasis: nan
+note 0 tags vs base: nan
+note 0 emphasis vs base: nan
+length of each t test vector: 100
+note 1 full vs base: nan
+note 1 full vs tags: nan
+note 1 full vs emphasis: nan
+note 1 tags vs emphasis: nan
+note 1 tags vs base: nan
+note 1 emphasis vs base: nan
+length of each t test vector: 100
+note 2 full vs base: nan
+note 2 full vs tags: nan
+note 2 full vs emphasis: nan
+note 2 tags vs emphasis: nan
+note 2 tags vs base: nan
+note 2 emphasis vs base: nan
+length of each t test vector: 100
+note 3 full vs base: nan
+note 3 full vs tags: nan
+note 3 full vs emphasis: nan
+note 3 tags vs emphasis: nan
+note 3 tags vs base: nan
+note 3 emphasis vs base: nan
+length of each t test vector: 100
+note 4 full vs base: 4.660129070899488e-27
+note 4 full vs tags: 0.6467930087657594
+note 4 full vs emphasis: 0.00030676360135105764
+note 4 tags vs emphasis: 0.0002280329625544157
+note 4 tags vs base: 4.92994958231542e-27
+note 4 emphasis vs base: 3.383003933931037e-28
+length of each t test vector: 100
+note 5 full vs base: 1.0904550031557622e-25
+note 5 full vs tags: 0.5497935186928253
+note 5 full vs emphasis: 0.0075092025268049265
+note 5 tags vs emphasis: 0.012348862234238214
+note 5 tags vs base: 1.2236569984825937e-25
+note 5 emphasis vs base: 6.093420979168672e-25
+length of each t test vector: 100
+note 6 full vs base: 3.8005395714394736e-14
+note 6 full vs tags: 0.4674526855497807
+note 6 full vs emphasis: 4.2320727374861956e-08
+note 6 tags vs emphasis: 3.9308706435890193e-10
+note 6 tags vs base: 6.99309374441355e-18
+note 6 emphasis vs base: 0.22135633021844953
+length of each t test vector: 100
+note 7 full vs base: 6.849201425293801e-21
+note 7 full vs tags: 0.06208725969628394
+note 7 full vs emphasis: 0.0017064882749205992
+note 7 tags vs emphasis: 0.06502547307196847
+note 7 tags vs base: 1.6838459153064049e-21
+note 7 emphasis vs base: 2.833036984359625e-22
+length of each t test vector: 100
+note 8 full vs base: 1.0912740983332491e-22
+note 8 full vs tags: 0.1771571569236301
+note 8 full vs emphasis: 1.2701666725823887e-06
+note 8 tags vs emphasis: 2.0049204926964265e-08
+note 8 tags vs base: 5.0813323014856597e-26
+note 8 emphasis vs base: 0.0007082069867948044
+length of each t test vector: 100
+note 9 full vs base: 7.485128815814537e-29
+note 9 full vs tags: 2.4878461307578967e-05
+note 9 full vs emphasis: 0.07602087842296386
+note 9 tags vs emphasis: 0.019958272241773163
+note 9 tags vs base: 1.6972688887195403e-28
+note 9 emphasis vs base: 1.4927340691781023e-30
+length of each t test vector: 100
+note 10 full vs base: 6.565510850654365e-20
+note 10 full vs tags: 0.10956609922078722
+note 10 full vs emphasis: 2.799975299230723e-08
+note 10 tags vs emphasis: 4.285422345703532e-08
+note 10 tags vs base: 1.1929309873013211e-14
+note 10 emphasis vs base: 1.93400045122544e-27
+length of each t test vector: 100
+note 11 full vs base: 1.9564660270287757e-22
+note 11 full vs tags: 0.27133853540800834
+note 11 full vs emphasis: 0.8937093683377582
+note 11 tags vs emphasis: 0.9163671340327216
+note 11 tags vs base: 8.891596444094706e-23
+note 11 emphasis vs base: 5.798535064462336e-20
+length of each t test vector: 100
+note 12 full vs base: 1.2688015459042136e-24
+note 12 full vs tags: 0.8188969989642139
+note 12 full vs emphasis: 2.4167307631154688e-06
+note 12 tags vs emphasis: 9.701801600623229e-07
+note 12 tags vs base: 8.456482763133016e-25
+note 12 emphasis vs base: 1.4737472392862497e-18
+length of each t test vector: 100
+note 13 full vs base: 1.9611981504046585e-24
+note 13 full vs tags: 0.1294384605020804
+note 13 full vs emphasis: 1.1189355574389853e-32
+note 13 tags vs emphasis: 8.199325400227817e-33
+note 13 tags vs base: 2.000497472061044e-24
+note 13 emphasis vs base: 3.6752053977386543e-26
+length of each t test vector: 100
+note 14 full vs base: 1.3042581060210206e-21
+note 14 full vs tags: 9.777021073062255e-05
+note 14 full vs emphasis: 3.9334520614908714e-72
+note 14 tags vs emphasis: 2.465911231714172e-70
+note 14 tags vs base: 2.1166214871331624e-21
+note 14 emphasis vs base: 1.3381576145961607e-23
+length of each t test vector: 100
+note 15 full vs base: 3.357239049030012e-24
+note 15 full vs tags: 0.41646427811114406
+note 15 full vs emphasis: 0.10492129946590772
+note 15 tags vs emphasis: 0.125543320231825
+note 15 tags vs base: 2.895285718190691e-24
+note 15 emphasis vs base: 1.7543552125227609e-25
+length of each t test vector: 100
+note 16 full vs base: nan
+note 16 full vs tags: nan
+note 16 full vs emphasis: nan
+note 16 tags vs emphasis: nan
+note 16 tags vs base: nan
+note 16 emphasis vs base: nan
+length of each t test vector: 100
+note 17 full vs base: nan
+note 17 full vs tags: nan
+note 17 full vs emphasis: nan
+note 17 tags vs emphasis: nan
+note 17 tags vs base: nan
+note 17 emphasis vs base: nan

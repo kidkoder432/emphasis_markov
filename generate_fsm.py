@@ -5,16 +5,17 @@ emphasis curves derived from splines, and saving the output as text and MIDI.
 Includes visualization, configuration flags, and logging. Version focused on conciseness.
 """
 
-import pickle as pkl
 import json
-import numpy as np
-import mido
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-import os
 import logging
+import os
+import pickle as pkl
 import sys
 from collections import defaultdict
+
+import mido
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # --- Logging Configuration ---
 LOG_LEVEL = logging.ERROR  # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -35,15 +36,19 @@ stdout_handler.setLevel(LOG_LEVEL)
 stdout_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt="%H:%M:%S"))
 logger.addHandler(stdout_handler)
 
+name = sys.argv[-1] if len(sys.argv) > 1 else "amrit"
+
+logger.error("Generating music for " + name)
+
 # --- Constants ---
-DEFAULT_TPM_PATH = "./model_data_jog/tpm.npy"
-DEFAULT_RAGADATA_PATH = "./raga_data_jog/jog.json"
-DEFAULT_TAG_TPM_PATH = "./model_data_jog/tpm_tags.npy"
-DEFAULT_TAG_PICKLE_PATH = "./model_data_jog/tag_tpms.pkl"
-DEFAULT_SPLINES_PATH = "./model_data_jog/splines.pkl"
-DEFAULT_SWARS_PATH = "./raga_data_jog/swars.json"
-OUTPUT_PHRASES_FILE = "./output/phrases.txt"
-OUTPUT_MIDI_FILE = "./output/out.mid"
+DEFAULT_TPM_PATH = f"./model_data_{name}/tpm.npy"
+DEFAULT_RAGADATA_PATH = f"./raga_data_{name}/{name}.json"
+DEFAULT_TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
+DEFAULT_TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
+DEFAULT_SPLINES_PATH = f"./model_data_{name}/splines.pkl"
+DEFAULT_SWARS_PATH = f"./raga_data_{name}/swars.json"
+OUTPUT_PHRASES_FILE = f"./output/phrases_{name}.txt"
+OUTPUT_MIDI_FILE = f"./output/out_{name}.mid"
 
 MIDI_BPM = 100
 MIDI_TONIC_NOTE = 56  # G#3
@@ -52,7 +57,9 @@ MIDI_TICKS_PER_BEAT = 480
 NOTE_SELECTION_TEMPERATURE = 1.3
 MIN_NOTE_DURATION_THRESHOLD = 0.5
 
-SPLINE_DOMAIN_MAX = 59  # Domain used for scaling time for spline evaluation
+SPLINE_DOMAIN_MAX = (
+    74 if name == "amrit" else 59
+)  # Domain used for scaling time for spline evaluation
 
 # Ablation parameters
 ENABLE_EMPHASIS = True  # Enable emphasis calculation
@@ -86,8 +93,37 @@ tag_tpm_dict, unique_note_tags, tags_to_time = pkl.load(
 
 # --- Utility Functions ---
 
+
+def changeRaga(n):
+
+    global name
+    global DEFAULT_TPM_PATH
+    global DEFAULT_RAGADATA_PATH
+    global DEFAULT_TAG_TPM_PATH
+    global DEFAULT_TAG_PICKLE_PATH
+    global DEFAULT_SPLINES_PATH
+    global DEFAULT_SWARS_PATH
+    global OUTPUT_PHRASES_FILE
+    global OUTPUT_MIDI_FILE
+    global SPLINE_DOMAIN_MAX
+
+    name = n
+    DEFAULT_TPM_PATH = f"./model_data_{n}/tpm.npy"
+    DEFAULT_RAGADATA_PATH = f"./raga_data_{n}/{n}.json"
+    DEFAULT_TAG_TPM_PATH = f"./model_data_{n}/tpm_tags.npy"
+    DEFAULT_TAG_PICKLE_PATH = f"./model_data_{n}/tag_tpms.pkl"
+    DEFAULT_SPLINES_PATH = f"./model_data_{n}/splines.pkl"
+    DEFAULT_SWARS_PATH = f"./raga_data_{n}/swars.json"
+    OUTPUT_PHRASES_FILE = f"./output/phrases_{n}.txt"
+    OUTPUT_MIDI_FILE = f"./output/out_{n}.mid"
+    SPLINE_DOMAIN_MAX = (
+        74 if name == "amrit" else 59
+    )  # Domain used for scaling time for spline evaluation
+
+
 def swar2midi(swar):
     return swar2midi_map[swar]
+
 
 def clip_value(value, min_val, max_val):
     """Clips a value to be within the specified minimum and maximum range."""
@@ -210,6 +246,7 @@ def create_emphasized_tpm(tpm_orig, emphasis, swars_list):
     logger.debug("Created emphasized TPM.")
     return new_tpm
 
+
 def decay_tpm(tpm, current, prev, decay_factor=0.9):
     current = swars_list.index(current)
     prev = swars_list.index(prev)
@@ -217,11 +254,13 @@ def decay_tpm(tpm, current, prev, decay_factor=0.9):
     tpm = normalize(tpm)
     return tpm
 
+
 def normalize(tpm):
     for row in tpm:
         if np.sum(row) > 1e-10:
             row /= np.sum(row)
     return tpm
+
 
 # --- Generating functions ---
 
@@ -561,7 +600,12 @@ def create_tags():
     return gen
 
 
-def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling=ENABLE_TEMPERATURE_SCALING, gen=[]):
+def generate_all_phrases(
+    swars_list,
+    convolved_splines,
+    enable_temp_scaling=ENABLE_TEMPERATURE_SCALING,
+    gen=[],
+):
     """Generates a specified number of phrases."""
     logger.info("--- Generating Phrases ---")
     logger.info("Generating Tag Sequence using FSM...")
@@ -570,8 +614,14 @@ def generate_all_phrases(swars_list, convolved_splines, enable_temp_scaling=ENAB
     times = []
     if not gen:
         time_to_tag = {v: k for k, v in tags_to_time.items()}
+
+        if name == "amrit":
+            l = 43
+        elif name == "jog":
+            l = 47
+
         times = np.linspace(
-            0, SPLINE_DOMAIN_MAX, 43
+            0, SPLINE_DOMAIN_MAX, l
         )  # Tag-based vistaars are ~43 (median) phrases long
         gen = []
         for t in times:

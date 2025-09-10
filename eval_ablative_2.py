@@ -1,12 +1,15 @@
 import pprint
-import re
-from collections import defaultdict, Counter
-import numpy as np
+import sys
+from collections import Counter, defaultdict
 from winsound import MessageBeep
+
+import numpy as np
 
 import generate_fsm as gf
 
-NUM_SAMPLES = 100
+NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+
+gf.changeRaga(sys.argv[2] if len(sys.argv) > 2 else "amrit")
 
 gen = gf.create_tags()
 
@@ -26,7 +29,6 @@ def evaluate_phrase(phrase_str, swars_list, convolved_splines):
     diffs = np.diff(midi).clip(-1, 1)
     l = len(diffs)
 
-   
     patterns = [
         [1] * l,  # up
         [-1] * l,  # down
@@ -37,7 +39,7 @@ def evaluate_phrase(phrase_str, swars_list, convolved_splines):
         ([-1, 1] * (l // 2 + 1))[:l],  # alternating II
     ]
 
-    similarity = [np.linalg.norm(diffs - p) / l for p in patterns]    
+    similarity = [np.linalg.norm(diffs - p) / l for p in patterns]
     evals["similarity"] = similarity
     evals["best_match"] = np.argmin(similarity)
 
@@ -131,6 +133,9 @@ def run(ground=False):
     return dists
 
 
+print("--- Ablative Evaluation II - Pattern Distribution ---")
+
+
 gf.ENABLE_EMPHASIS = True
 gf.ENABLE_TAGS = True
 gf.ENABLE_HYBRID = True
@@ -166,10 +171,12 @@ reference_dist = np.array(dist_ref[0])
 
 # --- Step 2: Calculate the KL Divergence scores for each model vs. the reference ---
 
+
 def kl_divergence(p, q):
     p += 1e-10
     q += 1e-10
     return np.sum(p * np.log(p / q))
+
 
 def calculate_kl_scores(generated_dists, ref_dist):
     """Calculates a list of KL divergence scores for each run against the reference."""
