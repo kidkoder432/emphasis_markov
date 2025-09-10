@@ -1,10 +1,10 @@
-from math import isnan
-import pickle as pkl
-import numpy as np
 import json
+import pickle as pkl
+from math import isnan
 
-from plotly.subplots import make_subplots
+import numpy as np
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 tpm = np.load("tpm.npy")
 

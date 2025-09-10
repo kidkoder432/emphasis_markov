@@ -1,10 +1,11 @@
-import pickle as pkl
-import numpy as np
 import json
-from scipy.interpolate import PchipInterpolator
-from scipy.signal import savgol_filter
+import pickle as pkl
+
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+from scipy.interpolate import PchipInterpolator
+from scipy.signal import savgol_filter
 
 with open("splines.pkl", "rb") as f:
     splines_ref, convolved_splines_ref = pkl.load(f).values()

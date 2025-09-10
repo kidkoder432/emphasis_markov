@@ -5,15 +5,16 @@ emphasis curves derived from splines, and saving the output as text and MIDI.
 Includes visualization, configuration flags, and logging. Version focused on conciseness.
 """
 
-import pickle as pkl
 import json
-import numpy as np
-import mido
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-import os
 import logging
+import os
+import pickle as pkl
 import traceback
+
+import mido
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # --- Logging Configuration ---
 LOG_LEVEL = logging.DEBUG  # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -779,12 +780,8 @@ def create_visualization(viz_tables, swars_list, num_phrases_generated):
             hovermode="closest",
             template="plotly_dark",
             # Explicit coloraxis layout
-            coloraxis1=dict(
-                colorscale="hot", cmin=0, cmax=1
-            ),
-            coloraxis2=dict(
-                colorscale="hot", cmin=0, cmax=1
-            ),
+            coloraxis1=dict(colorscale="hot", cmin=0, cmax=1),
+            coloraxis2=dict(colorscale="hot", cmin=0, cmax=1),
             coloraxis3=dict(
                 colorscale="hot",
                 cmin=0,
