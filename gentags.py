@@ -1,11 +1,15 @@
 import json
-import numpy as np
 import pickle as pkl
+import sys
 
-DEFAULT_RAGADATA_PATH = "./raga_data/amrit.json"
-DEFAULT_TPM_PATH = "./model_data/tpm.npy"
-DEFAULT_TAG_TPM_PATH = "./model_data/tpm_tags.npy"
-DEFAULT_TAG_PICKLE_PATH = "./model_data/tag_tpms.pkl"
+import numpy as np
+
+name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
+
+DEFAULT_RAGADATA_PATH = f"./raga_data_{name}/{name}.json"
+DEFAULT_TPM_PATH = f"./model_data_{name}/tpm.npy"
+DEFAULT_TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
+DEFAULT_TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
 
 tpm = np.load(DEFAULT_TPM_PATH)
 amrit_data = json.load(open(DEFAULT_RAGADATA_PATH))

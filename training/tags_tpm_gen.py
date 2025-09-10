@@ -1,8 +1,15 @@
-from tempfile import template
-import numpy as np
 import json
+import sys
 
-raga_data = json.load(open("./raga_data_jog/jog.json"))
+import numpy as np
+
+name = sys.argv[1] if len(sys.argv) > 1 else "jog"
+
+RAGA_DATA_PATH = f"./raga_data_{name}/{name}.json"
+TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
+TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
+
+raga_data = json.load(open(RAGA_DATA_PATH))
 
 new_tags = raga_data["new_tags"]
 old_tags = raga_data["tags"]
@@ -34,7 +41,7 @@ for i, row in enumerate(tpm):
 
 initial = "I S"
 
-np.save("./model_data_jog/tpm_tags.npy", tpm)
+np.save(TAG_TPM_PATH, tpm)
 
 gen = [initial]
 
@@ -96,7 +103,7 @@ for tag in raga_data["new_tags"][::-1]:
 
 obj = {"tag_tpms": tag_tpms, "unique_tags": states, "tags_to_time": tags_to_time}
 
-pkl.dump(obj, open("./model_data_jog/tag_tpms.pkl", "wb"))
+pkl.dump(obj, open(TAG_PICKLE_PATH, "wb"))
 
 import plotly.graph_objects as go
 

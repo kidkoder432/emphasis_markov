@@ -1,0 +1,137 @@
+1257.7600000000002 150
+Calculated Emphasis DataFrame:
+     S_   G_   m_        P_        N_  ...        S^   G^   m^   P^   N^
+0   0.0  0.0  0.0  0.000000  0.337205  ...  0.000000  0.0  0.0  0.0  0.0
+1   0.0  0.0  0.0  0.000000  0.926365  ...  0.000000  0.0  0.0  0.0  0.0
+2   0.0  0.0  0.0  0.163336  0.166198  ...  0.000000  0.0  0.0  0.0  0.0
+3   0.0  0.0  0.0  0.098616  0.510317  ...  0.000000  0.0  0.0  0.0  0.0
+4   0.0  0.0  0.0  0.000000  0.500000  ...  0.000000  0.0  0.0  0.0  0.0
+..  ...  ...  ...       ...       ...  ...       ...  ...  ...  ...  ...
+70  0.0  0.0  0.0  0.000000  0.000000  ...  0.150289  0.0  0.0  0.0  0.0
+71  0.0  0.0  0.0  0.000000  0.000000  ...  0.000000  0.0  0.0  0.0  0.0
+72  0.0  0.0  0.0  0.000000  0.290508  ...  0.000000  0.0  0.0  0.0  0.0
+73  0.0  0.0  0.0  0.000000  0.525214  ...  0.000000  0.0  0.0  0.0  0.0
+74  0.0  0.0  0.0  0.127990  0.020510  ...  0.000000  0.0  0.0  0.0  0.0
+
+[75 rows x 15 columns]
+
+Spline models saved to './model_data_amrit/splines.pkl'
+I S
+I N_
+E N_
+E N_
+C N_
+I P_
+E P_
+C P_
+I G
+E G
+E G
+E G
+E G
+C G
+I m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+I P
+E P
+E P
+E P
+E P
+E P
+E P
+E P
+E P
+E P
+E P
+I N
+E N
+T N
+T N
+T N
+T N
+T N
+T N
+T N
+I S^
+E S^
+E S^
+E S^
+E S^
+I G^
+E G^
+E G^
+E G^
+E G^
+I m^
+I P^
+E P^
+E P^
+E P^
+E P^
+C P^
+R S^
+G S^
+G S^
+G S^
+G S^
+R N
+R m
+R G
+R S
+G S
+F S
+['I S', 'I N_', 'E N_', 'C N_', 'I P_', 'E P_', 'C P_', 'I G', 'E G', 'C G', 'I m', 'E m', 'I P', 'E P', 'I N', 'E N', 'T N', 'I S^', 'E S^', 'I G^', 'E G^', 'I m^', 'I P^', 'E P^', 'C P^', 'R S^', 'G S^', 'R N', 'R m', 'R G', 'R S', 'G S', 'F S']
+42
+I S
+I N_
+E N_
+C N_
+I P_
+E P_
+C P_
+I G
+E G
+C G
+I m
+E m
+E m
+E m
+E m
+E m
+E m
+E m
+I P
+E P
+E P
+E P
+I N
+E N
+T N
+I S^
+E S^
+I G^
+E G^
+E G^
+I m^
+I P^
+E P^
+C P^
+R S^
+G S^
+R N
+R m
+R G
+R S
+G S
+F S

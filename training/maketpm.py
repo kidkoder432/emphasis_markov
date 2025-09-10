@@ -1,8 +1,14 @@
-from tkinter import SW
-import numpy as np
 import json
+import sys
+from tkinter import SW
 
-with open("./raga_data_jog/jog.json", "r") as f:
+import numpy as np
+
+name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
+
+RAGA_DATA_FILE = f"./raga_data_{name}/{name}.json"
+
+with open(RAGA_DATA_FILE, "r") as f:
     raga_data = json.load(f)
 
 SWARS = raga_data["notes"] + ["|"]
@@ -59,4 +65,5 @@ fig.update_layout(template="plotly_dark")
 fig.show()
 
 # print(tpm)
-np.save("./model_data_jog/tpm.npy", tpm)
+
+np.save(f"./model_data_{name}/tpm.npy", tpm)

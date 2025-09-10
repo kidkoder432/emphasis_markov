@@ -1,10 +1,12 @@
 import json
+import pickle as pkl
+import sys
+
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import pickle as pkl
-from scipy.ndimage import median_filter
 from scipy.interpolate import PchipInterpolator
+from scipy.ndimage import median_filter
 
 
 def calculate_emphasis_df(raga_data):
@@ -24,9 +26,7 @@ def calculate_emphasis_df(raga_data):
     Returns:
         pd.DataFrame: A DataFrame representing the emphasis table.
     """
-    emphasis_table = np.zeros(
-        (len(raga_data["phrases"]), len(raga_data["notes"]))
-    )
+    emphasis_table = np.zeros((len(raga_data["phrases"]), len(raga_data["notes"])))
 
     for i, phrase_str in enumerate(raga_data["phrases"]):
         # Split the phrase into individual note-emphasis pairs
@@ -71,6 +71,7 @@ def calculate_emphasis_df(raga_data):
     emphasis_df = pd.DataFrame(emphasis_table, columns=raga_data["notes"])
     return emphasis_df
 
+
 def generate_splines(emphasis_df):
     # Create a dense time vector for smooth plotting
     t = np.linspace(0, len(emphasis_df) - 1, 2000)
@@ -93,10 +94,13 @@ def generate_splines(emphasis_df):
 
         # Store the smoothed spline for later use
         convolved_splines.append(PchipInterpolator(t, y, extrapolate=False))
-    
+
     return t, splines, convolved_splines
 
-def generate_plots_and_save_splines(emphasis_df, t, splines, convolved_splines, output_path):
+
+def generate_plots_and_save_splines(
+    emphasis_df, t, splines, convolved_splines, output_path
+):
     """
     Generates an emphasis plot with splines and saves the spline models.
 
@@ -107,13 +111,13 @@ def generate_plots_and_save_splines(emphasis_df, t, splines, convolved_splines, 
 
     # Create a dense time vector for smooth plotting
     t = np.linspace(0, len(emphasis_df) - 1, 2000)
-    
+
     # Initialize a plotly figure for the plot
     fig = go.Figure()
 
     # Process and plot each note's emphasis curve
     for spline, name in zip(convolved_splines, emphasis_df.columns):
-        
+
         # Add the smoothed curve to the plot
         fig.add_scatter(
             x=t,
@@ -151,15 +155,19 @@ def generate_plots_and_save_splines(emphasis_df, t, splines, convolved_splines, 
 if __name__ == "__main__":
     # --- Main script execution starts here ---
 
+    # Get the raga name from command line arguments if provided
+    raga_name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
+
     # Define the path to your data file
-    json_file_path = "./raga_data_jog/jog.json"
+    data_file_path = f"./raga_data_{raga_name}/{raga_name}.json"
+    spline_output_path = f"./model_data_{raga_name}/splines.pkl"
 
     # Load the data from the JSON file
     try:
-        raga_data = json.load(open(json_file_path))
+        raga_data = json.load(open(data_file_path))
     except FileNotFoundError:
         print(
-            f"Error: The file '{json_file_path}' was not found. Please ensure the path is correct."
+            f"Error: The file '{data_file_path}' was not found. Please ensure the path is correct."
         )
         exit()
 
@@ -173,7 +181,8 @@ if __name__ == "__main__":
     print(emphasis_df)
 
     # Generate the plots and save the spline models using the reusable function
-    spline_output_path = "./model_data_jog/splines.pkl"
-    generate_plots_and_save_splines(emphasis_df, *generate_splines(emphasis_df), spline_output_path)
+    generate_plots_and_save_splines(
+        emphasis_df, *generate_splines(emphasis_df), spline_output_path
+    )
 
     print(f"\nSpline models saved to '{spline_output_path}'")
