@@ -3,7 +3,7 @@ import sys
 
 import numpy as np
 
-name = sys.argv[1] if len(sys.argv) > 1 else "jog"
+name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
 
 RAGA_DATA_PATH = f"./raga_data_{name}/{name}.json"
 TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"

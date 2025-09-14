@@ -10,13 +10,13 @@ I 3-N_ 3-S 9-G
 E 4-G 3-N_ 2-S 4-N_
 E 3-N_ 6-G
 E 2-G 3-m 4-G 5-S
-E 3-P_ 2-N_ 2-S 3-G 2-N 2-S 2-N 4-G
+E 3-P_ 2-N_ 2-S 3-G 2-N_ 2-S 2-N_ 4-G
 C 2-S 2-G 3-m 3-G 3-m 3-G 4-S
 I 3-G 9-m 3-G
 E 2-G 4-m 2-S 2-G 5-m 2-G
 E 2-G 3-m 2-S 2-G 2-S 5-m 2-G
 E 2-m 2-G 2-N_ 2-G 5-m 2-G
-E 2-m 2-G 2-N 5-m 2-G
+E 2-m 2-G 2-N_ 5-m 2-G
 E 2-G 5-m 2-G
 E 2-S 2-G 5-m 2-G
 E 2-G 2-P 5-m 2-G 3-m 2-G
@@ -70,6 +70,6 @@ G 1-S 1-G 2-S 5-S^ 2-N
 R 2-S^ 5-N 3-P
 R 1-G 1-m 1-P 1-N 1-S^ 2-P 2-S^ 2-N 2-P 4-m
 R 1-G 1-m 1-P 3-N 1-m 3-P 1-G 3-m 3-G
-R 1-S 1-G 1-m 1-P 1-G 1-m 1-S 1-m 1-G 3-S 3-N_
-G 1-N_ 3-G 2-N_ 2-S 3-N_
+R 1-S 1-G 1-m 1-P 1-G 1-m 1-S 1-m 1-G 3-S 5-N_
+G 1-N_ 3-G 2-N_ 2-S 5-N_
 F 3-P_ 1-N_ 1-S 1-G 1-m 1-P 3-G 1-m 3-G 2-m 3-G 5-S
