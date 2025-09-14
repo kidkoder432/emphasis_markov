@@ -284,7 +284,13 @@ def generate_single_phrase(
     )
 
     try:
-        if ENABLE_EMPHASIS:
+        if ENABLE_HYBRID and ENABLE_EMPHASIS:
+            emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
+            mod_tpm = 0.9 * tpm_orig + 0.1 * full_tpm
+            emphasized_tpm = create_emphasized_tpm(
+                mod_tpm, emphasis_vector, swars_list
+            )
+        elif ENABLE_EMPHASIS:
             emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
             emphasized_tpm = create_emphasized_tpm(
                 tpm_orig, emphasis_vector, swars_list
@@ -497,15 +503,13 @@ def generate_single_phrase(
         logger.info(f"Current sequence: {phrase_notes}")
 
         if ENABLE_EMPHASIS and ENABLE_HYBRID:
-            emphasis_vector += np.ones(len(emphasis_vector)) * 0.01
+            emphasis_vector += np.ones(len(emphasis_vector)) * 0.001
+            emphasis_vector /= np.sum(emphasis_vector)
             emphasis_vector **= 0.95
             emphasis_vector /= np.sum(emphasis_vector)
 
-            mod_tpm = 0.98 * tpm_orig + 0.02 * full_tpm
-
+            # mod_tpm[:, -1] *= 1.02
             emphasized_tpm = create_emphasized_tpm(mod_tpm, emphasis_vector, swars_list)
-            emphasized_tpm[:, -2] *= 1.1
-            emphasized_tpm = normalize(emphasized_tpm)
 
         if ENABLE_TRANSITION_DECAY:
             emphasized_tpm = decay_tpm(emphasized_tpm, current_note, prev_note)
@@ -536,7 +540,7 @@ def tpm_temp_scale(
     enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx
 ):
     base_probs = emphasized_tpm[current_note_idx, :-1].copy()
-    base_probs[base_probs < 0] = 0
+    base_probs[base_probs <= 0] = 0
     norm_probs = np.array([])  # Initialize
 
     if enable_temp_scaling:
