@@ -69,7 +69,7 @@ ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
 # --- Configuration Flags ---
 ENABLE_VISUALIZATION = True
 ENABLE_TEMPERATURE_SCALING = ENABLE_EMPHASIS
-ENABLE_TRANSITION_DECAY = False
+ENABLE_TRANSITION_DECAY = True
 # --- Data Loading ---
 
 full_tpm = np.load(DEFAULT_TPM_PATH)
@@ -286,9 +286,10 @@ def generate_single_phrase(
     try:
         if ENABLE_HYBRID and ENABLE_EMPHASIS:
             emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
-            mod_tpm = 0.9 * tpm_orig + 0.1 * full_tpm
+            tpm_orig = 0.95 * tpm_orig + 0.05 * full_tpm
+            tpm_orig = normalize(tpm_orig)
             emphasized_tpm = create_emphasized_tpm(
-                mod_tpm, emphasis_vector, swars_list
+                tpm_orig, emphasis_vector, swars_list
             )
         elif ENABLE_EMPHASIS:
             emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
@@ -508,11 +509,11 @@ def generate_single_phrase(
             emphasis_vector **= 0.95
             emphasis_vector /= np.sum(emphasis_vector)
 
-            # mod_tpm[:, -1] *= 1.02
-            emphasized_tpm = create_emphasized_tpm(mod_tpm, emphasis_vector, swars_list)
+            tpm_orig[:, -1] **= 1.05
+            emphasized_tpm = create_emphasized_tpm(tpm_orig, emphasis_vector, swars_list)
 
         if ENABLE_TRANSITION_DECAY:
-            emphasized_tpm = decay_tpm(emphasized_tpm, current_note, prev_note)
+            emphasized_tpm = decay_tpm(emphasized_tpm, current_note, prev_note, decay_factor=0.5)
 
     else:  # Loop finished without break (max_steps reached)
         logger.warning(
