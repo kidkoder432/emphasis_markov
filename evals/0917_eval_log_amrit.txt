@@ -1,0 +1,272 @@
+['eval_ablative.py', '100', 'amrit']
+16:32:05.169 - ERROR - <module> (:41) 
+	 Generating music for amrit
+--- Ablative Evaluation I - Phrase Rules ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 100
+
+Average ACR Lag 1:  0.05985435751155523
+Average ACR Lag 2:  0.3631260071634877
+Average ACR Lag 3:  0.29315588112455737
+Total rules broken:  308
+Rules broken per vistaar:  3.08
+% of unique tags:  100.0
+Running with emphasis and tags enabled
+Generating vistaar 100
+
+Average ACR Lag 1:  0.05961161997001908
+Average ACR Lag 2:  0.3325204892435255
+Average ACR Lag 3:  0.2957289231664435
+Total rules broken:  848
+Rules broken per vistaar:  8.48
+% of unique tags:  100.0
+Running with emphasis enabled
+Generating vistaar 100
+
+Average ACR Lag 1:  0.13213722441284317
+Average ACR Lag 2:  0.3120345213920494
+Average ACR Lag 3:  0.3259054667791721
+Total rules broken:  352
+Rules broken per vistaar:  3.52
+% of unique tags:  69.69696969696977
+Running with base Markov model
+Generating vistaar 100
+
+Average ACR Lag 1:  0.04463573101891961
+Average ACR Lag 2:  0.13902997874878534
+Average ACR Lag 3:  0.157329584034968
+Total rules broken:  2351
+Rules broken per vistaar:  23.51
+% of unique tags:  69.69696969696977
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+
+Average ACR Lag 1:  0.062370062370062374
+Average ACR Lag 2:  0.21621621621621623
+Average ACR Lag 3:  0.2972972972972973
+Total rules broken:  10
+Rules broken per vistaar:  10.0
+% of unique tags:  100.0
+Finished all runs
+Running t-tests
+t-test full vs tags (lag 1):  0.14247565419865305 0.8868491898837888
+t-test full vs emphasis (lag 1):  -29.37211912913351 2.6107993040622955e-65
+t-test tags vs emphasis (lag 1):  -29.425624783611603 1.5074576487684548e-65
+t-test full vs base (lag 1):  9.297836968674222 2.787361942243869e-17
+t-test full vs tags (lag 2):  7.48862775290493 2.257435361764273e-12
+t-test full vs emphasis (lag 2):  11.20086229898996 1.2185218192784123e-22
+t-test tags vs emphasis (lag 2):  4.421918995278329 1.6396958698527835e-05
+t-test full vs base (lag 2):  63.336007884009796 1.2948718557880814e-126
+t-test full vs tags (lag 3):  -0.49365087139816366 0.6221599703464602
+t-test full vs emphasis (lag 3):  -6.905559764960443 7.218592880863615e-11
+t-test tags vs emphasis (lag 3):  -5.376911870104078 2.1666609525631753e-07
+t-test full vs base (lag 3):  34.12238666120828 6.918086443474081e-84
+16:34:02.751 - ERROR - <module> (:41) 
+	 Generating music for amrit
+--- Ablative Evaluation II - Pattern Distribution ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 100.0
+Num errors 0.07
+Running with emphasis and tags enabled
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 100.0
+Num errors 0.0
+Running with emphasis enabled
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 69.69696969696977
+Num errors 0.8
+Running with base Markov model
+Generating vistaar 100
+100 [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+% of unique tags 69.69696969696977
+Num errors 0.9
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+1 [7]
+% of unique tags 1.0
+Num errors 0.0
+Finished all runs
+--- T-Tests of KL Divergence from Ground Truth ---
+Full Model vs. Base Model p-value: 0.1247725674863658
+Full Model vs. Tags-Only p-value: 2.5088211052330147e-15
+Full Model vs. Emphasis-Only p-value: 0.0015698111127617435
+16:36:00.049 - ERROR - <module> (:41) 
+	 Generating music for amrit
+--- Ablative Evaluation III - Vocab Size ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 100
+% of unique tags 100.0
+Averge phrase` length 6.238863636363638
+Num errors 0.07
+Average vocab size 127.8
+Running with emphasis and tags enabled
+Generating vistaar 100
+% of unique tags 100.0
+Averge phrase` length 4.785000000000001
+Num errors 0.0
+Average vocab size 109.4
+Running with emphasis enabled
+Generating vistaar 100
+% of unique tags 69.69696969696977
+Averge phrase` length 5.213953488372093
+Num errors 0.8
+Average vocab size 138.2
+Running with base Markov model
+Generating vistaar 100
+% of unique tags 69.69696969696977
+Averge phrase` length 7.305581395348835
+Num errors 0.87
+Average vocab size 225.52
+Evaluating ground truth vistaar
+Evaluating ground truth vistaar
+% of unique tags 100.0
+Averge phrase` length 6.413333333333333
+Num errors 0.0
+Average vocab size 205.0
+Finished all runs
+--- T-Tests of Vocab Size ---
+Full Model vs. Base Model p-value: 2.563924787917823e-94
+Full Model vs. Tags-Only p-value: 8.838772390855326e-29
+Full Model vs. Emphasis-Only p-value: 2.7592452541445163e-11
+Tags-Only vs. Base Model p-value: 1.3260198177345268e-96
+Tags-Only vs. Emphasis-Only p-value: 6.849924802204527e-58
+Emphasis-Only vs. Base Model p-value: 3.3758146171702037e-84
+16:37:57.494 - ERROR - <module> (:41) 
+	 Generating music for amrit
+[array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([2.77222529e-02, 1.07088314e-01, 1.29000000e+02, 8.64500000e-01]), array([ 0.07861149,  0.17167674, 16.        ,  0.7155    ]), array([ 0.08197978,  0.11779203, 47.        ,  0.432     ]), array([1.32537953e-01, 1.57602936e-01, 2.62000000e+02, 3.38000000e-01]), array([1.62974208e-01, 2.20429991e-01, 3.73000000e+02, 3.92000000e-01]), array([1.16202252e-01, 1.77445008e-01, 7.26000000e+02, 3.38000000e-01]), array([9.88697302e-02, 1.69039469e-01, 1.04100000e+03, 5.41000000e-01]), array([1.66172544e-01, 2.57495125e-01, 1.31400000e+03, 5.68000000e-01]), array([6.21506234e-02, 1.33131593e-01, 1.39700000e+03, 7.43500000e-01]), array([3.56289898e-02, 1.02476144e-01, 1.53100000e+03, 8.38000000e-01]), array([2.85256113e-02, 1.14697969e-01, 1.56500000e+03, 9.19000000e-01]), array([0., 0., 0., 1.])]
+--- Structural Fidelity Evaluation ---
+Running with emphasis, tags, and hybrid enabled
+Generating vistaar 100
+array([  0.        ,   0.        ,   0.        ,  75.93003274,
+       700.43020647, 139.05065887, 163.00018875, 181.37016864,
+        44.84012771, 239.52003321, 296.35002998, 298.98001006,
+       321.79000302, 305.73000419,   0.        ])
+Running with emphasis and tags enabled
+Generating vistaar 100
+array([  0.        ,   0.        ,   0.        ,  75.34004019,
+       704.13018677, 117.65013203, 129.10023054, 157.68019759,
+        45.63014465, 220.59003308, 292.64002969, 299.55000911,
+       319.51000332, 305.86000357,   0.        ])
+Running with emphasis enabled
+Generating vistaar 100
+array([   0.        ,    0.        ,    0.        ,   39.26042316,
+       1265.93005552,   61.5911485 ,  192.19024068,   77.08247115,
+         46.31055541,    4.79361341,   51.01097071,  180.60001188,
+         29.33004608,    1.80904825,    0.        ])
+Running with base Markov model
+Generating vistaar 100
+array([  0.        ,   0.        ,   0.        , 879.08008506,
+       856.40021042, 958.58011563, 733.31015403, 758.50034649,
+       547.85019065, 471.66023717, 564.87039732, 604.36025713,
+       644.87017947, 631.23224861,   0.        ])
+Finished all runs
+Running t-tests
+length of each t test vector: 100
+note 0 full vs base: nan
+note 0 full vs tags: nan
+note 0 full vs emphasis: nan
+note 0 tags vs emphasis: nan
+note 0 tags vs base: nan
+note 0 emphasis vs base: nan
+length of each t test vector: 100
+note 1 full vs base: nan
+note 1 full vs tags: nan
+note 1 full vs emphasis: nan
+note 1 tags vs emphasis: nan
+note 1 tags vs base: nan
+note 1 emphasis vs base: nan
+length of each t test vector: 100
+note 2 full vs base: nan
+note 2 full vs tags: nan
+note 2 full vs emphasis: nan
+note 2 tags vs emphasis: nan
+note 2 tags vs base: nan
+note 2 emphasis vs base: nan
+length of each t test vector: 100
+note 3 full vs base: 5.892406080037818e-25
+note 3 full vs tags: 0.19680899692811882
+note 3 full vs emphasis: 0.054315610898113174
+note 3 tags vs emphasis: 0.058173843975170364
+note 3 tags vs base: 5.617725056652267e-25
+note 3 emphasis vs base: 1.665817842695773e-26
+length of each t test vector: 100
+note 4 full vs base: 0.14536225286952387
+note 4 full vs tags: 0.9770263769714507
+note 4 full vs emphasis: 1.794914754230835e-05
+note 4 tags vs emphasis: 1.9607232934626442e-05
+note 4 tags vs base: 0.15403911368854478
+note 4 emphasis vs base: 0.0001767800259203538
+length of each t test vector: 100
+note 5 full vs base: 1.1236562020331042e-24
+note 5 full vs tags: 0.2929805932648298
+note 5 full vs emphasis: 0.0023964941918687317
+note 5 tags vs emphasis: 0.007050832003847465
+note 5 tags vs base: 2.1934684325785934e-25
+note 5 emphasis vs base: 1.6415260493283095e-27
+length of each t test vector: 100
+note 6 full vs base: 7.576691067135295e-17
+note 6 full vs tags: 0.27130177995819427
+note 6 full vs emphasis: 0.5831747321907198
+note 6 tags vs emphasis: 0.19260318596112527
+note 6 tags vs base: 3.8622081610457103e-19
+note 6 emphasis vs base: 9.530759056460033e-13
+length of each t test vector: 100
+note 7 full vs base: 5.316718539789677e-20
+note 7 full vs tags: 0.19864953835170082
+note 7 full vs emphasis: 3.920931107466158e-07
+note 7 tags vs emphasis: 5.686809889860744e-17
+note 7 tags vs base: 2.496408797483551e-21
+note 7 emphasis vs base: 8.042555391984962e-25
+length of each t test vector: 100
+note 8 full vs base: 3.547070985850946e-28
+note 8 full vs tags: 0.27298162951647514
+note 8 full vs emphasis: 0.7998477535960911
+note 8 tags vs emphasis: 0.9063747908311097
+note 8 tags vs base: 3.9716937775273404e-28
+note 8 emphasis vs base: 2.773178964918725e-28
+length of each t test vector: 100
+note 9 full vs base: 1.9027987063793506e-13
+note 9 full vs tags: 2.798984769377739e-05
+note 9 full vs emphasis: 7.778919953452379e-79
+note 9 tags vs emphasis: 1.3789466811024644e-131
+note 9 tags vs base: 4.882556463597915e-15
+note 9 emphasis vs base: 1.6935562859724942e-31
+length of each t test vector: 100
+note 10 full vs base: 2.8576652865884475e-10
+note 10 full vs tags: 0.2387413103311204
+note 10 full vs emphasis: 8.581512323262286e-39
+note 10 tags vs emphasis: 6.38838059237537e-38
+note 10 tags vs base: 1.765499714405943e-10
+note 10 emphasis vs base: 3.830498292440485e-24
+length of each t test vector: 100
+note 11 full vs base: 4.6540888172387e-12
+note 11 full vs tags: 0.3316551704796974
+note 11 full vs emphasis: 3.673580027309877e-18
+note 11 tags vs emphasis: 2.8142734959355193e-18
+note 11 tags vs base: 4.9924795648194644e-12
+note 11 emphasis vs base: 1.748535972837532e-18
+length of each t test vector: 100
+note 12 full vs base: 1.7105107577440176e-10
+note 12 full vs tags: 0.6205477515647032
+note 12 full vs emphasis: 1.2206735369196625e-140
+note 12 tags vs emphasis: 1.13743986745069e-133
+note 12 tags vs base: 1.353645349193325e-10
+note 12 emphasis vs base: 2.234709657156612e-24
+length of each t test vector: 100
+note 13 full vs base: 1.4262468398360103e-09
+note 13 full vs tags: 0.8998848342564856
+note 13 full vs emphasis: 7.892620551483726e-264
+note 13 tags vs emphasis: 1.527252303631305e-265
+note 13 tags vs base: 1.4441500030457185e-09
+note 13 emphasis vs base: 5.938061720895806e-23
+length of each t test vector: 100
+note 14 full vs base: nan
+note 14 full vs tags: nan
+note 14 full vs emphasis: nan
+note 14 tags vs emphasis: nan
+note 14 tags vs base: nan
+note 14 emphasis vs base: nan
