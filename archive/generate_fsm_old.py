@@ -17,7 +17,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from visualizers import create_tpm_dashboard, create_visualization
+from visualizers import *
 
 # --- Logging Configuration ---
 LOG_LEVEL = logging.ERROR  # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -65,8 +65,8 @@ SPLINE_DOMAIN_MAX = (
 
 # Ablation parameters
 ENABLE_EMPHASIS = True  # Enable emphasis calculation
-ENABLE_TAGS = False  # Enable tag-based FSM generation
-ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
+ENABLE_TAGS = True  # Enable tag-based FSM generation
+ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
 
 # --- Configuration Flags ---
 ENABLE_VISUALIZATION = True
@@ -179,16 +179,16 @@ def create_emphasized_tpm(tpm_orig, emphasis, swars_list):
         raise ValueError("Emphasis vector length mismatch.")
 
     has_pipe_col = tpm_orig.shape[1] == num_swars
-    new_tpm = np.zeros((num_swars, num_notes + 1))  # Shape (N, N+1)
+    new_tpm = np.zeros((num_swars, num_notes + 2))  # Shape (N, N+1) with Retry col
 
     # 1. Transitions TO '|' (col index -2)
     if has_pipe_col:
-        new_tpm[:, -1] = tpm_orig[:, -1]
+        new_tpm[:, -2] = tpm_orig[:, -1]
     # else: column remains zero
 
     # 2. Transitions FROM '|' (row index -1) to notes (cols 0 to N-2)
     try:
-        new_tpm[-1, :-1] = tpm_orig[-1, :num_notes]
+        new_tpm[-1, :-2] = tpm_orig[-1, :num_notes]
     except IndexError as e:
         logger.error(f"Error accessing tpm_orig[-1, :num_notes]: {e}. Check TPM dims.")
         raise
@@ -198,14 +198,52 @@ def create_emphasized_tpm(tpm_orig, emphasis, swars_list):
     new_tpm[:, :num_notes] = tpm_orig[:, :num_notes] * col_emphasis
 
     # 4. Scale transitions TO '|' (col index -2) based on source emphasis (original logic)
-    new_tpm[:-1, -1] *= col_emphasis.flatten()
+    new_tpm[:-1, -2] *= col_emphasis.flatten()
 
     # --- Row Normalization & Retry Probability (last col) ---
     new_tpm = np.where(
         np.isclose(new_tpm, 0, atol=1e-6), 0, new_tpm
     )  # Clean near-zeros
 
-    new_tpm = normalize(new_tpm)
+    for i in range(num_swars):
+        row_known = new_tpm[i, :-1]  # Probs for notes + '|'
+        row_sum_known = np.sum(row_known)
+
+        if not np.isfinite(row_sum_known):
+            logger.warning(
+                f"Row {i} ('{swars_list[i]}') sum not finite ({row_sum_known}). Forcing retry."
+            )
+            new_tpm[i, :-1] = 0
+            new_tpm[i, -1] = 1.0
+            continue
+
+        retry_prob = 1.0 - row_sum_known
+
+        if retry_prob < -1e-7:  # Sum significantly > 1, normalize
+            logger.warning(
+                f"Row {i} ('{swars_list[i]}') sum {row_sum_known:.4f} > 1. Renormalizing."
+            )
+            if row_sum_known > 1e-9:
+                new_tpm[i, :-1] /= row_sum_known
+            else:
+                new_tpm[i, :-1] = 0  # Avoid division by zero if sum was tiny but > 1
+            new_tpm[i, -1] = 0
+        elif retry_prob < 1e-9:  # Sum is ~1 or retry prob negative but tiny
+            new_tpm[i, -1] = 0
+        else:  # Valid positive retry probability
+            new_tpm[i, -1] = retry_prob
+
+        # Final check and forced normalization if needed
+        final_sum = np.sum(new_tpm[i, :])
+        if not np.isclose(final_sum, 1.0):
+            logger.warning(
+                f"Final sum row {i} ('{swars_list[i]}') is {final_sum:.4f} != 1.0. Force normalizing."
+            )
+            if final_sum > 1e-9:
+                new_tpm[i, :] /= final_sum
+            else:
+                new_tpm[i, :] = 0
+                new_tpm[i, -1] = 1.0  # Error case
 
     logger.debug("Created emphasized TPM.")
     return new_tpm
@@ -217,6 +255,7 @@ def decay_tpm(tpm, current, prev, decay_factor=0.9):
     tpm[current, prev] *= decay_factor
     tpm = normalize(tpm)
     return tpm
+
 
 def normalize(tpm):
     """
@@ -255,7 +294,6 @@ def generate_single_phrase(
             emphasis_vector = calculate_emphasis(t_emphasis, convolved_splines)
             tpm_orig = 0.95 * tpm_orig + 0.05 * full_tpm
             tpm_orig = normalize(tpm_orig)
-
             emphasized_tpm = create_emphasized_tpm(
                 tpm_orig, emphasis_vector, swars_list
             )
@@ -274,13 +312,6 @@ def generate_single_phrase(
         logger.error(f"Failed to create emphasis/TPM for phrase {timestamp}: {e}")
         return None, None  # Cannot proceed
 
-    # --- Format Output ---
-    viz_data = {
-        "emphasis": emphasis_vector,
-        "emphasized_tpm": emphasized_tpm,
-        "original_tpm": tpm_orig,
-    }
-
     # --- Starting Note Selection ---
     num_notes = len(swars_list) - 1
     available_start_notes = swars_list[:-1]
@@ -288,7 +319,7 @@ def generate_single_phrase(
         logger.error("No notes available to start phrase.")
         return None, None
 
-    start_note_probs = emphasized_tpm[-1][:-1].copy()
+    start_note_probs = emphasized_tpm[-1][:-2].copy()
     start_note_probs[np.isnan(start_note_probs) | (start_note_probs < 0)] = 0
     prob_sum = np.sum(start_note_probs)
     if prob_sum < 1e-9:
@@ -306,7 +337,7 @@ def generate_single_phrase(
     retry_start_count = 0
     max_start_retries = len(available_start_notes) * 2
     while (
-        np.sum(emphasized_tpm[start_note_idx, :]) < 1e-9
+        np.sum(emphasized_tpm[start_note_idx, :-1]) < 1e-9
         and retry_start_count < max_start_retries
     ):
         logger.warning(
@@ -385,6 +416,17 @@ def generate_single_phrase(
             )
             break
 
+        # Handle Retry State
+        if next_idx == len(swars_list):  # Retry column index
+            tpm_temp_scale(
+                enable_temp_scaling,
+                temp,
+                emphasized_tpm,
+                current_note,
+                current_note_idx,
+            )
+            continue  # Re-select note
+
         # Process Selected Note
         next_note = swars_list[next_idx]
 
@@ -446,7 +488,7 @@ def generate_single_phrase(
         if next_note == "|" and len(phrase_notes) < 3:
             logger.debug("Reached '|' early, attempting transition out.")
 
-            if emphasized_tpm[current_note_idx, -1] > 1 - 1e-9:
+            if emphasized_tpm[current_note_idx, -2] > 1 - 1e-9:
                 logger.warning(
                     f"Stuck on '|' with high retry prob from '{current_note}'. Skipping retry."
                 )
@@ -475,6 +517,7 @@ def generate_single_phrase(
 
             tpm_orig[:, -1] **= 1.05
             tpm_orig = normalize(tpm_orig)
+
             emphasized_tpm = create_emphasized_tpm(tpm_orig, emphasis_vector, swars_list)
 
         if ENABLE_TRANSITION_DECAY:
@@ -485,6 +528,12 @@ def generate_single_phrase(
             f"Phrase {timestamp} reached max steps ({max_steps}). Truncating. Sequence: {phrase_notes}"
         )
 
+    # --- Format Output ---
+    viz_data = {
+        "emphasis": emphasis_vector,
+        "emphasized_tpm": emphasized_tpm,
+        "original_tpm": tpm_orig,
+    }
     if not phrase_notes:
         logger.warning(f"Phrase {timestamp} generated no valid notes.")
         return None, viz_data
@@ -499,7 +548,7 @@ def generate_single_phrase(
 def tpm_temp_scale(
     enable_temp_scaling, temp, emphasized_tpm, current_note, current_note_idx
 ):
-    base_probs = emphasized_tpm[current_note_idx, :].copy()
+    base_probs = emphasized_tpm[current_note_idx, :-1].copy()
     base_probs[base_probs <= 0] = 0
     norm_probs = np.array([])  # Initialize
 
@@ -526,8 +575,9 @@ def tpm_temp_scale(
         norm_probs = np.ones(num_valid) / num_valid if num_valid > 0 else np.array([])
 
         # Update TPM row if possible
-    if len(norm_probs) == len(emphasized_tpm[current_note_idx, :]):
-        emphasized_tpm[current_note_idx, :] = norm_probs
+    if len(norm_probs) == len(emphasized_tpm[current_note_idx, :-1]):
+        emphasized_tpm[current_note_idx, :-1] = norm_probs
+        emphasized_tpm[current_note_idx, -1] = 0  # Reset retry prob
     else:
         logger.error(f"Shape mismatch during retry update for '{current_note}'.")
 
@@ -830,6 +880,7 @@ def create_midi_file(
         logger.exception(f"Error creating MIDI file {filename}: {e}")
 
 # --- Main Execution ---
+
 
 def main():
     """Main function to orchestrate the phrase generation and output."""
