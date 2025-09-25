@@ -126,7 +126,7 @@ R S
 G S
 F S
 ['I S', 'E S', 'I n_', 'E n_', 'C n_', 'I P_', 'E P_', 'C P_', 'T P_', 'I g', 'E g', 'C g', 'T g', 'I G', 'E G', 'C G', 'I M', 'E M', 'I P', 'E P', 'I n', 'E n', 'T n', 'I S^', 'E S^', 'I g^', 'E g^', 'C g^', 'I G^', 'I M^', 'E M^', 'C M^', 'R n', 'G n', 'R P', 'G P', 'R M', 'G M', 'R G', 'R S', 'G S', 'F S']
-43
+46
 I S
 E S
 I n_
@@ -135,6 +135,7 @@ C n_
 I P_
 E P_
 C P_
+T P_
 T P_
 I g
 E g
@@ -154,6 +155,8 @@ T n
 I S^
 E S^
 I g^
+E g^
+E g^
 E g^
 C g^
 I G^

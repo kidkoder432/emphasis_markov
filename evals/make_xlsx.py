@@ -240,7 +240,7 @@ def apply_bonferroni_correction(df):
     return df
 
 
-def write_formatted_excel(all_data, filename="evaluation_report_by_test.xlsx"):
+def write_formatted_excel(all_data, filename="0920_evals_jog.xlsx"):
     """
     Writes all parsed data to a beautifully formatted, multi-sheet Excel file.
     """
@@ -322,7 +322,7 @@ def write_formatted_excel(all_data, filename="evaluation_report_by_test.xlsx"):
 
 # --- Main Execution Block ---
 if __name__ == "__main__":
-    log_file_path = "eval_log_amrit.txt"
+    log_file_path = "0920_eval_log_jog.txt"
     try:
         with open(log_file_path, "r") as f:
             log_content = f.read()
