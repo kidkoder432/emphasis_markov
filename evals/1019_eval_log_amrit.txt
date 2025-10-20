@@ -1,0 +1,182 @@
+20:01:32.482 - ERROR - <module> (:43) 
+	 Generating music for amrit
+[array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([0., 0., 0., 1.]), array([2.77222529e-02, 1.07088314e-01, 1.29000000e+02, 8.64500000e-01]), array([ 0.07861149,  0.17167674, 16.        ,  0.7155    ]), array([ 0.08197978,  0.11779203, 47.        ,  0.432     ]), array([1.32537953e-01, 1.57602936e-01, 2.62000000e+02, 3.38000000e-01]), array([1.62974208e-01, 2.20429991e-01, 3.73000000e+02, 3.92000000e-01]), array([1.16202252e-01, 1.77445008e-01, 7.26000000e+02, 3.38000000e-01]), array([9.88697302e-02, 1.69039469e-01, 1.04100000e+03, 5.41000000e-01]), array([1.66172544e-01, 2.57495125e-01, 1.31400000e+03, 5.68000000e-01]), array([6.21506234e-02, 1.33131593e-01, 1.39700000e+03, 7.43500000e-01]), array([3.56289898e-02, 1.02476144e-01, 1.53100000e+03, 8.38000000e-01]), array([2.85256113e-02, 1.14697969e-01, 1.56500000e+03, 9.19000000e-01]), array([0., 0., 0., 1.])]
+Running with emphasis, tags, and hybrid enabled
+% of unique tags 100.0
+Average phrase length 6.732000000000002
+Num errors 0.1
+Average vocab size 123.51
+Std phrase length 1.1640397329988355
+Std vocab size 11.0231529064964
+array([  0.        ,   0.        ,   0.        ,  70.12002973,
+       683.36020955, 118.54027867, 120.12034475, 143.80020873,
+        62.39006407, 264.01001804, 216.16004264, 223.2100028 ,
+       171.33000541, 185.11001258,   0.        ])
+array([  0.        ,   0.        ,   0.        ,   1.3362647 ,
+       901.61706688, 102.21517407, 147.40520573,  35.2995318 ,
+         6.80717595,  17.00028896,  18.09017251,  19.4315648 ,
+        62.30040675,   4.22112344,   0.        ])
+Running with emphasis and tags enabled
+% of unique tags 100.0
+Average phrase length 4.7885
+Num errors 0.0
+Average vocab size 107.35
+Std phrase length 0.4784012437274802
+Std vocab size 7.727062831373899
+array([  0.        ,   0.        ,   0.        ,  70.03003642,
+       762.87016082,  84.15059315, 138.90033449, 146.42024128,
+        62.42007535, 243.2900198 , 217.26004068, 225.11000202,
+       159.82000597, 185.31001078,   0.        ])
+array([0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 1.02425921e+00,
+       9.19825602e+02, 8.56417498e+01, 2.07511320e+02, 3.17515318e+01,
+       5.66068845e+00, 1.49821841e+01, 1.86309495e+01, 7.19652660e-01,
+       6.66528864e+01, 6.24610753e+00, 0.00000000e+00])
+Running with emphasis enabled
+% of unique tags 69.69696969696977
+Average phrase length 5.168604651162791
+Num errors 0.82
+Average vocab size 129.79
+Std phrase length 0.42596088049777553
+Std vocab size 10.16788571926337
+array([   0.        ,    0.        ,    0.        ,   13.65041844,
+       1289.49005713,   43.53154131,  176.76021527,   94.51076403,
+         46.13059753,   11.88378349,   73.53066265,  183.32001675,
+         28.15003835,    2.57750462,    0.        ])
+array([  0.        ,   0.        ,   0.        ,  29.77149891,
+       895.33441142, 191.11535762, 438.91408964,  86.50200423,
+        59.39935145,  80.03724042, 140.80070717, 110.21376243,
+        26.52936125,  10.05421713,   0.        ])
+Running with base Markov model
+% of unique tags 69.69696969696977
+Average phrase length 7.1967441860465104
+Num errors 0.92
+Average vocab size 214.39
+Std phrase length 0.6594195785978628
+Std vocab size 15.522174461073423
+array([   0.        ,    0.        ,    0.        ,  853.7400879 ,
+       1019.10019604,  845.49019756,  761.97016073,  680.99074717,
+        556.46014879,  547.31036229,  555.78064192,  582.71027005,
+        667.27012816,  624.42026317,    0.        ])
+array([  0.        ,   0.        ,   0.        , 552.92999953,
+       581.37459555, 596.34383696, 551.88538031, 475.96504236,
+       303.9555107 , 282.64099024, 397.90605259, 373.19703118,
+       458.46008149, 457.65685704,   0.        ])
+% of unique tags 100.0
+Average phrase length 6.413333333333333
+Num errors 0.0
+Average vocab size 205.0
+Std phrase length 0.0
+Std vocab size 0.0
+--- T-Tests of Vocab Size ---
+Full Model vs. Base Model p-value: 2.984593552839871e-103
+Full Model vs. Tags-Only p-value: 1.6513264834547592e-24
+Full Model vs. Emphasis-Only p-value: 4.6267340085992424e-05
+Tags-Only vs. Base Model p-value: 8.236281145099934e-106
+Tags-Only vs. Emphasis-Only p-value: 5.06256565926316e-41
+Emphasis-Only vs. Base Model p-value: 3.5648534919492974e-97
+--- T-Tests of Structural Fidelity ---
+length of each t test vector: 100
+note 0 full vs base: nan
+note 0 full vs tags: nan
+note 0 full vs emphasis: nan
+note 0 tags vs emphasis: nan
+note 0 tags vs base: nan
+note 0 emphasis vs base: nan
+length of each t test vector: 100
+note 1 full vs base: nan
+note 1 full vs tags: nan
+note 1 full vs emphasis: nan
+note 1 tags vs emphasis: nan
+note 1 tags vs base: nan
+note 1 emphasis vs base: nan
+length of each t test vector: 100
+note 2 full vs base: nan
+note 2 full vs tags: nan
+note 2 full vs emphasis: nan
+note 2 tags vs emphasis: nan
+note 2 tags vs base: nan
+note 2 emphasis vs base: nan
+length of each t test vector: 100
+note 3 full vs base: 2.0432995746742247e-25
+note 3 full vs tags: 0.5954796222908729
+note 3 full vs emphasis: 1.3437628986644583e-34
+note 3 tags vs emphasis: 1.5663677164522545e-34
+note 3 tags vs base: 2.027824852911975e-25
+note 3 emphasis vs base: 1.734417743463422e-27
+length of each t test vector: 100
+note 4 full vs base: 0.0021688919333262267
+note 4 full vs tags: 0.5397819442902627
+note 4 full vs emphasis: 3.9634606050299e-06
+note 4 tags vs emphasis: 6.475620413361928e-05
+note 4 tags vs base: 0.020310286579670586
+note 4 emphasis vs base: 0.012652296579014994
+length of each t test vector: 100
+note 5 full vs base: 2.6938723693934074e-21
+note 5 full vs tags: 0.011051239127468263
+note 5 full vs emphasis: 0.0007428051725226523
+note 5 tags vs emphasis: 0.055693528147333006
+note 5 tags vs base: 1.5502975400301725e-22
+note 5 emphasis vs base: 5.44530731324463e-24
+length of each t test vector: 100
+note 6 full vs base: 5.3904477224376593e-20
+note 6 full vs tags: 0.4638438081551918
+note 6 full vs emphasis: 0.22590427003354024
+note 6 tags vs emphasis: 0.4391005719917811
+note 6 tags vs base: 5.778604284726471e-19
+note 6 emphasis vs base: 2.5561455888876206e-14
+length of each t test vector: 100
+note 7 full vs base: 2.3461405309462305e-19
+note 7 full vs tags: 0.5835840585515515
+note 7 full vs emphasis: 5.98856439446982e-07
+note 7 tags vs emphasis: 1.2626977530204389e-07
+note 7 tags vs base: 3.0777711871982605e-19
+note 7 emphasis vs base: 1.3996630981851826e-21
+length of each t test vector: 100
+note 8 full vs base: 1.5114296841893885e-29
+note 8 full vs tags: 0.9731287869110493
+note 8 full vs emphasis: 0.00799096415461043
+note 8 tags vs emphasis: 0.0077697971158433915
+note 8 tags vs base: 1.5229475607926637e-29
+note 8 emphasis vs base: 6.643795255842037e-31
+length of each t test vector: 100
+note 9 full vs base: 1.2771723098478584e-16
+note 9 full vs tags: 1.0805161818577469e-16
+note 9 full vs emphasis: 4.351382713711543e-55
+note 9 tags vs emphasis: 3.6238170925959996e-51
+note 9 tags vs base: 3.2591584022514065e-18
+note 9 emphasis vs base: 1.7204868902398224e-35
+length of each t test vector: 100
+note 10 full vs base: 2.1271916403051572e-13
+note 10 full vs tags: 0.6738731740622161
+note 10 full vs emphasis: 8.06110976528372e-17
+note 10 tags vs emphasis: 5.4708490920511954e-17
+note 10 tags vs base: 2.4420450086162123e-13
+note 10 emphasis vs base: 6.272782362370127e-21
+length of each t test vector: 100
+note 11 full vs base: 8.965453741175376e-16
+note 11 full vs tags: 0.3333029238384466
+note 11 full vs emphasis: 0.0005845387489967799
+note 11 tags vs emphasis: 0.0002751970237815987
+note 11 tags vs base: 1.1366633841105435e-15
+note 11 emphasis vs base: 7.361737387919475e-18
+length of each t test vector: 100
+note 12 full vs base: 2.5530544761660228e-18
+note 12 full vs tags: 0.21087627681245907
+note 12 full vs emphasis: 2.9238596768864734e-44
+note 12 tags vs emphasis: 1.1900517988143365e-37
+note 12 tags vs base: 7.302764179371582e-19
+note 12 emphasis vs base: 5.884638993359641e-25
+length of each t test vector: 100
+note 13 full vs base: 1.0443976972677826e-15
+note 13 full vs tags: 0.7921187110653132
+note 13 full vs emphasis: 4.1171871219254895e-156
+note 13 tags vs emphasis: 1.940630457361168e-180
+note 13 tags vs base: 1.0681468353354481e-15
+note 13 emphasis vs base: 3.2128785078438824e-24
+length of each t test vector: 100
+note 14 full vs base: nan
+note 14 full vs tags: nan
+note 14 full vs emphasis: nan
+note 14 tags vs emphasis: nan
+note 14 tags vs base: nan
+note 14 emphasis vs base: nan
