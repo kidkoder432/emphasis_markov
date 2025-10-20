@@ -20,8 +20,11 @@ new_tags = []
 for i, tag in enumerate(raga_data["tags"]):
     if tag == "I" or tag == "R":
         note = notes[np.argmax([sp(i) for sp in splines])]
-    elif tag == "F":
+    if tag == "F":
         note = "S"
+    
+    if tag == "T" and raga_data["tags"][i - 1] != "T":
+        note = notes[notes.index(note) + 1]
 
     if note is not None:
         print(tag, note)
