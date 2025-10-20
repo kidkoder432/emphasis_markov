@@ -1,3 +1,4 @@
+import traceback
 import pandas as pd
 import re
 import warnings
@@ -17,7 +18,7 @@ def parse_log_file(log_content):
     # Define model names for consistent mapping across all sections.
     model_name_map = {
         "emphasis, tags, and hybrid enabled": "Full",
-        "emphasis and tags enabled": "Tags-Only",
+        "emphasis and tags enabled": "Emphasis + Tags",
         "emphasis enabled": "Emphasis-Only",
         "base Markov model": "Base",
         "ground truth vistaar": "Ground Truth",
@@ -124,7 +125,7 @@ def parse_log_file(log_content):
         for desc, name in model_name_map.items():
             match = re.search(
                 re.escape(desc)
-                + r".*?Averge phrase` length\s+([\d.e-]+).*?Average vocab size\s+([\d.e-]+)",
+                + r".*?Average phrase length\s+([\d.e-]+).*?Average vocab size\s+([\d.e-]+).*?Std phrase length\s+([\d.e-]+).*?Std vocab size\s+([\d.e-]+)",
                 section_content,
                 re.DOTALL,
             )
@@ -134,6 +135,8 @@ def parse_log_file(log_content):
                         "Model": name,
                         "Avg Phrase Length": float(match.group(1)),
                         "Avg Vocab Size": float(match.group(2)),
+                        "Std Phrase Length": float(match.group(3)),
+                        "Std Vocab Size": float(match.group(4)),
                     }
                 )
 
@@ -169,14 +172,25 @@ def parse_log_file(log_content):
         for i, model_name in enumerate(model_order):
             if (i + 1) < len(model_blocks):
                 block = model_blocks[i + 1]
-                match = re.search(r"array\((.*?)\)", block, re.DOTALL)
+                match = re.findall(r"array\((.*?)\)", block, re.DOTALL)
                 if match:
-                    array_content = match.group(1)
+                    array_content_mean = match[0]
                     # Use regex to find all numbers (including scientific notation) in the array string
-                    cleaned_values = re.findall(r"[\d.e-]+", array_content)
+                    cleaned_values = re.findall(r"[\d.e-]+", array_content_mean)
+
+                    array_content_std = match[1]
+
+                    # Use regex to find all numbers (including scientific notation) in the array string
+                    std_values = re.findall(r"[\d.e-]+", array_content_std)
 
                     row_data = {"Model": model_name}
                     for idx, value in enumerate(cleaned_values):
+                        # Name columns 'Note 0', 'Note 1', etc., to align with p-value groups
+                        row_data[f"Note {idx}"] = float(value)
+                    metrics_list.append(row_data)
+
+                    row_data = {"Model": model_name}
+                    for idx, value in enumerate(std_values):
                         # Name columns 'Note 0', 'Note 1', etc., to align with p-value groups
                         row_data[f"Note {idx}"] = float(value)
                     metrics_list.append(row_data)
@@ -214,8 +228,9 @@ def parse_log_file(log_content):
             "p_values": pd.DataFrame(p_values_list),
         }
         print(" -> Successfully parsed 'Structural Fidelity' into columns.")
-    except (AttributeError, IndexError):
-        print(" -> Could not find or parse 'Structural Fidelity' section.")
+    except (AttributeError, IndexError) as e:
+        traceback.print_exc()
+        print(" -> Could not find or parse 'Structural Fidelity' section. Error:", e)
 
     return all_data
 
@@ -240,7 +255,7 @@ def apply_bonferroni_correction(df):
     return df
 
 
-def write_formatted_excel(all_data, filename="0920_evals_jog.xlsx"):
+def write_formatted_excel(all_data, filename="1015_evals_amrit.xlsx"):
     """
     Writes all parsed data to a beautifully formatted, multi-sheet Excel file.
     """
@@ -322,7 +337,7 @@ def write_formatted_excel(all_data, filename="0920_evals_jog.xlsx"):
 
 # --- Main Execution Block ---
 if __name__ == "__main__":
-    log_file_path = "0920_eval_log_jog.txt"
+    log_file_path = "1015_eval_log_amrit.txt"
     try:
         with open(log_file_path, "r") as f:
             log_content = f.read()
