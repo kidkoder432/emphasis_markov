@@ -57,6 +57,7 @@ def run():
             metric[i, j] = dist(t_ref, splines_ref[i], t_gen, splines_gen[i])
 
     pprint(np.mean(metric, axis=1))
+    pprint(np.std(metric, axis=1))
     return metric
 
 
