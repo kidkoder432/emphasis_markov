@@ -1,13 +1,21 @@
+from email.policy import default
 import json
 import pickle as pkl
 import sys
 
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 from scipy.interpolate import PchipInterpolator
 from scipy.ndimage import median_filter
 
+config = {
+    "toImageButtonOptions": {
+        "format": "png",  # one of png, svg, jpeg, webp
+        "scale": 4,  # Multiply resolution by this factor
+    }
+}
 
 def calculate_emphasis_df(raga_data):
     """
@@ -115,31 +123,58 @@ def generate_plots_and_save_splines(
     # Initialize a plotly figure for the plot
     fig = go.Figure()
 
-    # Process and plot each note's emphasis curve
-    for spline, name in zip(convolved_splines, emphasis_df.columns):
+    # Define your styles
+    # 'solid' is default. 'dash' and 'dot' are good secondary options.
+    line_styles = ["solid", "dash", "dot"]
 
-        # Add the smoothed curve to the plot
+    colors = px.colors.qualitative.Dark2
+
+    # Use enumerate to get the index 'i' for each trace
+    for i, (spline, name) in enumerate(zip(convolved_splines, emphasis_df.columns)):
+
+        if sum(spline(t)) == 0:
+            continue
+
+        # LOGIC: Switch style every 8 traces
+        # Traces 0-7: Solid
+        # Traces 8-15: Dash
+        # Traces 16+: Dot (if you had them)
+        current_style = line_styles[(i // 8) % len(line_styles)]
+
         fig.add_scatter(
             x=t,
             y=spline(t),
             mode="lines",
             name=name,
+            line={
+                "color": colors[i % len(colors)],  # Safety modulo
+                "dash": current_style,  # Apply the style
+            },
         )
 
     # Add the "Max Emphasis" line to the plot
-    max_emphases = np.array(
-        [max([spline(ti) for spline in convolved_splines]) for ti in t]
-    )
-    fig.add_scatter(
-        x=t, y=max_emphases, mode="lines", name="Max Emphasis", line={"color": "white"}
-    )
+    # max_emphases = np.array(
+    #     [max([spline(ti) for spline in convolved_splines]) for ti in t]
+    # )
+    # fig.add_scatter(
+    #     x=t, y=max_emphases, mode="lines", name="Max Emphasis", line={"color": "white"}
+    # )
 
     # Update plot layout and title
     fig.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         title="Emphasis Table",
-        xaxis_title="T",
+        xaxis_title="Phrase #",
         yaxis_title="Emphasis Level",
+        # 1. MAKE THE CANVAS SMALL (Simulates the column width)
+        width=1000,
+        height=600,
+        # 2. MAKE THE TEXT HUGE RELATIVE TO THE CANVAS
+        font=dict(
+            family="Verdana",
+            size=22,  # This looks massive on screen, but perfect in the paper
+            color="black",
+        ),
     )
 
     # Save the splines to a pickle file for later use
@@ -149,7 +184,62 @@ def generate_plots_and_save_splines(
     )
 
     # Display the final plot
-    fig.show()
+    fig.show(config=config)
+
+    names = emphasis_df.columns.tolist()
+
+    fig2 = go.Figure()
+    max_emp = {note: [None] * len(t) for note in emphasis_df.columns}
+    for i, time in enumerate(t):
+        vec = [spline(time) for spline in convolved_splines]
+        name = emphasis_df.columns[np.argmax(vec)]
+        max_emp[name][i] = time
+
+    colors = px.colors.qualitative.Light24
+
+    for name, times in max_emp.items():
+        if all(time is None for time in times):
+            continue
+        fig2.add_scatter(
+            x=times,
+            y=[name] * len(times),
+            mode="lines",
+            name=name,
+            connectgaps=False,
+            line={"color": "steelblue"},
+            
+        )
+
+    fig2.update_layout(
+        template="plotly_white",
+        title="Maximal Emphasis Regions",
+        xaxis_title="Phrase #",
+        yaxis_title="Note",
+        showlegend=False,
+         # 1. MAKE THE CANVAS SMALL (Simulates the column width)
+        width=1200,
+        height=600,
+        # 2. MAKE THE TEXT HUGE RELATIVE TO THE CANVAS
+        font=dict(
+            family="Verdana",
+            size=22,  # This looks massive on screen, but perfect in the paper
+            color="black",
+        ),
+    )
+
+    for i in range(1, int(max(t))):
+        fig2.add_shape(
+            go.layout.Shape(
+                type="line",
+                x0=i,
+                x1=i,
+                y0=0,
+                y1=len(names),
+                line={"color": "lightgrey", "width": 0.5}
+            )
+        )
+
+    fig2.show(config=config)
 
 
 if __name__ == "__main__":

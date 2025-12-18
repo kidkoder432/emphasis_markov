@@ -6,7 +6,16 @@ from plotly.subplots import make_subplots
 import numpy as np
 
 import logging
+
 logger = logging.getLogger(__name__)
+
+config = {
+    "toImageButtonOptions": {
+        "format": "png",  # one of png, svg, jpeg, webp
+        "scale": 4,  # Multiply resolution by this factor
+    }
+}
+
 
 # ==============================================================================
 # PART 1: STATIC FIGURE GENERATION
@@ -81,7 +90,7 @@ def create_static_figure(data, row_idx, swars_list):
         yaxis1=dict(range=[0, 1], title="Probability"),
         yaxis2=dict(range=[0, 1], title="Probability"),
         xaxis3=dict(tickangle=-45),
-        coloraxis=dict(colorscale="Viridis", cmin=0, cmax=1),
+        coloraxis=dict(colorscale="cividis_r", cmin=0, cmax=1),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
     return fig
@@ -155,15 +164,11 @@ def create_tpm_dashboard(viz_tables, swars_list):
     Creates an animated Plotly visualization of TPMs and Emphasis,
     using a specific visual style for the figures.
     """
-    #
-    # --- This section (Error Handling & Data Prep) is preserved from your original function ---
-    #
     if not viz_tables:
         logger.warning("No visualization data available to create a plot.")
         return
 
     logger.info("Creating Plotly visualization...")
-
     num_phrases_generated = len(viz_tables)
 
     try:
@@ -189,62 +194,74 @@ def create_tpm_dashboard(viz_tables, swars_list):
         emphasis_labels = swars_list[:-1]
         tpm_labels = swars_list
 
+        # Constants
+        FULL_Y_RANGE = [-0.5, 15.5]  # 16-row span for all plots
+        SCALE = [[0.0, "white"], [1.0, "steelblue"]]
+        FONT = dict(family="Verdana", size=22, color="black")
+
+        # 1. FIX: Dynamic range based on actual data size, not hardcoded 15.5
+        y_range = [-0.5, len(swars_list) - 0.5]
+
+        # 2. FIX: Simplified Layout Dictionary (No scaleanchor)
+        def clean_axis(title=""):
+            return dict(
+                title=title,
+                range=y_range,
+                # Removed scaleanchor and scaleratio to allow stretching
+                fixedrange=True,
+                showgrid=False,  # Optional: cleaner look for heatmaps
+                zeroline=False,
+            )
+
         figs = make_subplots(
             rows=1,
             cols=3,
-            column_widths=[0.45, 0.45, 0.1],  # reduce Emphasis width
+            # adjusted widths slightly to give the heatmaps more room
+            column_widths=[0.45, 0.45, 0.1],
             subplot_titles=(
                 "Transition Probability Matrix",
                 "TPM Original",
                 "Emphasis Table",
             ),
-            horizontal_spacing=0.05,
+            horizontal_spacing=0.05,  # Tighter spacing helps alignment visuals
         )
 
-        # Add initial heatmaps with coloraxis instead of individual colorbars
+        # Initial heatmaps
         figs.add_trace(
             go.Heatmap(
                 z=initial_data["emphasized_tpm"],
                 x=tpm_labels,
                 y=swars_list,
                 coloraxis="coloraxis1",
-                xaxis="x1",
-                yaxis="y1",
                 name="Emphasized TPM",
             ),
             row=1,
             col=1,
         )
-
         figs.add_trace(
             go.Heatmap(
                 z=initial_data["original_tpm"],
                 x=tpm_labels,
                 y=swars_list,
                 coloraxis="coloraxis2",
-                xaxis="x2",
-                yaxis="y2",
                 name="Original TPM",
             ),
             row=1,
             col=2,
         )
-
         figs.add_trace(
             go.Heatmap(
                 z=initial_data["emphasis"].reshape(-1, 1),
                 x=["Emphasis"],
                 y=emphasis_labels,
                 coloraxis="coloraxis3",
-                xaxis="x3",
-                yaxis="y3",
                 name="Emphasis",
             ),
             row=1,
             col=3,
         )
 
-        # Create frames
+        # Frames
         frames = []
         valid_indices = []
         for i, data in enumerate(viz_tables):
@@ -264,23 +281,10 @@ def create_tpm_dashboard(viz_tables, swars_list):
             frames.append(
                 go.Frame(
                     data=[
+                        go.Heatmap(z=data["emphasized_tpm"], coloraxis="coloraxis1"),
+                        go.Heatmap(z=data["original_tpm"], coloraxis="coloraxis2"),
                         go.Heatmap(
-                            z=data["emphasized_tpm"],
-                            coloraxis="coloraxis1",
-                            xaxis="x1",
-                            yaxis="y1",
-                        ),
-                        go.Heatmap(
-                            z=data["original_tpm"],
-                            coloraxis="coloraxis2",
-                            xaxis="x2",
-                            yaxis="y2",
-                        ),
-                        go.Heatmap(
-                            z=data["emphasis"].reshape(-1, 1),
-                            coloraxis="coloraxis3",
-                            xaxis="x3",
-                            yaxis="y3",
+                            z=data["emphasis"].reshape(-1, 1), coloraxis="coloraxis3"
                         ),
                     ],
                     name=f"Phrase {i}",
@@ -310,11 +314,10 @@ def create_tpm_dashboard(viz_tables, swars_list):
             for i in valid_indices
         ]
 
-        # Layout update
+        # Layout
         figs.update_layout(
             title_text=f"TPM Evolution & Emphasis (Phrases 0–{num_phrases_generated - 1})",
             title_x=0.5,
-            margin=dict(t=120, b=100, l=80, r=60),
             sliders=[
                 {
                     "active": 0,
@@ -323,26 +326,36 @@ def create_tpm_dashboard(viz_tables, swars_list):
                     "steps": slider_steps,
                 }
             ],
-            xaxis1=dict(title="To Swar/State", tickangle=-45),
-            yaxis1=dict(title="From Swar"),
-            xaxis2=dict(title="To Swar/State", tickangle=-45),
-            yaxis2=dict(title=""),
+            # Axis 1 (TPM Emphasized)
+            xaxis1=dict(title="Next Note"),
+            yaxis1=clean_axis("Current Note"),
+            # Axis 2 (TPM Original)
+            xaxis2=dict(title="Next Note"),
+            yaxis2=clean_axis(""),  # Shared visual height, distinct axis
+            # Axis 3 (Emphasis)
             xaxis3=dict(title=""),
-            yaxis3=dict(title="Swar"),
-            hovermode="closest",
-            template="plotly_dark",
-            # Explicit coloraxis layout
-            coloraxis1=dict(colorscale="hot", cmin=0, cmax=1),
-            coloraxis2=dict(colorscale="hot", cmin=0, cmax=1),
-            coloraxis3=dict(
-                colorscale="hot",
-                cmin=0,
-                cmax=1,
+            yaxis3=dict(
+                title="Note",
+                range=[-0.5, len(emphasis_labels) - 0.5],
+                # Removed scaleanchor and scaleratio to allow stretching
+                fixedrange=True,
+                showgrid=False,  # Optional: cleaner look for heatmaps
+                zeroline=False,
             ),
+            hovermode="closest",
+            template="plotly_white",
+            # Color axes
+            coloraxis1=dict(colorscale=SCALE, cmin=0, cmax=1),
+            coloraxis2=dict(colorscale=SCALE, cmin=0, cmax=1),
+            coloraxis3=dict(colorscale=SCALE, cmin=0, cmax=1),
+            width=2000,
+            height=1000,
+            font=FONT,
         )
 
+        figs.update_annotations(font=FONT)
         figs.frames = frames
-        figs.show()
+        figs.show(config=config)
         logger.info("Visualization successfully shown.")
 
     except Exception as e:

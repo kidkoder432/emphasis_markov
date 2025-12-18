@@ -5,6 +5,13 @@ import numpy as np
 
 name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
 
+config = {
+    "toImageButtonOptions": {
+        "format": "png",  # one of png, svg, jpeg, webp
+        "scale": 4,  # Multiply resolution by this factor
+    }
+}
+
 RAGA_DATA_PATH = f"./raga_data_{name}/{name}.json"
 TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
 TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
@@ -110,7 +117,10 @@ import plotly.graph_objects as go
 fig = go.Figure(
     data=go.Heatmap(
         z=list(tag_tpms.values())[0],
-        colorscale="hot",
+        colorscale=[
+            [0, "white"],
+            [1, "steelblue"]
+        ],
         x=allNotes,
         y=allNotes,
     ),
@@ -128,9 +138,10 @@ for tag in states:
 
 sliders = [dict(active=0, currentvalue={"prefix": "Tag: "}, pad={"t": 50}, steps=steps)]
 
-fig.update_layout(sliders=sliders, template="plotly_dark")
+fig.update_layout(sliders=sliders, template="plotly_white")
 
 fig.update_layout(
+    title="Tag-Specific TPM",
     xaxis=go.layout.XAxis(
         title="Next Note",
         tickvals=list(range(len(allNotes))),
@@ -140,7 +151,18 @@ fig.update_layout(
         title="Current Note",
         tickvals=list(range(len(allNotes))),
         ticktext=allNotes,
+        scaleanchor="x",
+        scaleratio=1,
+    ),
+    # 1. MAKE THE CANVAS SMALL (Simulates the column width)
+    width=1000,
+    height=1000,
+    # 2. MAKE THE TEXT HUGE RELATIVE TO THE CANVAS
+    font=dict(
+        family="Verdana",
+        size=22,  # This looks massive on screen, but perfect in the paper
+        color="black",
     ),
 )
 
-fig.show()
+fig.show(config=config)
