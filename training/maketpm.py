@@ -30,7 +30,7 @@ important_notes = list(set(important_notes))
 for phrase in phrases:
     phrase = phrase.split(" ")
 
-    phrase = [(p[0], p[2:]) for p in phrase]
+    phrase = [tuple(p.split("-")) for p in phrase]
 
     for i in range(len(phrase) - 1):
         tpm[SWARS.index(phrase[i][1]), SWARS.index(phrase[i + 1][1])] += 1.0
