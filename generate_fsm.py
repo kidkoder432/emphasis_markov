@@ -40,6 +40,9 @@ logger.addHandler(stdout_handler)
 
 name = sys.argv[-1] if len(sys.argv) > 1 else "amrit"
 
+seed = np.random.randint(100, 999)
+print(seed)
+
 logger.error("Generating music for " + name)
 
 # --- Constants ---
@@ -49,10 +52,10 @@ DEFAULT_TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
 DEFAULT_TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
 DEFAULT_SPLINES_PATH = f"./model_data_{name}/splines.pkl"
 DEFAULT_SWARS_PATH = f"./raga_data_{name}/swars.json"
-OUTPUT_PHRASES_FILE = f"./output/phrases_{name}.txt"
-OUTPUT_MIDI_FILE = f"./output/out_{name}.mid"
+OUTPUT_PHRASES_FILE = f"./output/phrases_{name}_{seed}.txt"
+OUTPUT_MIDI_FILE = f"./output/out_{name}_{seed}.mid"
 
-MIDI_BPM = 100
+MIDI_BPM = 120
 MIDI_TONIC_NOTE = 56  # G#3
 MIDI_TICKS_PER_BEAT = 480
 
@@ -65,8 +68,8 @@ SPLINE_DOMAIN_MAX = (
 
 # Ablation parameters
 ENABLE_EMPHASIS = True  # Enable emphasis calculation
-ENABLE_TAGS = False  # Enable tag-based FSM generation
-ENABLE_HYBRID = False  # Enable hybrid TPM with tags and emphasis
+ENABLE_TAGS = True  # Enable tag-based FSM generation
+ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
 
 # --- Configuration Flags ---
 ENABLE_VISUALIZATION = True
@@ -116,8 +119,8 @@ def changeRaga(n):
     DEFAULT_TAG_PICKLE_PATH = f"./model_data_{n}/tag_tpms.pkl"
     DEFAULT_SPLINES_PATH = f"./model_data_{n}/splines.pkl"
     DEFAULT_SWARS_PATH = f"./raga_data_{n}/swars.json"
-    OUTPUT_PHRASES_FILE = f"./output/phrases_{n}.txt"
-    OUTPUT_MIDI_FILE = f"./output/out_{n}.mid"
+    OUTPUT_PHRASES_FILE = f"./output/phrases_{n}_{seed}.txt"
+    OUTPUT_MIDI_FILE = f"./output/out_{n}_{seed}.mid"
     SPLINE_DOMAIN_MAX = (
         74 if name == "amrit" else 59
     )  # Domain used for scaling time for spline evaluation
@@ -807,7 +810,7 @@ def create_midi_file(
 
             # Add inter-phrase pause if notes were added
             if notes_in_phrase > 0:
-                pause_ticks = int(round(1.0 * ticks_per_beat))  # 1 beat pause
+                pause_ticks = int(ticks_per_beat * (bpm / 60) * 1.5)  # 1.5 seconds
                 track.append(
                     mido.Message(
                         "control_change",

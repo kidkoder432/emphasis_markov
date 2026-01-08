@@ -12,11 +12,11 @@ T 3-n_ 4-S 2-n_ 5-g 4-S
 T 2-g 3-n_ 4-g 4-S
 I 3-n_ 3-S 8-g
 E 4-g 3-n_ 6-g
-E 1-M 1-g 5-S 2-n 1-M 1-g 5-S
+E 1-M 1-g 5-S 2-n_ 1-M 1-g 5-S
 E 2-P_ 3-n_ 3-S 4-g 2-n_ 5-g
 E 3-g 3-S 2-P_ 2-n_ 5-g
 E 2-n_ 3-S 2-n_ 4-g 4-S
-C 2-P_ 2-n_ 3-g 2-n 4-g 4-S
+C 2-P_ 2-n_ 3-g 2-n_ 4-g 4-S
 T 2-P_ 2-n_ 2-S 4-g 5-g
 I 2-g 3-n_ 8-G
 E 3-G 2-M 3-g 5-S
