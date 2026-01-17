@@ -71,7 +71,8 @@ This work is currently a draft under review. If you find this code useful for yo
 
 ## 🙏 Acknowledgments
 
-* Shri Mahesh Kale: For over eight years of training in Hindustani Classical music and the domain knowledge required for this project.
 * Mahesh Kale School of Music (MKSM): For permission to use the didactic recordings for the training corpus.
+* Musical experts who participated in the listening study
+* MIR experts who provided valuable critiques, insights, and next steps
 
-*Created by Prajwal Agrawal. This is a research project in progress.*
+*This is a research project in progress.*
