@@ -1,4 +1,3 @@
-
 # Neuro-Symbolic Generation of Hindustani Classical Music
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
@@ -50,9 +49,27 @@ I conducted an ablative study comparing this framework against standard baseline
 
 ### Generating Music
 
-The main generation script has constants to change active layers (for ablative testing) and other parameters. 
+The main generation script has constants to change active layers (for ablative testing) and other parameters.
 
 ```bash
 # Generate a variation in Raga Amritvarshini
 python generate_fsm.py
 ```
+
+## 📂 Repository Structure
+
+* `raga_data_*/`: JSON definitions of Raga grammar and constraints.
+* `training/`: Scripts to extract Transition Probability Matrices (TPMs) from the source transcription.
+* `model_data_*/`: Trained TPMs, emphasis splines, and tag tables used for generation.
+* `samples/`: Generated audio examples (MP3/MIDI).
+
+📜 Citation
+This work is currently a draft under review. If you find this code useful for your own research or learning, you can cite the draft as:
+
+```Agrawal, P. (2026). A Hierarchical Framework for Modeling Long-Form Structure in Hindustani Classical Music. (Draft).```
+
+## 🙏 Acknowledgments
+* Shri Mahesh Kale: For over eight years of training in Hindustani Classical music and the domain knowledge required for this project.
+* Mahesh Kale School of Music (MKSM): For permission to use the didactic recordings for the training corpus.
+
+*Created by Prajwal Agrawal. This is a research project in progress.*
