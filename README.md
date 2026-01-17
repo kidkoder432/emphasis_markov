@@ -63,12 +63,14 @@ python generate_fsm.py
 * `model_data_*/`: Trained TPMs, emphasis splines, and tag tables used for generation.
 * `samples/`: Generated audio examples (MP3/MIDI).
 
-📜 Citation
+## 📜 Citation
+
 This work is currently a draft under review. If you find this code useful for your own research or learning, you can cite the draft as:
 
-```Agrawal, P. (2026). A Hierarchical Framework for Modeling Long-Form Structure in Hindustani Classical Music. (Draft).```
+``Agrawal, P. (2026). A Hierarchical Framework for Modeling Long-Form Structure in Hindustani Classical Music. (Draft).``
 
 ## 🙏 Acknowledgments
+
 * Shri Mahesh Kale: For over eight years of training in Hindustani Classical music and the domain knowledge required for this project.
 * Mahesh Kale School of Music (MKSM): For permission to use the didactic recordings for the training corpus.
 
