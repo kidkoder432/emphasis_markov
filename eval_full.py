@@ -8,7 +8,7 @@ from scipy.stats import ttest_ind
 
 import numpy as np
 
-import generate_fsm as gf
+import generate_full as gf
 
 from training.learn_emphasis import *
 

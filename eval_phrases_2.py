@@ -4,8 +4,8 @@ from winsound import MessageBeep
 import scipy as sp
 from scipy.stats import entropy, ttest_ind
 
-import generate_fsm as gf
-from generate_fsm import *
+import generate_full as gf
+from generate_full import *
 from training.learn_emphasis import *
 
 NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100

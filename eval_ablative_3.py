@@ -5,7 +5,7 @@ from winsound import MessageBeep
 
 import numpy as np
 
-import generate_fsm as gf
+import generate_full as gf
 
 NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
 

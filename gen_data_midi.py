@@ -1,4 +1,4 @@
-import generate_fsm as gf
+import generate_full as gf
 import json
 
 gf.changeRaga("jog")

@@ -1,5 +1,5 @@
-from generate_fsm import *
-import generate_fsm as gf
+from generate_full import *
+import generate_full as gf
 from training.learn_emphasis import *
 from pprint import pprint
 
