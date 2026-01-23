@@ -177,89 +177,90 @@ def run_struct_fid(vistaars):
     pprint(np.std(metric, axis=1))
     return metric
 
+if __name__ == "__main__":
 
-dataset = get_dataset_vistaar()
-print([calculate_features(t_ref, splines_ref[i]) for i in range(len(notes))])
+    dataset = get_dataset_vistaar()
+    print([calculate_features(t_ref, splines_ref[i]) for i in range(len(notes))])
 
-print("Running with emphasis, tags, and hybrid enabled")
-gf.ENABLE_EMPHASIS = True
-gf.ENABLE_TAGS = True
-gf.ENABLE_HYBRID = True
-vistaars = generate_vistaars()
+    print("Running with emphasis, tags, and hybrid enabled")
+    gf.ENABLE_EMPHASIS = True
+    gf.ENABLE_TAGS = True
+    gf.ENABLE_HYBRID = True
+    vistaars = generate_vistaars()
 
-vocab_full = run_ablative_vocab(vistaars)
-struct_full = run_struct_fid(vistaars)
+    vocab_full = run_ablative_vocab(vistaars)
+    struct_full = run_struct_fid(vistaars)
 
-print("Running with emphasis and tags enabled")
-gf.ENABLE_EMPHASIS = True
-gf.ENABLE_TAGS = True
-gf.ENABLE_HYBRID = False
-vistaars = generate_vistaars()
+    print("Running with emphasis and tags enabled")
+    gf.ENABLE_EMPHASIS = True
+    gf.ENABLE_TAGS = True
+    gf.ENABLE_HYBRID = False
+    vistaars = generate_vistaars()
 
-vocab_tags = run_ablative_vocab(vistaars)
-struct_tags = run_struct_fid(vistaars)
+    vocab_tags = run_ablative_vocab(vistaars)
+    struct_tags = run_struct_fid(vistaars)
 
-print("Running with emphasis enabled")
-gen = []
-gf.ENABLE_EMPHASIS = True
-gf.ENABLE_TAGS = False
-gf.ENABLE_HYBRID = False
-vistaars = generate_vistaars()
+    print("Running with emphasis enabled")
+    gen = []
+    gf.ENABLE_EMPHASIS = True
+    gf.ENABLE_TAGS = False
+    gf.ENABLE_HYBRID = False
+    vistaars = generate_vistaars()
 
-vocab_emphasis = run_ablative_vocab(vistaars)
-struct_emphasis = run_struct_fid(vistaars)
+    vocab_emphasis = run_ablative_vocab(vistaars)
+    struct_emphasis = run_struct_fid(vistaars)
 
-print("Running with base Markov model")
-gf.ENABLE_EMPHASIS = False
-gf.ENABLE_TAGS = False
-gf.ENABLE_HYBRID = False
-vistaars = generate_vistaars()
+    print("Running with base Markov model")
+    gf.ENABLE_EMPHASIS = False
+    gf.ENABLE_TAGS = False
+    gf.ENABLE_HYBRID = False
+    vistaars = generate_vistaars()
 
-vocab_base = run_ablative_vocab(vistaars)
-struct_base = run_struct_fid(vistaars)
+    vocab_base = run_ablative_vocab(vistaars)
+    struct_base = run_struct_fid(vistaars)
 
-vocab_ground = run_ablative_vocab(dataset, ground=True)
+    vocab_ground = run_ablative_vocab(dataset, ground=True)
 
-print("--- T-Tests of Vocab Size ---")
-# Compare all models to each other
-p_full_vs_base = ttest_ind(vocab_full, vocab_base, equal_var=False)[1]
-print(f"Full Model vs. Base Model p-value: {p_full_vs_base}")
+    print("--- T-Tests of Vocab Size ---")
+    # Compare all models to each other
+    p_full_vs_base = ttest_ind(vocab_full, vocab_base, equal_var=False)[1]
+    print(f"Full Model vs. Base Model p-value: {p_full_vs_base}")
 
-p_full_vs_tags = ttest_ind(vocab_full, vocab_tags, equal_var=False)[1]
-print(f"Full Model vs. Tags-Only p-value: {p_full_vs_tags}")
+    p_full_vs_tags = ttest_ind(vocab_full, vocab_tags, equal_var=False)[1]
+    print(f"Full Model vs. Tags-Only p-value: {p_full_vs_tags}")
 
-p_full_vs_emphasis = ttest_ind(vocab_full, vocab_emphasis, equal_var=False)[1]
-print(f"Full Model vs. Emphasis-Only p-value: {p_full_vs_emphasis}")
+    p_full_vs_emphasis = ttest_ind(vocab_full, vocab_emphasis, equal_var=False)[1]
+    print(f"Full Model vs. Emphasis-Only p-value: {p_full_vs_emphasis}")
 
-p_tags_vs_base = ttest_ind(vocab_tags, vocab_base, equal_var=False)[1]
-print(f"Tags-Only vs. Base Model p-value: {p_tags_vs_base}")
+    p_tags_vs_base = ttest_ind(vocab_tags, vocab_base, equal_var=False)[1]
+    print(f"Tags-Only vs. Base Model p-value: {p_tags_vs_base}")
 
-p_tags_vs_emphasis = ttest_ind(vocab_tags, vocab_emphasis, equal_var=False)[1]
-print(f"Tags-Only vs. Emphasis-Only p-value: {p_tags_vs_emphasis}")
+    p_tags_vs_emphasis = ttest_ind(vocab_tags, vocab_emphasis, equal_var=False)[1]
+    print(f"Tags-Only vs. Emphasis-Only p-value: {p_tags_vs_emphasis}")
 
-p_emphasis_vs_base = ttest_ind(vocab_emphasis, vocab_base, equal_var=False)[1]
-print(f"Emphasis-Only vs. Base Model p-value: {p_emphasis_vs_base}")
-
-
-print("--- T-Tests of Structural Fidelity ---")
-
-for i in range(len(notes)):
-    t_test_vector = [struct_full[i], struct_tags[i], struct_emphasis[i], struct_base[i]]
-    print("length of each t test vector:", len(t_test_vector[0]))
-
-    p_full_tags = ttest_ind(t_test_vector[0], t_test_vector[1], equal_var=False)[1]
-    p_full_emphasis = ttest_ind(t_test_vector[0], t_test_vector[2], equal_var=False)[1]
-    p_full_base = ttest_ind(t_test_vector[0], t_test_vector[3], equal_var=False)[1]
-    p_tags_emphasis = ttest_ind(t_test_vector[1], t_test_vector[2], equal_var=False)[1]
-    p_tags_base = ttest_ind(t_test_vector[1], t_test_vector[3], equal_var=False)[1]
-    p_emphasis_base = ttest_ind(t_test_vector[2], t_test_vector[3], equal_var=False)[1]
-
-    print("note", i, "full vs base:", p_full_base)
-    print("note", i, "full vs tags:", p_full_tags)
-    print("note", i, "full vs emphasis:", p_full_emphasis)
-    print("note", i, "tags vs emphasis:", p_tags_emphasis)
-    print("note", i, "tags vs base:", p_tags_base)
-    print("note", i, "emphasis vs base:", p_emphasis_base)
+    p_emphasis_vs_base = ttest_ind(vocab_emphasis, vocab_base, equal_var=False)[1]
+    print(f"Emphasis-Only vs. Base Model p-value: {p_emphasis_vs_base}")
 
 
-MessageBeep()
+    print("--- T-Tests of Structural Fidelity ---")
+
+    for i in range(len(notes)):
+        t_test_vector = [struct_full[i], struct_tags[i], struct_emphasis[i], struct_base[i]]
+        print("length of each t test vector:", len(t_test_vector[0]))
+
+        p_full_tags = ttest_ind(t_test_vector[0], t_test_vector[1], equal_var=False)[1]
+        p_full_emphasis = ttest_ind(t_test_vector[0], t_test_vector[2], equal_var=False)[1]
+        p_full_base = ttest_ind(t_test_vector[0], t_test_vector[3], equal_var=False)[1]
+        p_tags_emphasis = ttest_ind(t_test_vector[1], t_test_vector[2], equal_var=False)[1]
+        p_tags_base = ttest_ind(t_test_vector[1], t_test_vector[3], equal_var=False)[1]
+        p_emphasis_base = ttest_ind(t_test_vector[2], t_test_vector[3], equal_var=False)[1]
+
+        print("note", i, "full vs base:", p_full_base)
+        print("note", i, "full vs tags:", p_full_tags)
+        print("note", i, "full vs emphasis:", p_full_emphasis)
+        print("note", i, "tags vs emphasis:", p_tags_emphasis)
+        print("note", i, "tags vs base:", p_tags_base)
+        print("note", i, "emphasis vs base:", p_emphasis_base)
+
+
+    MessageBeep()
