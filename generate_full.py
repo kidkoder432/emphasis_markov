@@ -38,7 +38,7 @@ stdout_handler.setLevel(LOG_LEVEL)
 stdout_handler.setFormatter(logging.Formatter(LOG_FORMAT, datefmt="%H:%M:%S"))
 logger.addHandler(stdout_handler)
 
-name = sys.argv[-1] if len(sys.argv) > 1 else "amrit"
+name = sys.argv[1] if len(sys.argv) > 1 else "amrit"
 
 seed = np.random.randint(100, 999)
 print(seed)
@@ -52,8 +52,8 @@ DEFAULT_TAG_TPM_PATH = f"./model_data_{name}/tpm_tags.npy"
 DEFAULT_TAG_PICKLE_PATH = f"./model_data_{name}/tag_tpms.pkl"
 DEFAULT_SPLINES_PATH = f"./model_data_{name}/splines.pkl"
 DEFAULT_SWARS_PATH = f"./raga_data_{name}/swars.json"
-OUTPUT_PHRASES_FILE = f"./output/phrases_{name}_{seed}.txt"
-OUTPUT_MIDI_FILE = f"./output/out_{name}_{seed}.mid"
+OUTPUT_PHRASES_FILE = f"./hev2/phrases_{name}_{seed}.txt"
+OUTPUT_MIDI_FILE = f"./hev2/out_{name}_{seed}.mid"
 
 MIDI_BPM = 120
 MIDI_TONIC_NOTE = 56  # G#3
@@ -67,9 +67,9 @@ SPLINE_DOMAIN_MAX = (
 )  # Domain used for scaling time for spline evaluation
 
 # Ablation parameters
-ENABLE_EMPHASIS = True  # Enable emphasis calculation
-ENABLE_TAGS = True  # Enable tag-based FSM generation
-ENABLE_HYBRID = True  # Enable hybrid TPM with tags and emphasis
+ENABLE_EMPHASIS = int(sys.argv[-3])  # Enable emphasis calculation
+ENABLE_TAGS = int(sys.argv[-2])  # Enable tag-based FSM generation
+ENABLE_HYBRID = int(sys.argv[-1])  # Enable hybrid TPM with tags and emphasis
 
 # --- Configuration Flags ---
 ENABLE_VISUALIZATION = True
@@ -902,6 +902,53 @@ def main_with_eval():
 
     if ENABLE_TAGS:
         gen = create_tags()
+        gen = [
+            "I S",
+            "E S",
+            "I n_",
+            "E n_",
+            "C n_",
+            "I P_",
+            "E P_",
+            "C P_",
+            "T n_",
+            "I g",
+            "E g",
+            "E g",
+            "C g",
+            "T G",
+            "I G",
+            "E G",
+            "C G",
+            "I M",
+            "E M",
+            "E M",
+            "I P",
+            "E P",
+            "E P",
+            "I n",
+            "E n",
+            "T S^",
+            "I S^",
+            "E S^",
+            "I g^",
+            "E g^",
+            "C g^",
+            "I G^",
+            "I M^",
+            "E M^",
+            "C M^",
+            "R n",
+            "G n",
+            "R P",
+            "G P",
+            "R M",
+            "G M",
+            "R G",
+            "R S",
+            "G S",
+            "F S",
+        ]
     else:
         gen = []
 
