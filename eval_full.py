@@ -99,13 +99,17 @@ def get_dataset_vistaar():
 
     return [phrases]
 
-def generate_vistaars(num_samples=NUM_SAMPLES):
+
+def generate_vistaars(num_samples=NUM_SAMPLES, gen=gen):
     vistaars = []
-    for i in range(num_samples): 
-        print("Generating vistaar", i + 1, end="\r", flush=True, file=sys.stderr)
-        phrases, _ = gf.generate_all_phrases(gf.swars_list, gf.convolved_splines, gen=gen)
+    for i in range(num_samples):
+        print("Generating vistaar", i + 1, end="\r", flush=True, file=sys.stdout)
+        phrases, _ = gf.generate_all_phrases(
+            gf.swars_list, gf.convolved_splines, gen=gen
+        )
         vistaars.append(phrases)
     return vistaars
+
 
 def run_ablative_vocab(vistaars, ground=False):
     num_errors = 0
@@ -118,9 +122,7 @@ def run_ablative_vocab(vistaars, ground=False):
     for i in range(ns):
         phrases = vistaars[i]
 
-        vistaar_eval = calc_vocab_all(
-            phrases, gf.swars_list, gf.convolved_splines
-        )
+        vistaar_eval = calc_vocab_all(phrases, gf.swars_list, gf.convolved_splines)
 
         num_errors += vistaar_eval.get("err_last_note", 0)
         tags_unique += vistaar_eval["unique_tags_%"]
@@ -176,6 +178,7 @@ def run_struct_fid(vistaars):
     pprint(np.mean(metric, axis=1))
     pprint(np.std(metric, axis=1))
     return metric
+
 
 if __name__ == "__main__":
 
@@ -241,19 +244,29 @@ if __name__ == "__main__":
     p_emphasis_vs_base = ttest_ind(vocab_emphasis, vocab_base, equal_var=False)[1]
     print(f"Emphasis-Only vs. Base Model p-value: {p_emphasis_vs_base}")
 
-
     print("--- T-Tests of Structural Fidelity ---")
 
     for i in range(len(notes)):
-        t_test_vector = [struct_full[i], struct_tags[i], struct_emphasis[i], struct_base[i]]
+        t_test_vector = [
+            struct_full[i],
+            struct_tags[i],
+            struct_emphasis[i],
+            struct_base[i],
+        ]
         print("length of each t test vector:", len(t_test_vector[0]))
 
         p_full_tags = ttest_ind(t_test_vector[0], t_test_vector[1], equal_var=False)[1]
-        p_full_emphasis = ttest_ind(t_test_vector[0], t_test_vector[2], equal_var=False)[1]
+        p_full_emphasis = ttest_ind(
+            t_test_vector[0], t_test_vector[2], equal_var=False
+        )[1]
         p_full_base = ttest_ind(t_test_vector[0], t_test_vector[3], equal_var=False)[1]
-        p_tags_emphasis = ttest_ind(t_test_vector[1], t_test_vector[2], equal_var=False)[1]
+        p_tags_emphasis = ttest_ind(
+            t_test_vector[1], t_test_vector[2], equal_var=False
+        )[1]
         p_tags_base = ttest_ind(t_test_vector[1], t_test_vector[3], equal_var=False)[1]
-        p_emphasis_base = ttest_ind(t_test_vector[2], t_test_vector[3], equal_var=False)[1]
+        p_emphasis_base = ttest_ind(
+            t_test_vector[2], t_test_vector[3], equal_var=False
+        )[1]
 
         print("note", i, "full vs base:", p_full_base)
         print("note", i, "full vs tags:", p_full_tags)
@@ -261,6 +274,5 @@ if __name__ == "__main__":
         print("note", i, "tags vs emphasis:", p_tags_emphasis)
         print("note", i, "tags vs base:", p_tags_base)
         print("note", i, "emphasis vs base:", p_emphasis_base)
-
 
     MessageBeep()
