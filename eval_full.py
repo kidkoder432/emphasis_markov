@@ -12,10 +12,7 @@ import generate_full as gf
 
 from training.learn_emphasis import *
 
-NUM_SAMPLES = int(sys.argv[1]) if len(sys.argv) > 1 else 100
-
-gf.changeRaga(sys.argv[2] if len(sys.argv) > 2 else "amrit")
-
+NUM_SAMPLES = 100
 
 gen = gf.create_tags()
 
@@ -182,6 +179,12 @@ def run_struct_fid(vistaars):
 
 if __name__ == "__main__":
 
+    NUM_SAMPLES = int(sys.argv[2]) if len(sys.argv) > 1 else 100
+
+    gf.changeRaga(sys.argv[1] if len(sys.argv) > 2 else "amrit")
+
+    gen = gf.create_tags()
+
     dataset = get_dataset_vistaar()
     print([calculate_features(t_ref, splines_ref[i]) for i in range(len(notes))])
 
@@ -189,7 +192,7 @@ if __name__ == "__main__":
     gf.ENABLE_EMPHASIS = True
     gf.ENABLE_TAGS = True
     gf.ENABLE_HYBRID = True
-    vistaars = generate_vistaars()
+    vistaars = generate_vistaars(NUM_SAMPLES, gen)
 
     vocab_full = run_ablative_vocab(vistaars)
     struct_full = run_struct_fid(vistaars)
@@ -198,7 +201,7 @@ if __name__ == "__main__":
     gf.ENABLE_EMPHASIS = True
     gf.ENABLE_TAGS = True
     gf.ENABLE_HYBRID = False
-    vistaars = generate_vistaars()
+    vistaars = generate_vistaars(NUM_SAMPLES, gen)
 
     vocab_tags = run_ablative_vocab(vistaars)
     struct_tags = run_struct_fid(vistaars)
@@ -208,7 +211,7 @@ if __name__ == "__main__":
     gf.ENABLE_EMPHASIS = True
     gf.ENABLE_TAGS = False
     gf.ENABLE_HYBRID = False
-    vistaars = generate_vistaars()
+    vistaars = generate_vistaars(NUM_SAMPLES, gen)
 
     vocab_emphasis = run_ablative_vocab(vistaars)
     struct_emphasis = run_struct_fid(vistaars)
@@ -217,7 +220,7 @@ if __name__ == "__main__":
     gf.ENABLE_EMPHASIS = False
     gf.ENABLE_TAGS = False
     gf.ENABLE_HYBRID = False
-    vistaars = generate_vistaars()
+    vistaars = generate_vistaars(NUM_SAMPLES, gen)
 
     vocab_base = run_ablative_vocab(vistaars)
     struct_base = run_struct_fid(vistaars)
