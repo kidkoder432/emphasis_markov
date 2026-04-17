@@ -1,4 +1,3 @@
-from turtle import width
 import openpyxl
 import json
 import pandas as pd
@@ -35,8 +34,8 @@ models = ["Full Model", "Emphasis + Tags", "Emphasis-Only", "Baseline", "Dataset
 COLUMN_WIDTH_INCHES = 3.5
 DPI = 300  # Higher DPI for a sharp PNG export
 PX_WIDTH = int(COLUMN_WIDTH_INCHES * DPI)  # 1050px
-PX_HEIGHT = int(PX_WIDTH * 0.6)  # Maintains a clean aspect ratio
-FONT_SIZE = 20  # Scaled for 300 DPI to look like ~9pt in LaTeX
+PX_HEIGHT = int(PX_WIDTH * 0.5)  # Maintains a clean aspect ratio
+FONT_SIZE = 29  # Scaled for 300 DPI to look like ~9pt in LaTeX
 
 fig = go.Figure()
 
@@ -111,4 +110,4 @@ fig.update_layout(
 )
 
 # Export as high-res PNG
-fig.write_image(f"../0212_evals_{name}.png", scale=1)
+fig.write_image(f"../0212_evals_{name}.png", scale=1, width=PX_WIDTH, height=PX_HEIGHT)

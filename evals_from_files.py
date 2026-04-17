@@ -3,7 +3,7 @@ import os
 
 import generate_full as gf
 
-directory = './test3/'
+directory = './hev2/text/'
 
 gf.changeRaga("jog")
 files = [f for f in os.listdir(directory) if f.endswith('.txt') and 'phrases_jog_' in f]
